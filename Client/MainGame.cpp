@@ -49,6 +49,8 @@ int CMainGame::Update(void)
 	//Scene Mgr Update
 	//GETS(CSceneMgr)->Update();
 
+	cout << "¾È³ç" << endl;
+
 	return 0;
 }
 
