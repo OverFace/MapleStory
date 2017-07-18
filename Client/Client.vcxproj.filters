@@ -1,0 +1,177 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="01.Object">
+      <UniqueIdentifier>{a3ce744d-156e-4a2d-b053-bf19297d6702}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00.MainGame">
+      <UniqueIdentifier>{0b5b086a-2a04-47bf-a13b-1e74a903d959}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Object\Map">
+      <UniqueIdentifier>{c9212656-f9c1-4700-9990-20cf57ca16ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Object\Player">
+      <UniqueIdentifier>{7946e675-76cd-4b16-a87f-94d8f65ce754}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Object\Monster">
+      <UniqueIdentifier>{9003f797-86a3-4b79-afaa-4ed01b001c17}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="99.Default">
+      <UniqueIdentifier>{9d90a431-fa3e-4b9d-9b56-7cfd2107c701}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.Manager">
+      <UniqueIdentifier>{e3ef4c1d-fbd5-4613-9e1a-feb683ee40e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.Manager\BitMapMgr">
+      <UniqueIdentifier>{d6b991e7-b5bd-4ea4-ad90-6c642f120adc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.Manager\KeyMgr">
+      <UniqueIdentifier>{62c97a24-9401-42db-bf21-fcdcf8caa13c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.Manager\MouseMgr">
+      <UniqueIdentifier>{ca92b829-2a2e-4e1f-acd8-ddc4780b81fc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.Manager\ObjMgr">
+      <UniqueIdentifier>{7a7c9aa6-0660-48ce-80bb-8aef12ea36c8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.Manager\SceneMgr">
+      <UniqueIdentifier>{b34dedda-6395-466f-804e-9da02c85912d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.Manager\SoundMgr">
+      <UniqueIdentifier>{730e1187-bb34-4c37-a548-ee5ed2ee3086}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Scene">
+      <UniqueIdentifier>{25b33383-4f07-4c66-ae36-168e6fd34c01}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Scene\Logo">
+      <UniqueIdentifier>{eb329fdf-7376-466d-b13d-d28b4a938568}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Scene\SignIn">
+      <UniqueIdentifier>{455c81a1-651d-4c4c-a40b-c98016682fe2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Scene\Login">
+      <UniqueIdentifier>{a49a46d5-8495-48e7-858f-762f51853fd3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Scene\SelectPlayer">
+      <UniqueIdentifier>{a146898c-8962-49a1-9800-c7f5423bed31}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Scene\Stage1">
+      <UniqueIdentifier>{c79545fe-bc46-49a4-a6a4-eea922e97b48}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Scene\Stage2">
+      <UniqueIdentifier>{03256d73-5afe-4213-9927-389f38505bf2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Scene\Boss Stage">
+      <UniqueIdentifier>{8cd4315f-f43d-44ab-b3df-6f19f70a976e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.Manager\BitMapMgr\BitMap">
+      <UniqueIdentifier>{5b50d295-6945-42af-ad0e-5c71777cff5f}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Client.h">
+      <Filter>99.Default</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>99.Default</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>99.Default</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>99.Default</Filter>
+    </ClInclude>
+    <ClInclude Include="MainGame.h">
+      <Filter>00.MainGame</Filter>
+    </ClInclude>
+    <ClInclude Include="Obj.h">
+      <Filter>01.Object</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjMgr.h">
+      <Filter>03.Manager\ObjMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneMgr.h">
+      <Filter>03.Manager\SceneMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene.h">
+      <Filter>02.Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="BitMap.h">
+      <Filter>03.Manager\BitMapMgr\BitMap</Filter>
+    </ClInclude>
+    <ClInclude Include="BitMapMgr.h">
+      <Filter>03.Manager\BitMapMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="KeyMgr.h">
+      <Filter>03.Manager\KeyMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="Mouse.h">
+      <Filter>03.Manager\MouseMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="SoundMgr.h">
+      <Filter>03.Manager\SoundMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="Logo.h">
+      <Filter>02.Scene\Logo</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Client.cpp">
+      <Filter>99.Default</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>99.Default</Filter>
+    </ClCompile>
+    <ClCompile Include="MainGame.cpp">
+      <Filter>00.MainGame</Filter>
+    </ClCompile>
+    <ClCompile Include="Obj.cpp">
+      <Filter>01.Object</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjMgr.cpp">
+      <Filter>03.Manager\ObjMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneMgr.cpp">
+      <Filter>03.Manager\SceneMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene.cpp">
+      <Filter>02.Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="BitMap.cpp">
+      <Filter>03.Manager\BitMapMgr\BitMap</Filter>
+    </ClCompile>
+    <ClCompile Include="BitMapMgr.cpp">
+      <Filter>03.Manager\BitMapMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="KeyMgr.cpp">
+      <Filter>03.Manager\KeyMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="Mouse.cpp">
+      <Filter>03.Manager\MouseMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="SoundMgr.cpp">
+      <Filter>03.Manager\SoundMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="Logo.cpp">
+      <Filter>02.Scene\Logo</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Client.ico">
+      <Filter>99.Default</Filter>
+    </Image>
+    <Image Include="small.ico">
+      <Filter>99.Default</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Client.rc">
+      <Filter>99.Default</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt">
+      <Filter>99.Default</Filter>
+    </Text>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,33 @@
+<<<<<<< HEAD
+﻿  SoundMgr.cpp
+c:\users\user\desktop\maple_story\maplestory\client\soundmgr.cpp(21): warning C4150: 불완전한 형식 'FMOD_SOUND'에 대한 포인터를 삭제했습니다. 소멸자가 호출되지 않습니다.
+  c:\users\user\desktop\maple_story\maplestory\fmodlib\fmod.h(64): note: 'FMOD_SOUND' 선언을 참조하십시오.
+=======
+﻿  stdafx.cpp
+c:\users\user\desktop\maple\maplestory\headers\define.h(4): warning C4005: 'PURE': 매크로 재정의
+  c:\program files\windows kits\10\include\10.0.15063.0\um\combaseapi.h(202): note: 'PURE'의 이전 정의를 참조하십시오.
+  SoundMgr.cpp
+c:\users\user\desktop\maple\maplestory\client\soundmgr.cpp(21): warning C4150: 불완전한 형식 'FMOD_SOUND'에 대한 포인터를 삭제했습니다. 소멸자가 호출되지 않습니다.
+  c:\users\user\desktop\maple\maplestory\fmodlib\fmod.h(64): note: 'FMOD_SOUND' 선언을 참조하십시오.
+>>>>>>> d5b54c98a6fb3883859da1423fd890fc6c4bfddf
+  SceneMgr.cpp
+  Scene.cpp
+  ObjMgr.cpp
+  Obj.cpp
+  Mouse.cpp
+  MainGame.cpp
+  Logo.cpp
+  KeyMgr.cpp
+<<<<<<< HEAD
+  코드를 생성하고 있습니다...
+  Client.vcxproj -> C:\Users\User\Desktop\Maple_Story\MapleStory\Debug\Client.exe
+  Client.vcxproj -> C:\Users\User\Desktop\Maple_Story\MapleStory\Debug\Client.pdb (Partial PDB)
+=======
+  Client.cpp
+  BitMapMgr.cpp
+  BitMap.cpp
+  코드를 생성하고 있습니다...
+  LINK : C:\Users\user\Desktop\maple\MapleStory\Debug\Client.exe을(를) 찾을 수 없거나 마지막 증분 링크에 의해 빌드되지 않았습니다. 전체 링크를 수행하고 있습니다.
+  Client.vcxproj -> C:\Users\user\Desktop\maple\MapleStory\Debug\Client.exe
+  Client.vcxproj -> C:\Users\user\Desktop\maple\MapleStory\Debug\Client.pdb (Partial PDB)
+>>>>>>> d5b54c98a6fb3883859da1423fd890fc6c4bfddf
