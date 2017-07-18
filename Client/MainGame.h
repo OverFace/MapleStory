@@ -1,5 +1,6 @@
 #pragma once
 
+class CObj;
 class CMainGame
 {
 public:
@@ -11,6 +12,7 @@ private:
 	DWORD   m_dwFrameTime;
 	int     m_iFps;
 	TCHAR   m_szFrameBuf[128];
+	CObj*	m_pPlayer;
 
 public:
 	void    Initialize(void);
