@@ -7,6 +7,7 @@
 #include "KeyMgr.h"
 #include "BitMapMgr.h"
 #include "BitMap.h"
+#include "Player.h"
 
 CMainGame::CMainGame(void)
 {
@@ -42,21 +43,26 @@ void CMainGame::Initialize(void)
 
 	//Scene Logo
 	//GETS(CSceneMgr)->SetScene(SCENE_LOGO);
+	m_pPlayer = new CPlayer;
+	m_pPlayer->Initialize();
 }
 
 int CMainGame::Update(void)
 {
+	m_pPlayer->Update();
 	//Scene Mgr Update
 	//GETS(CSceneMgr)->Update();
+
 
 	return 0;
 }
 
 void CMainGame::Render(void)
 {
+
 	//Back Buffer Image Render
 	HDC BackDC = GETS(CBitMapMgr)->FindImage(L"BackBuffer")->GetMemDC();
-
+	m_pPlayer->Render(BackDC);
 	//Scene Mgr Render
 	//GETS(CSceneMgr)->Render(BackDC);
 

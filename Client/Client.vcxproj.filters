@@ -114,6 +114,9 @@
     <ClInclude Include="Logo.h">
       <Filter>02.Scene\Logo</Filter>
     </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>01.Object\Player</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -154,6 +157,9 @@
     </ClCompile>
     <ClCompile Include="Logo.cpp">
       <Filter>02.Scene\Logo</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>01.Object\Player</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
