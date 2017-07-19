@@ -8,6 +8,7 @@
 #include "BitMapMgr.h"
 #include "BitMap.h"
 #include "Logo.h"
+#include "Player.h"
 
 CMainGame::CMainGame(void)
 {
@@ -40,12 +41,16 @@ void CMainGame::Initialize(void)
 
 	//Scene Logo
 	GETS(CSceneMgr)->SetScene(SCENE_LOGO);
+	m_pPlayer = new CPlayer;
+	m_pPlayer->Initialize();
 }
 
 int CMainGame::Update(void)
 {
+	m_pPlayer->Update();
 	//Scene Mgr Update
 	GETS(CSceneMgr)->Update();
+
 
 	return 0;
 }
@@ -56,8 +61,10 @@ void CMainGame::Render(void)
 	//Stage1 로 넘어갈때 Stage1_Map 객체에서 사용하는 Stage1_Map.bmp 파일을
 	//출력 못한다. 여기서 지금 BackBuffer에 문제가 있는것 같다.
 	//여기 부분을 좀 살펴 봐야 될듯.
-	HDC BackDC = GETS(CBitMapMgr)->FindImage(L"BackBuffer")->GetMemDC();
 
+	//Back Buffer Image Render
+	HDC BackDC = GETS(CBitMapMgr)->FindImage(L"BackBuffer")->GetMemDC();
+	m_pPlayer->Render(BackDC);
 	//Scene Mgr Render
 	GETS(CSceneMgr)->Render(BackDC);
 

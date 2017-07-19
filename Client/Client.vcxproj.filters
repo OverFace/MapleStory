@@ -135,6 +135,7 @@
     <ClInclude Include="Logo.h">
       <Filter>02.Scene\Logo</Filter>
     </ClInclude>
+<<<<<<< HEAD
     <ClInclude Include="Stage1.h">
       <Filter>02.Scene\Stage1</Filter>
     </ClInclude>
@@ -146,6 +147,10 @@
     </ClInclude>
     <ClInclude Include="Stage1_Map.h">
       <Filter>01.Object\Map\Stage1</Filter>
+=======
+    <ClInclude Include="Player.h">
+      <Filter>01.Object\Player</Filter>
+>>>>>>> 3386e2691b143e3a1950f187402a15a899d34f98
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -188,6 +193,7 @@
     <ClCompile Include="Logo.cpp">
       <Filter>02.Scene\Logo</Filter>
     </ClCompile>
+<<<<<<< HEAD
     <ClCompile Include="Stage1.cpp">
       <Filter>02.Scene\Stage1</Filter>
     </ClCompile>
@@ -199,6 +205,10 @@
     </ClCompile>
     <ClCompile Include="Stage1_Map.cpp">
       <Filter>01.Object\Map\Stage1</Filter>
+=======
+    <ClCompile Include="Player.cpp">
+      <Filter>01.Object\Player</Filter>
+>>>>>>> 3386e2691b143e3a1950f187402a15a899d34f98
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
