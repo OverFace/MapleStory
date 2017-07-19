@@ -4,6 +4,7 @@
 enum eObjType
 {
 	OBJ_BACKGROUND,			//배경 오브젝트
+	OBJ_MAP,				//Map
 	OBJ_PLAER,				//Player
 	OBJ_MONSTER,			//Monster
 	OBJ_ITEM,				//Item
@@ -48,10 +49,11 @@ enum ePlayerState
 enum eRenderType
 {
 	RENDER_BACKGROUND = 0,
+	RENDER_MAP,
 	RENDER_WORLDOBJ,
 	RENDER_EFFECT,
 	RENDER_UI,
-	REDNER_END
+	RENDER_END
 };
 
 #endif // !Enum_h__

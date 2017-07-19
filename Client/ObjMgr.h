@@ -5,7 +5,7 @@ class CObjMgr
 	DECLARE_SINGLETON(CObjMgr)
 private:	
 	list<CObj*>			m_ObjList[OBJ_END];			//Object Contanier
-	vector<CObj*>		m_vecRender[REDNER_END];	//Y Sorting  
+	vector<CObj*>		m_vecRender[RENDER_END];	//Y Sorting  
 
 private:
 	static inline bool  Compare(CObj* pDest, CObj* pSour);

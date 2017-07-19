@@ -21,6 +21,7 @@ inline bool CObjMgr::Compare(CObj* pDest, CObj* pSour)
 
 void CObjMgr::AddObject(eObjType eType, CObj * pObj)
 {
+	m_ObjList[eType].push_back(pObj);
 }
 
 list<CObj*>* CObjMgr::GetObjList(eObjType eType)
@@ -65,7 +66,7 @@ void CObjMgr::Render(HDC _dc)
 	//Sort
 	sort(m_vecRender[RENDER_WORLDOBJ].begin(), m_vecRender[RENDER_WORLDOBJ].end(), CObjMgr::Compare);
 
-	for (size_t i = 0; i < REDNER_END; ++i)
+	for (size_t i = 0; i < RENDER_END; ++i)
 	{
 		for (int j = 0, iCnt = m_vecRender[i].size(); j < iCnt; ++j)
 		{

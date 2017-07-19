@@ -154,6 +154,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Logo_Back.h" />
     <ClInclude Include="BitMap.h" />
     <ClInclude Include="BitMapMgr.h" />
     <ClInclude Include="Client.h" />
@@ -167,10 +168,14 @@
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneMgr.h" />
     <ClInclude Include="SoundMgr.h" />
+    <ClInclude Include="Stage1.h" />
+    <ClInclude Include="Stage1_Back.h" />
+    <ClInclude Include="Stage1_Map.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Logo_Back.cpp" />
     <ClCompile Include="BitMap.cpp" />
     <ClCompile Include="BitMapMgr.cpp" />
     <ClCompile Include="Client.cpp" />
@@ -183,6 +188,9 @@
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneMgr.cpp" />
     <ClCompile Include="SoundMgr.cpp" />
+    <ClCompile Include="Stage1.cpp" />
+    <ClCompile Include="Stage1_Back.cpp" />
+    <ClCompile Include="Stage1_Map.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

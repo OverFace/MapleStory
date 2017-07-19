@@ -6,14 +6,14 @@ public:
 	virtual ~CObj(void);
 
 protected:
-	RECT			m_Rect;
-	INFO			m_tInfo;
-	bool			m_bDead;
-	float			m_fRadius;
-	float			m_fAngle;
-	float			m_fSpeed;
-	static POINT	m_ptScroll;
-	eRenderType     m_eRenderType;
+	RECT				m_Rect;
+	INFO				m_tInfo;
+	bool				m_bDead;
+	float				m_fRadius;
+	float				m_fAngle;
+	float				m_fSpeed;
+	static POINT		m_ptScroll;
+	eRenderType			m_eRenderType;
 
 public:	//Get
 	inline eRenderType  GetRenderType(void) { return m_eRenderType; }

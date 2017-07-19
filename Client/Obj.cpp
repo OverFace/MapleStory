@@ -5,6 +5,14 @@ POINT CObj::m_ptScroll;
 
 CObj::CObj(void)
 {
+	m_bDead = false;
+	m_fAngle = 0.f;
+	m_fSpeed = 0.f;
+	m_ptScroll.x = 0;
+	m_ptScroll.y = 0;
+	m_eRenderType = RENDER_END;
+
+	memset(&m_tInfo, 0, sizeof(INFO));
 }
 
 CObj::~CObj(void)

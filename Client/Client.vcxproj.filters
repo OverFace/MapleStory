@@ -67,6 +67,27 @@
     <Filter Include="03.Manager\BitMapMgr\BitMap">
       <UniqueIdentifier>{5b50d295-6945-42af-ad0e-5c71777cff5f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Object\Map\Logo">
+      <UniqueIdentifier>{c672442a-291b-4bf4-9ed4-bb2c5c70464b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Object\Map\Stage1">
+      <UniqueIdentifier>{e27945c4-2eef-4dce-b3bb-d6e05bb59b60}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Object\Map\Stage2">
+      <UniqueIdentifier>{78081996-442f-4a60-a743-d2e7526c0fc1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Object\Map\Boss Stage">
+      <UniqueIdentifier>{8212099f-63f8-4c92-8b2a-c7e772d3d931}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Object\Map\Login">
+      <UniqueIdentifier>{c850ff2b-d626-4e7a-a697-511c6a470bdf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Object\Map\SignIn">
+      <UniqueIdentifier>{26c451e1-c69a-44e5-9e08-5806ee4044ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Object\Map\SelectPlayer">
+      <UniqueIdentifier>{8980970a-9a52-4242-8df9-dcfedc29fba2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -114,6 +135,18 @@
     <ClInclude Include="Logo.h">
       <Filter>02.Scene\Logo</Filter>
     </ClInclude>
+    <ClInclude Include="Stage1.h">
+      <Filter>02.Scene\Stage1</Filter>
+    </ClInclude>
+    <ClInclude Include="Logo_Back.h">
+      <Filter>01.Object\Map\Logo</Filter>
+    </ClInclude>
+    <ClInclude Include="Stage1_Back.h">
+      <Filter>01.Object\Map\Stage1</Filter>
+    </ClInclude>
+    <ClInclude Include="Stage1_Map.h">
+      <Filter>01.Object\Map\Stage1</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -154,6 +187,18 @@
     </ClCompile>
     <ClCompile Include="Logo.cpp">
       <Filter>02.Scene\Logo</Filter>
+    </ClCompile>
+    <ClCompile Include="Stage1.cpp">
+      <Filter>02.Scene\Stage1</Filter>
+    </ClCompile>
+    <ClCompile Include="Logo_Back.cpp">
+      <Filter>01.Object\Map\Logo</Filter>
+    </ClCompile>
+    <ClCompile Include="Stage1_Back.cpp">
+      <Filter>01.Object\Map\Stage1</Filter>
+    </ClCompile>
+    <ClCompile Include="Stage1_Map.cpp">
+      <Filter>01.Object\Map\Stage1</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

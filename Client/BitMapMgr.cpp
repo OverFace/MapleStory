@@ -38,13 +38,15 @@ CBitMap * CBitMapMgr::FindImage(const TCHAR * pKey)
 
 void CBitMapMgr::LoadImageByScene(eSceneType eType)
 {
+	GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/BackBuffer/BackBuffer.bmp", L"BackBuffer");
+
 	switch(eType)
 	{
 	case SCENE_LOGO:
-
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Stage/Logo.bmp", L"Logo");
 		break;
 	case SCENE_SGININ:
-
+		
 		break;
 	case SCENE_LOGIN:
 
@@ -53,7 +55,9 @@ void CBitMapMgr::LoadImageByScene(eSceneType eType)
 
 		break;
 	case SCENE_STAGE1:
-
+		//Stage1 BackGround & Map
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Stage/Ereve_BackGround.bmp", L"Stage1_Back");
+		GETS(CBitMapMgr)->LoadImage(L"../Resouce/Texture/Stage/Ereve_Field.bmp", L"Stage1_Map");
 		break;
 	case SCENE_STAGE2:
 

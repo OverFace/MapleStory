@@ -2,6 +2,12 @@
 #include "SceneMgr.h"
 #include "Scene.h"
 
+//Stage Header Include
+//--------------------------------------
+#include "Logo.h"
+#include "Stage1.h"
+//--------------------------------------
+
 IMPLEMENT_SINGLETON(CSceneMgr)
 
 CSceneMgr::CSceneMgr(void)
@@ -25,10 +31,10 @@ void CSceneMgr::SetScene(eSceneType eType)
 	switch (eType)
 	{
 	case SCENE_LOGO:
-
+		m_pNextScene = new CLogo();
 		break;
 	case SCENE_SGININ:
-
+		
 		break;
 	case SCENE_LOGIN:
 
@@ -37,7 +43,7 @@ void CSceneMgr::SetScene(eSceneType eType)
 
 		break;
 	case SCENE_STAGE1:
-
+		m_pNextScene = new CStage1();
 		break;
 	case SCENE_STAGE2:
 

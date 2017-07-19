@@ -7,6 +7,7 @@
 #include "KeyMgr.h"
 #include "BitMapMgr.h"
 #include "BitMap.h"
+#include "Logo.h"
 
 CMainGame::CMainGame(void)
 {
@@ -37,28 +38,28 @@ void CMainGame::Initialize(void)
 	GETS(CSoundMgr)->Initialize();
 	GETS(CSoundMgr)->LoadSoundFile();
 
-	//Back Buffer Image Load
-	GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/BackBuffer/BackBuffer.bmp", L"BackBuffer");
-
 	//Scene Logo
-	//GETS(CSceneMgr)->SetScene(SCENE_LOGO);
+	GETS(CSceneMgr)->SetScene(SCENE_LOGO);
 }
 
 int CMainGame::Update(void)
 {
 	//Scene Mgr Update
-	//GETS(CSceneMgr)->Update();
+	GETS(CSceneMgr)->Update();
 
 	return 0;
 }
 
 void CMainGame::Render(void)
 {
-	//Back Buffer Image Render
+	//Back Buffer Image Render 
+	//Stage1 로 넘어갈때 Stage1_Map 객체에서 사용하는 Stage1_Map.bmp 파일을
+	//출력 못한다. 여기서 지금 BackBuffer에 문제가 있는것 같다.
+	//여기 부분을 좀 살펴 봐야 될듯.
 	HDC BackDC = GETS(CBitMapMgr)->FindImage(L"BackBuffer")->GetMemDC();
 
 	//Scene Mgr Render
-	//GETS(CSceneMgr)->Render(BackDC);
+	GETS(CSceneMgr)->Render(BackDC);
 
 	//Frame Redner
 	++m_iFps;
@@ -71,7 +72,7 @@ void CMainGame::Render(void)
 	TextOut(BackDC, 960, 20, m_szFrameBuf, lstrlen(m_szFrameBuf));
 
 	//BackBuffer
-	//if (typeid(*GETS(CSeneMgr)->GetCurrentScene()).name() == typeid(CLogo).name())
+	//if (typeid(*CSceneMgr::GetInstance()->GetCurrentScene()).name() == typeid(CLogo).name())
 		//return;
 
 	BitBlt(m_DC, 0, 0, WINCX, WINCY, BackDC, 0, 0, SRCCOPY);
