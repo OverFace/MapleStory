@@ -26,7 +26,7 @@ void CObjMgr::AddObject(eObjType eType, CObj * pObj)
 
 list<CObj*>* CObjMgr::GetObjList(eObjType eType)
 {
-	return nullptr;
+	return &m_ObjList[eType];
 }
 
 void CObjMgr::Update(void)

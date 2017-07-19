@@ -57,7 +57,7 @@ void CBitMapMgr::LoadImageByScene(eSceneType eType)
 	case SCENE_STAGE1:
 		//Stage1 BackGround & Map
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Stage/Ereve_BackGround.bmp", L"Stage1_Back");
-		GETS(CBitMapMgr)->LoadImage(L"../Resouce/Texture/Stage/Ereve_Field.bmp", L"Stage1_Map");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Stage/Ereve_Field.bmp", L"Stage1_Map");
 		break;
 	case SCENE_STAGE2:
 

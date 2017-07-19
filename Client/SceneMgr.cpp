@@ -74,8 +74,6 @@ int CSceneMgr::Update(void)
 
 void CSceneMgr::Render(HDC _dc)
 {
-	m_pScene->Render(_dc);
-
 	if (m_bChangeScene == true)
 	{
 		delete m_pScene;
@@ -83,6 +81,8 @@ void CSceneMgr::Render(HDC _dc)
 		m_pScene->Initialize();
 		m_bChangeScene = false;
 	}
+
+	m_pScene->Render(_dc);
 }
 
 void CSceneMgr::Release(void)

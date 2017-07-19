@@ -20,12 +20,12 @@ void CStage1::Initialize(void)
 	GETS(CBitMapMgr)->LoadImageByScene(SCENE_STAGE1);
 
 	//Stage1 Back Object Create
-	//CObj* pObj = new CStage1_Back();
-	//pObj->Initialize();
-	//GETS(CObjMgr)->AddObject(OBJ_BACKGROUND, pObj);
+	CObj* pObj = new CStage1_Back();
+	pObj->Initialize();
+	GETS(CObjMgr)->AddObject(OBJ_BACKGROUND, pObj);
 
 	//Stage1 Map Object Create
-	CObj* pObj = new CStage1_Map();
+	pObj = new CStage1_Map();
 	pObj->Initialize();
 	GETS(CObjMgr)->AddObject(OBJ_BACKGROUND, pObj);
 }

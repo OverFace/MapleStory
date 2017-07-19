@@ -18,7 +18,7 @@ CBitMap * CBitMap::LoadBmp(const TCHAR * pFileName)
 
 	if (!m_Bitmap)
 	{
-		MSG(L"Image Load Failed");
+		MessageBox(g_hWnd, pFileName, L"Image Load Failed", MB_OK);
 		return NULL;
 	}
 
