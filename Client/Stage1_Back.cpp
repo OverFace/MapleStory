@@ -5,6 +5,7 @@
 
 CStage1_Back::CStage1_Back(void)
 {
+	m_bRender = false;
 }
 
 CStage1_Back::~CStage1_Back(void)
@@ -27,12 +28,16 @@ int CStage1_Back::Update(void)
 
 void CStage1_Back::Render(HDC _dc)
 {
-	TransparentBlt(_dc,
-		0, 0,
-		int(m_tInfo.fcx), int(m_tInfo.fcy),
-		GETS(CBitMapMgr)->FindImage(L"Stage1_Back")->GetMemDC(),
-		0, 0,
-		int(m_tInfo.fcx), int(m_tInfo.fcy), RGB(0, 0, 255));
+	if (m_bRender == true)
+	{
+		TransparentBlt(_dc,
+			0 + g_fScrollX, 0 + g_fScrollY,
+			int(m_tInfo.fcx), int(m_tInfo.fcy),
+			GETS(CBitMapMgr)->FindImage(L"Stage1_Back")->GetMemDC(),
+			0, 0,
+			int(m_tInfo.fcx), int(m_tInfo.fcy),
+			RGB(0, 0, 255));
+	}	
 }
 
 void CStage1_Back::Release(void)

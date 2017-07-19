@@ -31,6 +31,7 @@ enum eSceneType
 	SCENE_STAGE2,				//사냥터 1
 	SCENE_STAGE3,				//사냥터 2
 	SCENE_BOSS,					//보스
+	SCENE_EDIT,					//Map Tool 화면
 	SCENE_END				
 };
 

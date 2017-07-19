@@ -154,6 +154,9 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BStage_Back.h" />
+    <ClInclude Include="BStage_Map.h" />
+    <ClInclude Include="Edit.h" />
     <ClInclude Include="Logo_Back.h" />
     <ClInclude Include="BitMap.h" />
     <ClInclude Include="BitMapMgr.h" />
@@ -172,10 +175,15 @@
     <ClInclude Include="Stage1.h" />
     <ClInclude Include="Stage1_Back.h" />
     <ClInclude Include="Stage1_Map.h" />
+    <ClInclude Include="Stage2_Map.h" />
+    <ClInclude Include="Stage3_Map.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BStage_Back.cpp" />
+    <ClCompile Include="BStage_Map.cpp" />
+    <ClCompile Include="Edit.cpp" />
     <ClCompile Include="Logo_Back.cpp" />
     <ClCompile Include="BitMap.cpp" />
     <ClCompile Include="BitMapMgr.cpp" />
@@ -193,6 +201,8 @@
     <ClCompile Include="Stage1.cpp" />
     <ClCompile Include="Stage1_Back.cpp" />
     <ClCompile Include="Stage1_Map.cpp" />
+    <ClCompile Include="Stage2_Map.cpp" />
+    <ClCompile Include="Stage3_Map.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

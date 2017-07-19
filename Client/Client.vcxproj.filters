@@ -55,6 +55,21 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>99.Default</Filter>
     </ClCompile>
+    <ClCompile Include="Edit.cpp">
+      <Filter>03.Scene\Edit</Filter>
+    </ClCompile>
+    <ClCompile Include="Stage2_Map.cpp">
+      <Filter>02.Object\03.Map\Stage2</Filter>
+    </ClCompile>
+    <ClCompile Include="Stage3_Map.cpp">
+      <Filter>02.Object\03.Map\Stage3</Filter>
+    </ClCompile>
+    <ClCompile Include="BStage_Back.cpp">
+      <Filter>02.Object\03.Map\Boss_Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="BStage_Map.cpp">
+      <Filter>02.Object\03.Map\Boss_Stage</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainGame.h">
@@ -116,6 +131,21 @@
     </ClInclude>
     <ClInclude Include="targetver.h">
       <Filter>99.Default</Filter>
+    </ClInclude>
+    <ClInclude Include="Edit.h">
+      <Filter>03.Scene\Edit</Filter>
+    </ClInclude>
+    <ClInclude Include="Stage2_Map.h">
+      <Filter>02.Object\03.Map\Stage2</Filter>
+    </ClInclude>
+    <ClInclude Include="Stage3_Map.h">
+      <Filter>02.Object\03.Map\Stage3</Filter>
+    </ClInclude>
+    <ClInclude Include="BStage_Back.h">
+      <Filter>02.Object\03.Map\Boss_Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="BStage_Map.h">
+      <Filter>02.Object\03.Map\Boss_Stage</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -183,6 +213,18 @@
     </Filter>
     <Filter Include="04.Manager\SceneMgr">
       <UniqueIdentifier>{488f3a59-1d1e-4910-a219-e0f52aefd303}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.Scene\Edit">
+      <UniqueIdentifier>{43f830f5-b75e-409b-bdf6-92c978457a5a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Object\03.Map\Stage2">
+      <UniqueIdentifier>{3fdc5919-5656-4ce2-abc0-f3e533735a86}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Object\03.Map\Stage3">
+      <UniqueIdentifier>{ffd6d085-c03e-4440-ac77-80ae5b838376}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Object\03.Map\Boss_Stage">
+      <UniqueIdentifier>{aeea727b-6bd8-4de4-9240-b29478ca3bff}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

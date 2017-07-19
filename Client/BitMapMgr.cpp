@@ -60,13 +60,31 @@ void CBitMapMgr::LoadImageByScene(eSceneType eType)
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Stage/Ereve_Field.bmp", L"Stage1_Map");
 		break;
 	case SCENE_STAGE2:
-
+		//Stage2 Map
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Stage/Stage2_Field.bmp", L"Stage2_Map");
 		break;
 	case SCENE_STAGE3:
+		//Stage3 Map
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Stage/Stage3_Field.bmp", L"Stage3_Map");
+		break;
+	case SCENE_EDIT:
+		//Tile Image
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Tile/Box1.bmp", L"Tile1");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Tile/Box2.bmp", L"Tile2");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Tile/Box3.bmp", L"Tile3");
 
+		//Stage1 BackGround & Map
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Stage/Ereve_BackGround.bmp", L"Stage1_Back");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Stage/Ereve_Field.bmp", L"Stage1_Map");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Stage/Stage2_Field.bmp", L"Stage2_Map");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Stage/Stage3_Field.bmp", L"Stage3_Map");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Stage/Boss_Stage_Back.bmp", L"Boss_Back");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Stage/Boss_Stage_Field.bmp", L"Boss_Map");
 		break;
 	case SCENE_BOSS:
-
+		//Boss Stage Back & Map
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Stage/Boss_Stage_Back.bmp", L"Boss_Back");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Stage/Boss_Stage_Field.bmp", L"Boss_Map");
 		break;
 	}
 }

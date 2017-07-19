@@ -7,6 +7,12 @@ public:
 	CStage1_Map(void);
 	virtual ~CStage1_Map(void);
 
+private:
+	bool			m_bRender;
+
+public:
+	inline void		SetRedner(bool _bRender) { m_bRender = _bRender; }
+	
 public:
 	virtual void	Initialize(void);
 	virtual int		Update(void);

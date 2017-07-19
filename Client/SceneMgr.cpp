@@ -6,6 +6,7 @@
 //--------------------------------------
 #include "Logo.h"
 #include "Stage1.h"
+#include "Edit.h"
 //--------------------------------------
 
 IMPLEMENT_SINGLETON(CSceneMgr)
@@ -50,6 +51,9 @@ void CSceneMgr::SetScene(eSceneType eType)
 		break;
 	case SCENE_STAGE3:
 
+		break;
+	case SCENE_EDIT:
+		m_pNextScene = new CEdit();
 		break;
 	case SCENE_BOSS:
 

@@ -157,8 +157,24 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 //
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
+	int wmId, wmEvent;
+	PAINTSTRUCT ps;
+	HDC hdc;
+
+	RECT rc;
+	rc.left = 0;
+	rc.right = WINCX;
+	rc.bottom = WINCY;
+	rc.top = 0;
+
     switch (message)
     {
+	case WM_KILLFOCUS:
+		g_bFocus = false;
+		break;
+	case WM_SETFOCUS:
+		g_bFocus = true;
+		break;
 	case WM_KEYDOWN:
 		switch (wParam)
 		{
