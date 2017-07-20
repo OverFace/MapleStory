@@ -70,6 +70,12 @@
     <ClCompile Include="BStage_Map.cpp">
       <Filter>02.Object\03.Map\Boss_Stage</Filter>
     </ClCompile>
+    <ClCompile Include="LogIn.cpp">
+      <Filter>03.Scene\LogIn</Filter>
+    </ClCompile>
+    <ClCompile Include="LogIn_Back.cpp">
+      <Filter>02.Object\03.Map\Login</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainGame.h">
@@ -146,6 +152,12 @@
     </ClInclude>
     <ClInclude Include="BStage_Map.h">
       <Filter>02.Object\03.Map\Boss_Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="LogIn.h">
+      <Filter>03.Scene\LogIn</Filter>
+    </ClInclude>
+    <ClInclude Include="LogIn_Back.h">
+      <Filter>02.Object\03.Map\Login</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -225,6 +237,12 @@
     </Filter>
     <Filter Include="02.Object\03.Map\Boss_Stage">
       <UniqueIdentifier>{aeea727b-6bd8-4de4-9240-b29478ca3bff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.Scene\LogIn">
+      <UniqueIdentifier>{5f4fe65e-4794-45be-bdd8-f5fc9b0e6cfa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Object\03.Map\Login">
+      <UniqueIdentifier>{bc7aa66c-666c-4614-9aa3-322470e4eba0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

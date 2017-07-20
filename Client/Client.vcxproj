@@ -157,6 +157,8 @@
     <ClInclude Include="BStage_Back.h" />
     <ClInclude Include="BStage_Map.h" />
     <ClInclude Include="Edit.h" />
+    <ClInclude Include="LogIn.h" />
+    <ClInclude Include="LogIn_Back.h" />
     <ClInclude Include="Logo_Back.h" />
     <ClInclude Include="BitMap.h" />
     <ClInclude Include="BitMapMgr.h" />
@@ -184,6 +186,8 @@
     <ClCompile Include="BStage_Back.cpp" />
     <ClCompile Include="BStage_Map.cpp" />
     <ClCompile Include="Edit.cpp" />
+    <ClCompile Include="LogIn.cpp" />
+    <ClCompile Include="LogIn_Back.cpp" />
     <ClCompile Include="Logo_Back.cpp" />
     <ClCompile Include="BitMap.cpp" />
     <ClCompile Include="BitMapMgr.cpp" />

@@ -49,7 +49,7 @@ void CBitMapMgr::LoadImageByScene(eSceneType eType)
 		
 		break;
 	case SCENE_LOGIN:
-
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Stage/Login_Back.bmp", L"Login");
 		break;
 	case SCENE_PLAYERSELECT:
 

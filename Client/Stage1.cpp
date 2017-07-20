@@ -23,11 +23,13 @@ void CStage1::Initialize(void)
 	CObj* pObj = new CStage1_Back();
 	pObj->Initialize();
 	GETS(CObjMgr)->AddObject(OBJ_BACKGROUND, pObj);
+	((CStage1_Back*)pObj)->SetRedner(true);
 
 	//Stage1 Map Object Create
 	pObj = new CStage1_Map();
 	pObj->Initialize();
 	GETS(CObjMgr)->AddObject(OBJ_BACKGROUND, pObj);
+	((CStage1_Map*)pObj)->SetRedner(true);
 }
 
 int CStage1::Update(void)
