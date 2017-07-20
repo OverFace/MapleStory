@@ -5,6 +5,7 @@
 #include "BitMap.h"
 #include "Stage1_Back.h"
 #include "Stage1_Map.h"
+#include "Player.h"
 
 CStage1::CStage1(void)
 {
@@ -23,11 +24,18 @@ void CStage1::Initialize(void)
 	CObj* pObj = new CStage1_Back();
 	pObj->Initialize();
 	GETS(CObjMgr)->AddObject(OBJ_BACKGROUND, pObj);
+	((CStage1_Back*)pObj)->SetRedner(true);
 
 	//Stage1 Map Object Create
 	pObj = new CStage1_Map();
 	pObj->Initialize();
 	GETS(CObjMgr)->AddObject(OBJ_BACKGROUND, pObj);
+	((CStage1_Map*)pObj)->SetRedner(true);
+
+	//Player
+	pObj = new CPlayer;
+	pObj->Initialize();
+	GETS(CObjMgr)->AddObject(OBJ_PLAYER, pObj);
 }
 
 int CStage1::Update(void)
