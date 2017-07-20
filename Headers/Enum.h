@@ -5,7 +5,7 @@ enum eObjType
 {
 	OBJ_BACKGROUND,			//배경 오브젝트
 	OBJ_MAP,				//Map
-	OBJ_PLAER,				//Player
+	OBJ_PLAYER,				//Player
 	OBJ_MONSTER,			//Monster
 	OBJ_ITEM,				//Item
 	OBJ_PROP,				//Stage Object(물건, 장애물) 
