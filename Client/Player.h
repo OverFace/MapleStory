@@ -1,9 +1,11 @@
 #pragma once
-#include "obj.h"
+#include "Obj.h"
+
 
 class CPlayer : public CObj {
 private:
-
+	int m_isizex;
+	int m_isizey;
 public:
 	virtual void Initialize(void);
 	virtual int Update(void);
