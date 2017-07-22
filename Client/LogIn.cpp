@@ -7,6 +7,8 @@
 
 CLogIn::CLogIn(void)
 {
+	m_bLogin_Check = false;
+	m_pLogin = NULL;
 }
 
 CLogIn::~CLogIn(void)
@@ -18,9 +20,11 @@ void CLogIn::Initialize(void)
 {
 	GETS(CBitMapMgr)->LoadImageByScene(SCENE_LOGIN);
 
-	CObj* pObj = new CLogin_Back;
-	pObj->Initialize();
-	GETS(CObjMgr)->AddObject(OBJ_BACKGROUND, pObj);
+	m_pLogin = new CLogin_Back;
+	m_pLogin->Initialize();
+	GETS(CObjMgr)->AddObject(OBJ_BACKGROUND, m_pLogin);
+
+	m_bLogin_Check = true;
 }
 
 int CLogIn::Update(void)

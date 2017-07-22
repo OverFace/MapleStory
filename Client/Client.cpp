@@ -4,6 +4,9 @@
 #include "stdafx.h"
 #include "Client.h"
 #include "MainGame.h"
+#include "LogIn.h"
+
+class CLogin;
 
 #define MAX_LOADSTRING 100
 
@@ -12,10 +15,11 @@ HINSTANCE hInst;                                // 현재 인스턴스입니다.
 WCHAR szTitle[MAX_LOADSTRING];                  // 제목 표시줄 텍스트입니다.
 WCHAR szWindowClass[MAX_LOADSTRING];            // 기본 창 클래스 이름입니다.
 
-HWND  g_hWnd;
-float g_fScrollX;
-float g_fScrollY;
-bool  g_bFocus;
+HWND	  g_hWnd;
+WPARAM	  g_wParam;
+float	  g_fScrollX;
+float	  g_fScrollY;
+bool	  g_bFocus;
 
 // 이 코드 모듈에 들어 있는 함수의 정방향 선언입니다.
 ATOM                MyRegisterClass(HINSTANCE hInstance);
@@ -54,7 +58,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	//MainGame
 	CMainGame MainGame;
 	MainGame.Initialize();
-
+	MainGame.Initialize();
+	
     // 기본 메시지 루프입니다.
 	while (msg.message != WM_QUIT)
 	{
@@ -167,8 +172,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	rc.bottom = WINCY;
 	rc.top = 0;
 
-    switch (message)
+	switch (message)
     {
+	case WM_CHAR:
+		g_wParam = wParam;	
+		break;
+		InvalidateRect(g_hWnd, NULL, FALSE);
+		break;
 	case WM_KILLFOCUS:
 		g_bFocus = false;
 		break;

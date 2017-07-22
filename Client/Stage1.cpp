@@ -7,6 +7,17 @@
 #include "Stage1_Map.h"
 #include "Player.h"
 
+//UI
+//-------------------------------------
+#include "Status.h"
+#include "Inven.h"
+#include "Equip.h"
+#include "Skill.h"
+#include "Skill_Input.h"
+#include "Store.h"
+#include "Stat.h"
+//-------------------------------------
+
 CStage1::CStage1(void)
 {
 }
@@ -36,6 +47,37 @@ void CStage1::Initialize(void)
 	pObj = new CPlayer;
 	pObj->Initialize();
 	GETS(CObjMgr)->AddObject(OBJ_PLAYER, pObj);
+
+	//UI
+	//---------------------------------------------------------------------
+	//Status
+	pObj = new CStatus;
+	pObj->Initialize();
+	GETS(CObjMgr)->AddObject(OBJ_UI, pObj);	
+	//Inven
+	pObj = new CInven;
+	pObj->Initialize();
+	GETS(CObjMgr)->AddObject(OBJ_UI, pObj);
+	//Equip
+	pObj = new CEquip;
+	pObj->Initialize();
+	GETS(CObjMgr)->AddObject(OBJ_UI, pObj);
+	//Skill
+	CObj* pSkill = new CSkill_UI;
+	pSkill->Initialize();
+	GETS(CObjMgr)->AddObject(OBJ_UI, pSkill);
+	pObj = new CSkill_Input(*(pSkill->GetInfo()));
+	pObj->Initialize();
+	GETS(CObjMgr)->AddObject(OBJ_UI, pObj);
+	//Store
+	pObj = new CStore;
+	pObj->Initialize();
+	GETS(CObjMgr)->AddObject(OBJ_UI, pObj);
+	//Stat
+	pObj = new CStat;
+	pObj->Initialize();
+	GETS(CObjMgr)->AddObject(OBJ_UI, pObj);
+	//---------------------------------------------------------------------
 }
 
 int CStage1::Update(void)

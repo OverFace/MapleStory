@@ -76,6 +76,30 @@
     <ClCompile Include="LogIn_Back.cpp">
       <Filter>02.Object\03.Map\Login</Filter>
     </ClCompile>
+    <ClCompile Include="UI.cpp">
+      <Filter>02.Object\04.UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Status.cpp">
+      <Filter>02.Object\04.UI\Status</Filter>
+    </ClCompile>
+    <ClCompile Include="Inven.cpp">
+      <Filter>02.Object\04.UI\Inventory</Filter>
+    </ClCompile>
+    <ClCompile Include="Equip.cpp">
+      <Filter>02.Object\04.UI\Equipment</Filter>
+    </ClCompile>
+    <ClCompile Include="Skill.cpp">
+      <Filter>02.Object\04.UI\Skill</Filter>
+    </ClCompile>
+    <ClCompile Include="Skill_Input.cpp">
+      <Filter>02.Object\04.UI\Skill</Filter>
+    </ClCompile>
+    <ClCompile Include="Store.cpp">
+      <Filter>02.Object\04.UI\Store</Filter>
+    </ClCompile>
+    <ClCompile Include="Stat.cpp">
+      <Filter>02.Object\04.UI\Stat</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainGame.h">
@@ -158,6 +182,30 @@
     </ClInclude>
     <ClInclude Include="LogIn_Back.h">
       <Filter>02.Object\03.Map\Login</Filter>
+    </ClInclude>
+    <ClInclude Include="UI.h">
+      <Filter>02.Object\04.UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Status.h">
+      <Filter>02.Object\04.UI\Status</Filter>
+    </ClInclude>
+    <ClInclude Include="Inven.h">
+      <Filter>02.Object\04.UI\Inventory</Filter>
+    </ClInclude>
+    <ClInclude Include="Equip.h">
+      <Filter>02.Object\04.UI\Equipment</Filter>
+    </ClInclude>
+    <ClInclude Include="Skill.h">
+      <Filter>02.Object\04.UI\Skill</Filter>
+    </ClInclude>
+    <ClInclude Include="Skill_Input.h">
+      <Filter>02.Object\04.UI\Skill</Filter>
+    </ClInclude>
+    <ClInclude Include="Store.h">
+      <Filter>02.Object\04.UI\Store</Filter>
+    </ClInclude>
+    <ClInclude Include="Stat.h">
+      <Filter>02.Object\04.UI\Stat</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -243,6 +291,27 @@
     </Filter>
     <Filter Include="02.Object\03.Map\Login">
       <UniqueIdentifier>{bc7aa66c-666c-4614-9aa3-322470e4eba0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Object\04.UI">
+      <UniqueIdentifier>{92480e87-e262-4667-b1bd-6202604d09bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Object\04.UI\Status">
+      <UniqueIdentifier>{b56230dc-067a-4e4d-9bac-95321dcbfbd7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Object\04.UI\Stat">
+      <UniqueIdentifier>{7b78fec7-904d-44af-b893-929445b2bdbe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Object\04.UI\Inventory">
+      <UniqueIdentifier>{ec1d1fe9-25c3-4597-b41c-4331a318d0fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Object\04.UI\Equipment">
+      <UniqueIdentifier>{5765d3ab-04e6-4135-89aa-07ff1192e8d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Object\04.UI\Store">
+      <UniqueIdentifier>{5b0627eb-3cd8-4bbd-8fb2-6e0a5feb7a17}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Object\04.UI\Skill">
+      <UniqueIdentifier>{cfddd690-f938-46c9-80ca-39639bbd7bbe}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
