@@ -16,6 +16,9 @@
 #include "Skill_Input.h"
 #include "Store.h"
 #include "Stat.h"
+#include "HpBar.h"
+#include "MpBar.h"
+#include "ExpBar.h"
 //-------------------------------------
 
 CStage1::CStage1(void)
@@ -75,6 +78,18 @@ void CStage1::Initialize(void)
 	GETS(CObjMgr)->AddObject(OBJ_UI, pObj);
 	//Stat
 	pObj = new CStat;
+	pObj->Initialize();
+	GETS(CObjMgr)->AddObject(OBJ_UI, pObj);
+	//Hp_Bar
+	pObj = new CHpBar;
+	pObj->Initialize();
+	GETS(CObjMgr)->AddObject(OBJ_UI, pObj);
+	//Mp_Bar
+	pObj = new CMpBar;
+	pObj->Initialize();
+	GETS(CObjMgr)->AddObject(OBJ_UI, pObj);
+	//Exp_Bar
+	pObj = new CExpBar;
 	pObj->Initialize();
 	GETS(CObjMgr)->AddObject(OBJ_UI, pObj);
 	//---------------------------------------------------------------------

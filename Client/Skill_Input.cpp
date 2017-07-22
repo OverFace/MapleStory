@@ -38,13 +38,16 @@ int CSkill_Input::Update(void)
 
 void CSkill_Input::Render(HDC _dc)
 {
-	TransparentBlt(_dc,
-		int(m_fx + 10.f) + g_fScrollX, int(m_fy + 90.f) + g_fScrollY,
-		int(m_tInfo.fcx), int(m_tInfo.fcy),
-		GETS(CBitMapMgr)->FindImage(L"Skill_Input")->GetMemDC(),
-		0, 0,
-		int(m_tInfo.fcx), int(m_tInfo.fcy),
-		RGB(0, 0, 0));
+	if (m_bVisible == true)
+	{
+		TransparentBlt(_dc,
+			int(m_fx + 10.f) + g_fScrollX, int(m_fy + 90.f) + g_fScrollY,
+			int(m_tInfo.fcx), int(m_tInfo.fcy),
+			GETS(CBitMapMgr)->FindImage(L"Skill_Input")->GetMemDC(),
+			0, 0,
+			int(m_tInfo.fcx), int(m_tInfo.fcy),
+			RGB(0, 0, 0));
+	}
 }
 
 void CSkill_Input::Release(void)

@@ -30,13 +30,16 @@ int CStat::Update(void)
 
 void CStat::Render(HDC _dc)
 {
-	TransparentBlt(_dc,
-		int(m_tInfo.fx) + g_fScrollX, int(m_tInfo.fy) + g_fScrollY,
-		int(m_tInfo.fcx), int(m_tInfo.fcy),
-		GETS(CBitMapMgr)->FindImage(L"Stat")->GetMemDC(),
-		0, 0,
-		int(m_tInfo.fcx), int(m_tInfo.fcy),
-		RGB(0, 0, 0));
+	if (m_bVisible == true)
+	{
+		TransparentBlt(_dc,
+			int(m_tInfo.fx) + g_fScrollX, int(m_tInfo.fy) + g_fScrollY,
+			int(m_tInfo.fcx), int(m_tInfo.fcy),
+			GETS(CBitMapMgr)->FindImage(L"Stat")->GetMemDC(),
+			0, 0,
+			int(m_tInfo.fcx), int(m_tInfo.fcy),
+			RGB(0, 0, 0));
+	}
 }
 
 void CStat::Release(void)
