@@ -1,4 +1,5 @@
-﻿  Stage1.cpp
+﻿  건너뛰고 있습니다... (관련된 변경 내용 없음)
+  MainGame.cpp
 SoundMgr.obj : error LNK2019: FMOD_System_Create 외부 기호(참조 위치: "public: void __cdecl CSoundMgr::Initialize(void)" (?Initialize@CSoundMgr@@QEAAXXZ) 함수)에서 확인하지 못했습니다.
 SoundMgr.obj : error LNK2019: FMOD_System_Release 외부 기호(참조 위치: "public: __cdecl CSoundMgr::~CSoundMgr(void)" (??1CSoundMgr@@QEAA@XZ) 함수)에서 확인하지 못했습니다.
 SoundMgr.obj : error LNK2019: FMOD_System_Init 외부 기호(참조 위치: "public: void __cdecl CSoundMgr::Initialize(void)" (?Initialize@CSoundMgr@@QEAAXXZ) 함수)에서 확인하지 못했습니다.
