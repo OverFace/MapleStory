@@ -2,7 +2,7 @@
 #define Extern_h__
 
 extern HWND g_hWnd;
-
+extern WPARAM g_wParam;
 extern float g_fScrollX;
 extern float g_fScrollY;
 

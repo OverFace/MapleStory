@@ -7,6 +7,7 @@
 #include "Logo.h"
 #include "Stage1.h"
 #include "Edit.h"
+#include "LogIn.h"
 //--------------------------------------
 
 IMPLEMENT_SINGLETON(CSceneMgr)
@@ -38,7 +39,7 @@ void CSceneMgr::SetScene(eSceneType eType)
 		
 		break;
 	case SCENE_LOGIN:
-
+		m_pNextScene = new CLogIn();
 		break;
 	case SCENE_PLAYERSELECT:
 

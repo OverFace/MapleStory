@@ -9,6 +9,7 @@ enum eObjType
 	OBJ_MONSTER,			//Monster
 	OBJ_ITEM,				//Item
 	OBJ_PROP,				//Stage Object(물건, 장애물) 
+	OBJ_UI,
 	OBJ_END					
 };
 
@@ -55,6 +56,18 @@ enum eRenderType
 	RENDER_EFFECT,
 	RENDER_UI,
 	RENDER_END
+};
+
+//User Interface
+enum eUiType
+{
+	UI_INVEN,
+	UI_EQUIP,
+	UI_SKILL,
+	UI_STORE,
+	UI_STAT,
+	UI_STATUS,
+	UI_END
 };
 
 #endif // !Enum_h__
