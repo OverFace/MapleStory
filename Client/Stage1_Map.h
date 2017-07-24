@@ -9,10 +9,14 @@ public:
 
 private:
 	bool			m_bRender;
+	vector<TILE*>	m_vecStage1_Tile;
 
 public:
 	inline void		SetRedner(bool _bRender) { m_bRender = _bRender; }
 	
+private:
+	void			LoadData(void);
+
 public:
 	virtual void	Initialize(void);
 	virtual int		Update(void);

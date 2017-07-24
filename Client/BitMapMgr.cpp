@@ -55,6 +55,9 @@ void CBitMapMgr::LoadImageByScene(eSceneType eType)
 
 		break;
 	case SCENE_STAGE1:
+		//Tile Image
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Tile/Box1.bmp", L"Tile1");
+
 		//Stage1 BackGround & Map
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Stage/Ereve_BackGround.bmp", L"Stage1_Back");
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Stage/Ereve_Field.bmp", L"Stage1_Map");
@@ -113,6 +116,10 @@ void CBitMapMgr::LoadImageByScene(eSceneType eType)
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Tile/Box1.bmp", L"Tile1");
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Tile/Box2.bmp", L"Tile2");
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Tile/Box3.bmp", L"Tile3");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Tile/Box2(62).bmp", L"Tile_62");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Tile/Box3(55).bmp", L"Tile_55");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Tile/Box3(58).bmp", L"Tile_58");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Tile/Box3(63).bmp", L"Tile_63");
 
 		//Stage1 BackGround & Map
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Stage/Ereve_BackGround.bmp", L"Stage1_Back");

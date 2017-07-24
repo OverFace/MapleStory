@@ -263,7 +263,7 @@ void CEdit::Render(HDC _dc)
 					(int)m_vecTile_Stage2[iIndex]->fy - iTileSizeY / 2 + (int)g_fScrollY,
 					iTileSizeX,
 					iTileSizeY,
-					GETS(CBitMapMgr)->FindImage(L"Tile2")->GetMemDC(),
+					GETS(CBitMapMgr)->FindImage(L"Tile_62")->GetMemDC(),
 					m_vecTile_Stage2[iIndex]->iDrawID * iTileSizeX, 0,
 					iTileSizeX, iTileSizeY,
 					RGB(255, 255, 255));
@@ -275,7 +275,7 @@ void CEdit::Render(HDC _dc)
 					(int)m_vecTile_Stage3[iIndex]->fy - iTileSizeY / 2 + (int)g_fScrollY,
 					iTileSizeX,
 					iTileSizeY,
-					GETS(CBitMapMgr)->FindImage(L"Tile3")->GetMemDC(),
+					GETS(CBitMapMgr)->FindImage(L"Tile_58")->GetMemDC(),
 					m_vecTile_Stage3[iIndex]->iDrawID * iTileSizeX, 0,
 					iTileSizeX, iTileSizeY,
 					RGB(255, 255, 255));
@@ -287,7 +287,7 @@ void CEdit::Render(HDC _dc)
 					(int)m_vecTile_BStage[iIndex]->fy - iTileSizeY / 2 + (int)g_fScrollY,
 					iTileSizeX,
 					iTileSizeY,
-					GETS(CBitMapMgr)->FindImage(L"Tile1")->GetMemDC(),
+					GETS(CBitMapMgr)->FindImage(L"Tile_63")->GetMemDC(),
 					m_vecTile_BStage[iIndex]->iDrawID * iTileSizeX, 0,
 					iTileSizeX, iTileSizeY,
 					RGB(255, 255, 255));

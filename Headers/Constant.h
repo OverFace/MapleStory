@@ -10,15 +10,15 @@ const int STAGE1_TILECNTX = 27;
 const int STAGE1_TILECNTY = 18;
 //----------------------------------------------------------
 //Stage2----------------------------------------------------
-const int STAGE2_TILECNTX = 48;
-const int STAGE2_TILECNTY = 23;
+const int STAGE2_TILECNTX = 50;
+const int STAGE2_TILECNTY = 24;
 //----------------------------------------------------------
 //Stage3----------------------------------------------------
-const int STAGE3_TILECNTX = 31;
-const int STAGE3_TILECNTY = 16;
+const int STAGE3_TILECNTX = 26;
+const int STAGE3_TILECNTY = 14;
 //----------------------------------------------------------
 //Boss Stage------------------------------------------------
-const int BSTAGE_TILECNTX = 30;
+const int BSTAGE_TILECNTX = 29;
 const int BSTAGE_TILECNTY = 13;
 //----------------------------------------------------------
 
@@ -28,16 +28,16 @@ const int STAGE1_TILESIZEX = 60;
 const int STAGE1_TILESIZEY = 60;
 //----------------------------------------------------------
 //Stage2----------------------------------------------------
-const int STAGE2_TILESIZEX = 64;
-const int STAGE2_TILESIZEY = 64;
+const int STAGE2_TILESIZEX = 62;
+const int STAGE2_TILESIZEY = 62;
 //----------------------------------------------------------
 //Stage3----------------------------------------------------
-const int STAGE3_TILESIZEX = 50;
-const int STAGE3_TILESIZEY = 50;
+const int STAGE3_TILESIZEX = 58;
+const int STAGE3_TILESIZEY = 58;
 //----------------------------------------------------------
 //Boss Stage------------------------------------------------
-const int BSTAGE_TILESIZEX = 60;
-const int BSTAGE_TILESIZEY = 60;
+const int BSTAGE_TILESIZEX = 63;
+const int BSTAGE_TILESIZEY = 63;
 //----------------------------------------------------------
 
 //Map Å©±â
