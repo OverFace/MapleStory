@@ -5,9 +5,12 @@
 //Stage Header Include
 //--------------------------------------
 #include "Logo.h"
-#include "Stage1.h"
 #include "Edit.h"
 #include "LogIn.h"
+#include "Stage1.h"
+#include "Stage2.h"
+#include "Stage3.h"
+#include "Boss_Stage.h"
 //--------------------------------------
 
 IMPLEMENT_SINGLETON(CSceneMgr)
@@ -48,16 +51,16 @@ void CSceneMgr::SetScene(eSceneType eType)
 		m_pNextScene = new CStage1();
 		break;
 	case SCENE_STAGE2:
-
+		m_pNextScene = new CStage2();
 		break;
 	case SCENE_STAGE3:
-
+		m_pNextScene = new CStage3();
 		break;
 	case SCENE_EDIT:
 		m_pNextScene = new CEdit();
 		break;
 	case SCENE_BOSS:
-
+		m_pNextScene = new CBoss_Stage();
 		break;
 	}
 

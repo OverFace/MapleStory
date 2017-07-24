@@ -78,10 +78,21 @@ void CBitMapMgr::LoadImageByScene(eSceneType eType)
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/UI/Skill.bmp", L"Skill");
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/UI/Skill_Input.bmp", L"Skill_Input");
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/UI/Stat.bmp", L"Stat");
+		//UI_Button
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/UI/Button/Botton1.bmp", L"Button_Plus");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/UI/Button/Botton2.bmp", L"Button_Minus");
 		break;
 	case SCENE_STAGE2:
+		//Tile Image
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Tile/Box2(62).bmp", L"Tile_62");
+		
 		//Stage2 Map
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Stage/Stage2_Field.bmp", L"Stage2_Map");
+
+		//Player
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Player/Player_LEFT.bmp", L"Player_Left");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Player/Player_RIGHT.bmp", L"Player_Right");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Player/Player_UP.bmp", L"Player_Up");
 
 		//UI
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/UI/StateBar.bmp", L"Status");
@@ -94,11 +105,22 @@ void CBitMapMgr::LoadImageByScene(eSceneType eType)
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/UI/Skill.bmp", L"Skill");
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/UI/Skill_Input.bmp", L"Skill_Input");
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/UI/Stat.bmp", L"Stat");
+		//UI_Button
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/UI/Button/Botton1.bmp", L"Button_Plus");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/UI/Button/Botton2.bmp", L"Button_Minus");
 		break;
 	case SCENE_STAGE3:
+		//Tile Image
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Tile/Box3(58).bmp", L"Tile_58");
+
 		//Stage3 Map
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Stage/Stage3_Field.bmp", L"Stage3_Map");
 	
+		//Player
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Player/Player_LEFT.bmp", L"Player_Left");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Player/Player_RIGHT.bmp", L"Player_Right");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Player/Player_UP.bmp", L"Player_Up");
+
 		//UI
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/UI/StateBar.bmp", L"Status");
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/UI/Equipment.bmp", L"Equipment");
@@ -110,6 +132,9 @@ void CBitMapMgr::LoadImageByScene(eSceneType eType)
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/UI/Skill.bmp", L"Skill");
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/UI/Skill_Input.bmp", L"Skill_Input");
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/UI/Stat.bmp", L"Stat");
+		//UI_Button
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/UI/Button/Botton1.bmp", L"Button_Plus");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/UI/Button/Botton2.bmp", L"Button_Minus");
 		break;
 	case SCENE_EDIT:
 		//Tile Image
@@ -130,10 +155,18 @@ void CBitMapMgr::LoadImageByScene(eSceneType eType)
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Stage/Boss_Stage_Field.bmp", L"Boss_Map");
 		break;
 	case SCENE_BOSS:
+		//Tile Image
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Tile/Box3(63).bmp", L"Tile_63");
+
 		//Boss Stage Back & Map
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Stage/Boss_Stage_Back.bmp", L"Boss_Back");
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Stage/Boss_Stage_Field.bmp", L"Boss_Map");
 		
+		//Player
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Player/Player_LEFT.bmp", L"Player_Left");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Player/Player_RIGHT.bmp", L"Player_Right");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Player/Player_UP.bmp", L"Player_Up");
+
 		//UI
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/UI/StateBar.bmp", L"Status");
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/UI/Equipment.bmp", L"Equipment");
@@ -145,6 +178,9 @@ void CBitMapMgr::LoadImageByScene(eSceneType eType)
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/UI/Skill.bmp", L"Skill");
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/UI/Skill_Input.bmp", L"Skill_Input");
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/UI/Stat.bmp", L"Stat");
+		//UI_Button
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/UI/Button/Botton1.bmp", L"Button_Plus");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/UI/Button/Botton2.bmp", L"Button_Minus");
 		break;
 	}
 }

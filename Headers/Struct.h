@@ -12,6 +12,27 @@ typedef struct tagInfo
 }INFO;
 //---------------------------------------------------------------------------------
 
+//Player Stat 정보 구조체
+//---------------------------------------------------------------------------------
+typedef struct tagStatInfo
+{
+	TCHAR   m_szName[128];		//이름
+	TCHAR	m_szJop[128];		//직업
+	int		m_iLevel;			//레벨
+	int		m_iExp;				//경험치
+	int		m_iHonorLevel;		//명예레벨
+	int		m_iFameValue;		//명성치
+	TCHAR	m_szGuild[128];		//길드
+	int		m_iHp;				//HP
+	int		m_iMp;				//MP
+	int		m_iPopularity;		//인기도
+	int		m_iSTR;				//힘
+	int		m_iDEX;				//민첩
+	int	    m_iINT;				//지능
+	int		m_iLUK;				//운
+}STAT;
+//---------------------------------------------------------------------------------
+
 // Line 을 위한 구조체 
 //---------------------------------------------------------------------------------
 typedef struct tagLinePoint

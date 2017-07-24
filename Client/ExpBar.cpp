@@ -25,13 +25,16 @@ void CExpBar::Initialize(void)
 
 int CExpBar::Update(void)
 {
+	m_tInfo.fx = 252.f + g_fScrollX;
+	m_tInfo.fy = 705.f + g_fScrollY;
+
 	return 0;
 }
 
 void CExpBar::Render(HDC _dc)
 {
 	TransparentBlt(_dc,
-		int(m_tInfo.fx) + g_fScrollX, int(m_tInfo.fy) + g_fScrollY,
+		int(m_tInfo.fx) - g_fScrollX, int(m_tInfo.fy) - g_fScrollY,
 		int(m_tInfo.fcx), int(m_tInfo.fcy),
 		GETS(CBitMapMgr)->FindImage(L"Exp_Bar")->GetMemDC(),
 		0, 0,

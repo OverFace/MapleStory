@@ -6,6 +6,15 @@
 CStage1_Map::CStage1_Map(void)
 {
 	m_bRender = false;
+	m_bRender_Tile = false;
+	m_bStage_Check = false;
+}
+
+CStage1_Map::CStage1_Map(bool bCheck)
+{
+	m_bRender = false;
+	m_bRender_Tile = false;
+	m_bStage_Check = bCheck;
 }
 
 CStage1_Map::~CStage1_Map(void)
@@ -52,11 +61,24 @@ void CStage1_Map::Initialize(void)
 
 	m_eRenderType = RENDER_BACKGROUND;
 
-	LoadData();
+	if(m_bStage_Check == false)
+		LoadData();
 }
 
 int CStage1_Map::Update(void)
 {
+	static bool bIsPress_Five = false;
+	if (GetAsyncKeyState('5') && bIsPress_Five == false)
+	{
+		m_bRender_Tile = true;
+		bIsPress_Five = true;
+	}
+	if (!GetAsyncKeyState('5') && bIsPress_Five == true)
+	{
+		m_bRender_Tile = false;
+		bIsPress_Five = false;
+	}		
+
 	return 0;
 }
 
@@ -74,39 +96,54 @@ void CStage1_Map::Render(HDC _dc)
 	}	
 
 	//나중에 특정키를 누르면 Render 되게 해야됨
-	int iMapSizeX, iMapSizeY, iTileSizeX, iTileSizeY, iCullX, iCullY, iCullEndX, iCullEndY;
-	
-	iMapSizeX = STAGE1_MAPSIZEX;
-	iMapSizeY = STAGE1_MAPSIZEY;
-	iTileSizeX = STAGE1_TILESIZEX;
-	iTileSizeY = STAGE1_TILESIZEY;
-	iCullX = ((int)-g_fScrollX) / STAGE1_TILESIZEX;
-	iCullY = ((int)-g_fScrollY) / STAGE1_TILESIZEY;
-	iCullEndX = WINCX / STAGE1_TILESIZEX + 2;
-	iCullEndY = WINCY / STAGE1_TILESIZEY + 2;
-
-	for (int i = iCullY; i < iCullY + iCullEndY; ++i)
+	if (m_bStage_Check == false)
 	{
-		for (int j = iCullX; j < iCullX + iCullEndX; ++j)
+		int iMapSizeX, iMapSizeY, iTileSizeX, iTileSizeY, iCullX, iCullY, iCullEndX, iCullEndY;
+
+		iMapSizeX = STAGE1_MAPSIZEX;
+		iMapSizeY = STAGE1_MAPSIZEY;
+		iTileSizeX = STAGE1_TILESIZEX;
+		iTileSizeY = STAGE1_TILESIZEY;
+		iCullX = ((int)-g_fScrollX) / STAGE1_TILESIZEX;
+		iCullY = ((int)-g_fScrollY) / STAGE1_TILESIZEY;
+		iCullEndX = WINCX / STAGE1_TILESIZEX + 2;
+		iCullEndY = WINCY / STAGE1_TILESIZEY + 2;
+
+		for (int i = iCullY; i < iCullY + iCullEndY; ++i)
 		{
-			int iIndex = i * (iMapSizeX / iTileSizeX) + j;
+			for (int j = iCullX; j < iCullX + iCullEndX; ++j)
+			{
+				int iIndex = i * (iMapSizeX / iTileSizeX) + j;
 
-			if (iIndex < 0 || (iMapSizeX / iTileSizeX)  * (iMapSizeY / iTileSizeY) - 2  < iIndex)
-				continue;
+				if (iIndex < 0 || (iMapSizeX / iTileSizeX)  * (iMapSizeY / iTileSizeY) - 2  < iIndex)
+					continue;
 
-			TransparentBlt(_dc,
-				(int)m_vecStage1_Tile[iIndex]->fx - iTileSizeX / 2 + (int)g_fScrollX,
-				(int)m_vecStage1_Tile[iIndex]->fy - iTileSizeY / 2 + (int)g_fScrollY,
-				iTileSizeX,
-				iTileSizeY,
-				GETS(CBitMapMgr)->FindImage(L"Tile1")->GetMemDC(),
-				m_vecStage1_Tile[iIndex]->iDrawID * iTileSizeX, 0,
-				iTileSizeX, iTileSizeY,
-				RGB(255, 255, 255));
+				if (m_bRender_Tile == true)
+				{
+					TransparentBlt(_dc,
+						(int)m_vecStage1_Tile[iIndex]->fx - iTileSizeX / 2 + (int)g_fScrollX,
+						(int)m_vecStage1_Tile[iIndex]->fy - iTileSizeY / 2 + (int)g_fScrollY,
+						iTileSizeX,
+						iTileSizeY,
+						GETS(CBitMapMgr)->FindImage(L"Tile1")->GetMemDC(),
+						m_vecStage1_Tile[iIndex]->iDrawID * iTileSizeX, 0,
+						iTileSizeX, iTileSizeY,
+						RGB(255, 255, 255));
+				}
+			}
 		}
 	}
 }
 
 void CStage1_Map::Release(void)
 {
+	if (m_bStage_Check == false)
+	{
+		vector<TILE*>::iterator iter = m_vecStage1_Tile.begin();
+		for (iter; iter != m_vecStage1_Tile.end(); ++iter)
+		{
+			SAFE_DELETE(*iter);
+		}
+		m_vecStage1_Tile.clear();
+	}	
 }

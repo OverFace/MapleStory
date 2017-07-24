@@ -95,7 +95,7 @@ void CEdit::Initialize(void)
 	m_pStage1_Back = new CStage1_Back();
 	m_pStage1_Back->Initialize();
 	GETS(CObjMgr)->AddObject(OBJ_BACKGROUND, m_pStage1_Back);
-	m_pStage1_Map = new CStage1_Map();
+	m_pStage1_Map = new CStage1_Map(true);
 	m_pStage1_Map->Initialize();
 	GETS(CObjMgr)->AddObject(OBJ_BACKGROUND, m_pStage1_Map);
 
@@ -104,12 +104,12 @@ void CEdit::Initialize(void)
 	((CStage1_Map*)(m_pStage1_Map))->SetRedner(true);
 
 	//Stage2 Map Object Create
-	m_pStage2_Map = new CStage2_Map();
+	m_pStage2_Map = new CStage2_Map(true);
 	m_pStage2_Map->Initialize();
 	GETS(CObjMgr)->AddObject(OBJ_BACKGROUND, m_pStage2_Map);
 
 	//Stage3 Map Object Create
-	m_pStage3_Map = new CStage3_Map();
+	m_pStage3_Map = new CStage3_Map(true);
 	m_pStage3_Map->Initialize();
 	GETS(CObjMgr)->AddObject(OBJ_BACKGROUND, m_pStage3_Map);
 
@@ -118,7 +118,7 @@ void CEdit::Initialize(void)
 	m_pBStage_Back->Initialize();
 	GETS(CObjMgr)->AddObject(OBJ_BACKGROUND, m_pBStage_Back);
 
-	m_pBStage_Map = new CBstage_Map();
+	m_pBStage_Map = new CBstage_Map(true);
 	m_pBStage_Map->Initialize();
 	GETS(CObjMgr)->AddObject(OBJ_BACKGROUND, m_pBStage_Map);
 }
@@ -462,7 +462,7 @@ void CEdit::Picking(void)
 	{
 		int iX = (pt.x - (int)g_fScrollX) / STAGE3_TILESIZEX;
 		int iY = (pt.y - (int)g_fScrollY) / STAGE3_TILESIZEY;
-		iIndex = iY * (STAGE3_MAPSIZEX / STAGE3_TILESIZEX) + iX + iY;
+		iIndex = iY * (STAGE3_MAPSIZEX / STAGE3_TILESIZEX) + iX;
 
 		++m_vecTile_Stage3[iIndex]->iDrawID;
 

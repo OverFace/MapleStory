@@ -154,6 +154,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Boss_Stage.h" />
     <ClInclude Include="BStage_Back.h" />
     <ClInclude Include="BStage_Map.h" />
     <ClInclude Include="Edit.h" />
@@ -184,7 +185,9 @@
     <ClInclude Include="Stage1.h" />
     <ClInclude Include="Stage1_Back.h" />
     <ClInclude Include="Stage1_Map.h" />
+    <ClInclude Include="Stage2.h" />
     <ClInclude Include="Stage2_Map.h" />
+    <ClInclude Include="Stage3.h" />
     <ClInclude Include="Stage3_Map.h" />
     <ClInclude Include="Stat.h" />
     <ClInclude Include="Status.h" />
@@ -194,6 +197,7 @@
     <ClInclude Include="UI.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Boss_Stage.cpp" />
     <ClCompile Include="BStage_Back.cpp" />
     <ClCompile Include="BStage_Map.cpp" />
     <ClCompile Include="Edit.cpp" />
@@ -223,7 +227,9 @@
     <ClCompile Include="Stage1.cpp" />
     <ClCompile Include="Stage1_Back.cpp" />
     <ClCompile Include="Stage1_Map.cpp" />
+    <ClCompile Include="Stage2.cpp" />
     <ClCompile Include="Stage2_Map.cpp" />
+    <ClCompile Include="Stage3.cpp" />
     <ClCompile Include="Stage3_Map.cpp" />
     <ClCompile Include="Stat.cpp" />
     <ClCompile Include="Status.cpp" />

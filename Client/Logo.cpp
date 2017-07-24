@@ -30,8 +30,11 @@ int CLogo::Update(void)
 {
 	if (GETS(CKeyMgr)->GetKeyDown(VK_RETURN))
 	{
-		GETS(CSceneMgr)->SetScene(SCENE_STAGE1);
 		//GETS(CSceneMgr)->SetScene(SCENE_EDIT);
+		GETS(CSceneMgr)->SetScene(SCENE_STAGE1);
+		//GETS(CSceneMgr)->SetScene(SCENE_STAGE2);
+		//GETS(CSceneMgr)->SetScene(SCENE_STAGE3);
+		//GETS(CSceneMgr)->SetScene(SCENE_BOSS);
 		return 1;
 	}	
 

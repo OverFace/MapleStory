@@ -2,6 +2,7 @@
 #include "Status.h"
 #include "BitMapMgr.h"
 #include "BitMap.h"
+#include "ObjMgr.h"
 
 CStatus::CStatus(void)
 {
@@ -15,6 +16,8 @@ CStatus::~CStatus(void)
 
 void CStatus::Initialize(void)
 {
+	m_tInfo.fx = 0.f;
+	m_tInfo.fy = 0.f;
 	m_tInfo.fcx = 1024.f;
 	m_tInfo.fcy = 720.f;
 
@@ -23,13 +26,16 @@ void CStatus::Initialize(void)
 
 int CStatus::Update(void)
 {
+	m_tInfo.fx = g_fScrollX;
+	m_tInfo.fy = g_fScrollY;
+
 	return 0;
 }
 
 void CStatus::Render(HDC _dc)
 {
 	TransparentBlt(_dc,
-		g_fScrollX, g_fScrollY,
+		int(m_tInfo.fx) - g_fScrollX, int(m_tInfo.fy) - g_fScrollY,
 		int(m_tInfo.fcx), int(m_tInfo.fcy),
 		GETS(CBitMapMgr)->FindImage(L"Status")->GetMemDC(),
 		0, 0,

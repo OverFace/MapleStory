@@ -7,6 +7,12 @@ public:
 	CSkill_UI(void);
 	virtual ~CSkill_UI(void);
 
+private:
+	DWORD				m_dwTime;
+
+private:
+	void				Skill_Key(void);
+
 public:
 	virtual void		Initialize(void);
 	virtual	int			Update(void);
