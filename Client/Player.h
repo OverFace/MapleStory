@@ -16,8 +16,10 @@ private:
 	int m_isizey;
 
 private:
-	void	FrameMove(void);
+	void FrameMove(void);
 	void KeyCheck(void);
+	void Scroll(void);
+	void DynamicScroll(void);
 public:
 	virtual void Initialize(void);
 	virtual int Update(void);
