@@ -98,17 +98,18 @@ void CPlayer::FrameMove(void)
 			m_tFrame.iYIndex = 2;
 			m_tFrame.dwFrameTime = 150;
 			break;
+		case STATE_UP:
+			m_tFrame.iFrameStart = 0;
+			m_tFrame.iFrameEnd = 1;
+			m_tFrame.iYIndex = 0;
+			m_tFrame.dwFrameTime = 150;
+			break;
 		case STATE_JUMP:
 			m_tFrame.iFrameStart = 0;
 			m_tFrame.iFrameEnd = 0;
 			m_tFrame.iYIndex = 6;
 			m_tFrame.dwFrameTime = 150;
 			break;
-		case STATE_UP:
-			m_tFrame.iFrameStart = 0;
-			m_tFrame.iFrameEnd = 1;
-			m_tFrame.iYIndex = 0;
-			m_tFrame.dwFrameTime = 150;
 		case STATE_DOWN:
 			m_tFrame.iFrameStart = 0;
 			m_tFrame.iFrameEnd = 0;
