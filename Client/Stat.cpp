@@ -75,6 +75,21 @@ int CStat::Update(void)
 	m_tInfo.fx = 509.f + g_fScrollX;
 	m_tInfo.fy = 300.f + g_fScrollY;
 
+	for (int i = 0; i < 4; ++i)
+	{
+		//Button Position
+		m_tButton_Info[i].fx = m_tInfo.fx + 180.f;
+		m_tButton_Info[i].fy = m_tInfo.fy + 263.f + (i * 18.f);
+		m_tButton_Info[i].fcx = 13.f;
+		m_tButton_Info[i].fcy = 12.f;
+
+		//Rect Position
+		m_tButton_Rect[i].left = long(m_tButton_Info[i].fx + (m_tButton_Info[i].fcx / 2.f) - m_tButton_Info[i].fcx / 2);
+		m_tButton_Rect[i].right = long(m_tButton_Info[i].fx + (m_tButton_Info[i].fcx / 2.f) + m_tButton_Info[i].fcx / 2);
+		m_tButton_Rect[i].top = long(m_tButton_Info[i].fy + (m_tButton_Info[i].fcy / 2.f) - m_tButton_Info[i].fcy / 2);
+		m_tButton_Rect[i].bottom = long(m_tButton_Info[i].fy + (m_tButton_Info[i].fcy / 2.f) + m_tButton_Info[i].fcy / 2);
+	}
+
 	//Key Setting
 	Stat_Key();
 
