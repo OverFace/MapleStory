@@ -43,7 +43,7 @@ void CInven::Render(HDC _dc)
 		TransparentBlt(_dc,
 			int(m_tInfo.fx) - g_fScrollX, int(m_tInfo.fy) - g_fScrollY,
 			int(m_tInfo.fcx), int(m_tInfo.fcy),
-			GETS(CBitMapMgr)->FindImage(L"Inventory")->GetMemDC(),
+			GETS(CBitMapMgr)->FindImage(L"Inventory_Equip")->GetMemDC(),
 			0, 0,
 			int(m_tInfo.fcx), int(m_tInfo.fcy),
 			RGB(0, 0, 0));

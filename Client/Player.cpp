@@ -32,7 +32,7 @@ void CPlayer::Initialize(void) {
 	m_dwPrevState = STATE_STAND;
 
 	m_dwFrameTime = GetTickCount();
-	m_fSpeed = 1.f;
+	m_fSpeed = 4.f;
 
 	m_eRenderType = RENDER_WORLDOBJ;
 }
@@ -43,7 +43,7 @@ int CPlayer::Update(void) {
 	CObj::Update();
 	FrameMove();
 
-	Scroll();
+	Scroll();		
 	DynamicScroll();
 	return 0;
 }

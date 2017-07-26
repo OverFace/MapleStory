@@ -118,6 +118,9 @@
     <ClCompile Include="Boss_Stage.cpp">
       <Filter>03.Scene\Boss_Stage</Filter>
     </ClCompile>
+    <ClCompile Include="Item.cpp">
+      <Filter>02.Object\05.Item</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainGame.h">
@@ -243,6 +246,9 @@
     <ClInclude Include="Boss_Stage.h">
       <Filter>03.Scene\Boss_Stage</Filter>
     </ClInclude>
+    <ClInclude Include="Item.h">
+      <Filter>02.Object\05.Item</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -366,6 +372,21 @@
     </Filter>
     <Filter Include="02.Object\04.UI\Status\MpBar">
       <UniqueIdentifier>{8a13a394-ef3e-4227-9dda-750e9bdd24dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Object\05.Item">
+      <UniqueIdentifier>{451563ef-8e8f-41cb-b217-b51307083491}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Object\05.Item\Weapon">
+      <UniqueIdentifier>{d1d89f6f-1d77-4399-b59d-f958bd0449e6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Object\05.Item\Armor">
+      <UniqueIdentifier>{d52c3f89-6de7-4600-928b-71808be2ba13}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Object\05.Item\Potion">
+      <UniqueIdentifier>{31d37afb-f9d1-426d-9082-b2d6a3145676}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Object\05.Item\Exp">
+      <UniqueIdentifier>{df43953f-712a-4666-a54d-03ec3ec4eabf}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

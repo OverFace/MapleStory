@@ -73,7 +73,9 @@ void CBitMapMgr::LoadImageByScene(eSceneType eType)
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/UI/ExpBar.bmp", L"Exp_Bar");
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/UI/HPBar.bmp", L"Hp_Bar");
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/UI/MPBar.bmp", L"Mp_Bar");
-		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/UI/Inventory.bmp", L"Inventory");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/UI/Inventory_Etc.bmp", L"Inventory_Etc");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/UI/Inventory_Equip.bmp", L"Inventory_Equip");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/UI/Inventory_Consume.bmp", L"Inventory_Consume");
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/UI/Shop.bmp", L"Store");
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/UI/Skill.bmp", L"Skill");
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/UI/Skill_Input.bmp", L"Skill_Input");
@@ -81,6 +83,63 @@ void CBitMapMgr::LoadImageByScene(eSceneType eType)
 		//UI_Button
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/UI/Button/Botton1.bmp", L"Button_Plus");
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/UI/Button/Botton2.bmp", L"Button_Minus");
+		
+#pragma region Item Resource
+		//Item_Accessory
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Accessory/Accessory.bmp", L"Accessory");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Accessory/Accessory1.bmp", L"Accessory1");
+		//Item_Armor
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Armor/Armor.bmp", L"Armor");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Armor/Armor1.bmp", L"Armor1");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Armor/Armor2.bmp", L"Armor2");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Armor/Armor3.bmp", L"Armor3");
+		//Item_Etc
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Etc/Etc.bmp", L"Etc");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Etc/Etc1.bmp", L"Etc1");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Etc/Etc2.bmp", L"Etc2");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Etc/Etc3.bmp", L"Etc3");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Etc/Etc4.bmp", L"Etc4");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Etc/Etc5.bmp", L"Etc5");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Etc/Etc6.bmp", L"Etc6");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Etc/Etc7.bmp", L"Etc7");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Etc/Etc8.bmp", L"Etc8");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Etc/Etc9.bmp", L"Etc9");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Etc/Etc10.bmp", L"Etc10");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Etc/Etc11.bmp", L"Etc11");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Etc/Etc12.bmp", L"Etc12");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Etc/Etc13.bmp", L"Etc13");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Etc/Etc14.bmp", L"Etc14");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Etc/Etc15.bmp", L"Etc15");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Etc/Etc16.bmp", L"Etc16");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Etc/Etc17.bmp", L"Etc17");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Etc/Etc18.bmp", L"Etc18");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Etc/Etc19.bmp", L"Etc19");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Etc/Etc20.bmp", L"Etc20");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Etc/Etc21.bmp", L"Etc21");
+		//Item_Glove
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Glove/Glove.bmp", L"Glove");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Glove/Glove1.bmp", L"Glove1");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Glove/Glove2.bmp", L"Glove2");
+		//Item_Helmet
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Helmet/Helmet.bmp", L"Helmet");
+		//Item_Messo
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Messo/Messo.bmp", L"Messo");
+		//Item_Pants
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Pants/Pants.bmp", L"Pants");
+		//Item_Potion
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Potion/Hp_Potion.bmp", L"Hp_Potion");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Potion/Mp_Potion.bmp", L"Mp_Potion");
+		//Item_Shoes
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Shoes/Shoes.bmp", L"Shoes");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Shoes/Shoes1.bmp", L"Shoes1");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Shoes/Shoes2.bmp", L"Shoes2");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Shoes/Shoes3.bmp", L"Shoes3");
+		//Item_Weapon
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Weapon/Weapon.bmp", L"Weapon");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Weapon/Weapon1.bmp", L"Weapon1");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Weapon/Weapon2.bmp", L"Weapon2");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Weapon/Weapon3.bmp", L"Weapon3");
+#pragma endregion
 		break;
 	case SCENE_STAGE2:
 		//Tile Image
@@ -100,7 +159,9 @@ void CBitMapMgr::LoadImageByScene(eSceneType eType)
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/UI/ExpBar.bmp", L"Exp_Bar");
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/UI/HPBar.bmp", L"Hp_Bar");
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/UI/MPBar.bmp", L"Mp_Bar");
-		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/UI/Inventory.bmp", L"Inventory");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/UI/Inventory_Etc.bmp", L"Inventory_Etc");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/UI/Inventory_Equip.bmp", L"Inventory_Equip");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/UI/Inventory_Consume.bmp", L"Inventory_Consume");
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/UI/Shop.bmp", L"Store");
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/UI/Skill.bmp", L"Skill");
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/UI/Skill_Input.bmp", L"Skill_Input");
@@ -108,6 +169,63 @@ void CBitMapMgr::LoadImageByScene(eSceneType eType)
 		//UI_Button
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/UI/Button/Botton1.bmp", L"Button_Plus");
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/UI/Button/Botton2.bmp", L"Button_Minus");
+		
+#pragma region Item Resource
+		//Item_Accessory
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Accessory/Accessory.bmp", L"Accessory");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Accessory/Accessory1.bmp", L"Accessory1");
+		//Item_Armor
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Armor/Armor.bmp", L"Armor");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Armor/Armor1.bmp", L"Armor1");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Armor/Armor2.bmp", L"Armor2");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Armor/Armor3.bmp", L"Armor3");
+		//Item_Etc
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Etc/Etc.bmp", L"Etc");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Etc/Etc1.bmp", L"Etc1");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Etc/Etc2.bmp", L"Etc2");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Etc/Etc3.bmp", L"Etc3");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Etc/Etc4.bmp", L"Etc4");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Etc/Etc5.bmp", L"Etc5");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Etc/Etc6.bmp", L"Etc6");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Etc/Etc7.bmp", L"Etc7");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Etc/Etc8.bmp", L"Etc8");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Etc/Etc9.bmp", L"Etc9");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Etc/Etc10.bmp", L"Etc10");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Etc/Etc11.bmp", L"Etc11");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Etc/Etc12.bmp", L"Etc12");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Etc/Etc13.bmp", L"Etc13");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Etc/Etc14.bmp", L"Etc14");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Etc/Etc15.bmp", L"Etc15");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Etc/Etc16.bmp", L"Etc16");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Etc/Etc17.bmp", L"Etc17");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Etc/Etc18.bmp", L"Etc18");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Etc/Etc19.bmp", L"Etc19");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Etc/Etc20.bmp", L"Etc20");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Etc/Etc21.bmp", L"Etc21");
+		//Item_Glove
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Glove/Glove.bmp", L"Glove");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Glove/Glove1.bmp", L"Glove1");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Glove/Glove2.bmp", L"Glove2");
+		//Item_Helmet
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Helmet/Helmet.bmp", L"Helmet");
+		//Item_Messo
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Messo/Messo.bmp", L"Messo");
+		//Item_Pants
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Pants/Pants.bmp", L"Pants");
+		//Item_Potion
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Potion/Hp_Potion.bmp", L"Hp_Potion");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Potion/Mp_Potion.bmp", L"Mp_Potion");
+		//Item_Shoes
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Shoes/Shoes.bmp", L"Shoes");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Shoes/Shoes1.bmp", L"Shoes1");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Shoes/Shoes2.bmp", L"Shoes2");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Shoes/Shoes3.bmp", L"Shoes3");
+		//Item_Weapon
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Weapon/Weapon.bmp", L"Weapon");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Weapon/Weapon1.bmp", L"Weapon1");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Weapon/Weapon2.bmp", L"Weapon2");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Weapon/Weapon3.bmp", L"Weapon3");
+#pragma endregion
 		break;
 	case SCENE_STAGE3:
 		//Tile Image
@@ -127,7 +245,9 @@ void CBitMapMgr::LoadImageByScene(eSceneType eType)
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/UI/ExpBar.bmp", L"Exp_Bar");
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/UI/HPBar.bmp", L"Hp_Bar");
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/UI/MPBar.bmp", L"Mp_Bar");
-		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/UI/Inventory.bmp", L"Inventory");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/UI/Inventory_Etc.bmp", L"Inventory_Etc");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/UI/Inventory_Equip.bmp", L"Inventory_Equip");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/UI/Inventory_Consume.bmp", L"Inventory_Consume");
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/UI/Shop.bmp", L"Store");
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/UI/Skill.bmp", L"Skill");
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/UI/Skill_Input.bmp", L"Skill_Input");
@@ -135,6 +255,63 @@ void CBitMapMgr::LoadImageByScene(eSceneType eType)
 		//UI_Button
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/UI/Button/Botton1.bmp", L"Button_Plus");
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/UI/Button/Botton2.bmp", L"Button_Minus");
+		
+#pragma region Item Resource
+		//Item_Accessory
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Accessory/Accessory.bmp", L"Accessory");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Accessory/Accessory1.bmp", L"Accessory1");
+		//Item_Armor
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Armor/Armor.bmp", L"Armor");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Armor/Armor1.bmp", L"Armor1");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Armor/Armor2.bmp", L"Armor2");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Armor/Armor3.bmp", L"Armor3");
+		//Item_Etc
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Etc/Etc.bmp", L"Etc");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Etc/Etc1.bmp", L"Etc1");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Etc/Etc2.bmp", L"Etc2");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Etc/Etc3.bmp", L"Etc3");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Etc/Etc4.bmp", L"Etc4");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Etc/Etc5.bmp", L"Etc5");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Etc/Etc6.bmp", L"Etc6");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Etc/Etc7.bmp", L"Etc7");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Etc/Etc8.bmp", L"Etc8");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Etc/Etc9.bmp", L"Etc9");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Etc/Etc10.bmp", L"Etc10");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Etc/Etc11.bmp", L"Etc11");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Etc/Etc12.bmp", L"Etc12");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Etc/Etc13.bmp", L"Etc13");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Etc/Etc14.bmp", L"Etc14");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Etc/Etc15.bmp", L"Etc15");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Etc/Etc16.bmp", L"Etc16");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Etc/Etc17.bmp", L"Etc17");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Etc/Etc18.bmp", L"Etc18");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Etc/Etc19.bmp", L"Etc19");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Etc/Etc20.bmp", L"Etc20");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Etc/Etc21.bmp", L"Etc21");
+		//Item_Glove
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Glove/Glove.bmp", L"Glove");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Glove/Glove1.bmp", L"Glove1");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Glove/Glove2.bmp", L"Glove2");
+		//Item_Helmet
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Helmet/Helmet.bmp", L"Helmet");
+		//Item_Messo
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Messo/Messo.bmp", L"Messo");
+		//Item_Pants
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Pants/Pants.bmp", L"Pants");
+		//Item_Potion
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Potion/Hp_Potion.bmp", L"Hp_Potion");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Potion/Mp_Potion.bmp", L"Mp_Potion");
+		//Item_Shoes
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Shoes/Shoes.bmp", L"Shoes");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Shoes/Shoes1.bmp", L"Shoes1");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Shoes/Shoes2.bmp", L"Shoes2");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Shoes/Shoes3.bmp", L"Shoes3");
+		//Item_Weapon
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Weapon/Weapon.bmp", L"Weapon");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Weapon/Weapon1.bmp", L"Weapon1");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Weapon/Weapon2.bmp", L"Weapon2");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Weapon/Weapon3.bmp", L"Weapon3");
+#pragma endregion
 		break;
 	case SCENE_EDIT:
 		//Tile Image
@@ -173,7 +350,9 @@ void CBitMapMgr::LoadImageByScene(eSceneType eType)
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/UI/ExpBar.bmp", L"Exp_Bar");
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/UI/HPBar.bmp", L"Hp_Bar");
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/UI/MPBar.bmp", L"Mp_Bar");
-		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/UI/Inventory.bmp", L"Inventory");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/UI/Inventory_Etc.bmp", L"Inventory_Etc");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/UI/Inventory_Equip.bmp", L"Inventory_Equip");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/UI/Inventory_Consume.bmp", L"Inventory_Consume");
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/UI/Shop.bmp", L"Store");
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/UI/Skill.bmp", L"Skill");
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/UI/Skill_Input.bmp", L"Skill_Input");
@@ -181,6 +360,63 @@ void CBitMapMgr::LoadImageByScene(eSceneType eType)
 		//UI_Button
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/UI/Button/Botton1.bmp", L"Button_Plus");
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/UI/Button/Botton2.bmp", L"Button_Minus");
+		
+#pragma region Item Resource
+		//Item_Accessory
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Accessory/Accessory.bmp", L"Accessory");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Accessory/Accessory1.bmp", L"Accessory1");
+		//Item_Armor
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Armor/Armor.bmp", L"Armor");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Armor/Armor1.bmp", L"Armor1");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Armor/Armor2.bmp", L"Armor2");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Armor/Armor3.bmp", L"Armor3");
+		//Item_Etc
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Etc/Etc.bmp", L"Etc");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Etc/Etc1.bmp", L"Etc1");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Etc/Etc2.bmp", L"Etc2");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Etc/Etc3.bmp", L"Etc3");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Etc/Etc4.bmp", L"Etc4");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Etc/Etc5.bmp", L"Etc5");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Etc/Etc6.bmp", L"Etc6");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Etc/Etc7.bmp", L"Etc7");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Etc/Etc8.bmp", L"Etc8");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Etc/Etc9.bmp", L"Etc9");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Etc/Etc10.bmp", L"Etc10");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Etc/Etc11.bmp", L"Etc11");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Etc/Etc12.bmp", L"Etc12");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Etc/Etc13.bmp", L"Etc13");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Etc/Etc14.bmp", L"Etc14");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Etc/Etc15.bmp", L"Etc15");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Etc/Etc16.bmp", L"Etc16");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Etc/Etc17.bmp", L"Etc17");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Etc/Etc18.bmp", L"Etc18");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Etc/Etc19.bmp", L"Etc19");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Etc/Etc20.bmp", L"Etc20");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Etc/Etc21.bmp", L"Etc21");
+		//Item_Glove
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Glove/Glove.bmp", L"Glove");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Glove/Glove1.bmp", L"Glove1");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Glove/Glove2.bmp", L"Glove2");
+		//Item_Helmet
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Helmet/Helmet.bmp", L"Helmet");
+		//Item_Messo
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Messo/Messo.bmp", L"Messo");
+		//Item_Pants
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Pants/Pants.bmp", L"Pants");
+		//Item_Potion
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Potion/Hp_Potion.bmp", L"Hp_Potion");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Potion/Mp_Potion.bmp", L"Mp_Potion");
+		//Item_Shoes
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Shoes/Shoes.bmp", L"Shoes");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Shoes/Shoes1.bmp", L"Shoes1");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Shoes/Shoes2.bmp", L"Shoes2");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Shoes/Shoes3.bmp", L"Shoes3");
+		//Item_Weapon
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Weapon/Weapon.bmp", L"Weapon");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Weapon/Weapon1.bmp", L"Weapon1");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Weapon/Weapon2.bmp", L"Weapon2");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Weapon/Weapon3.bmp", L"Weapon3");
+#pragma endregion
 		break;
 	}
 }
