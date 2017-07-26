@@ -6,6 +6,8 @@ IMPLEMENT_SINGLETON(CKeyMgr)
 CKeyMgr::CKeyMgr(void)
 {
 	memset(m_bPress, 0, sizeof(m_bPress));
+	ZeroMemory(m_bKeyDown, sizeof(m_bKeyDown));
+	ZeroMemory(m_bKeyUp, sizeof(m_bKeyUp));
 }
 
 CKeyMgr::~CKeyMgr(void)
@@ -48,6 +50,58 @@ bool CKeyMgr::GetKeyDown(int iKey)
 bool CKeyMgr::GetKeyUp(int iKey)
 {
 	if (GetAsyncKeyState(iKey) & 0x0001)
+		return true;
+
+	return false;
+}
+
+bool CKeyMgr::StayKeyDown(int iKey)
+{
+	if (GetAsyncKeyState(iKey) & 0x8000)
+		return true;
+
+	return false;
+}
+
+bool CKeyMgr::OnceKeyDown(int iKey)
+{
+	if (GetAsyncKeyState(iKey) & 0x8000)
+	{
+		if (m_bKeyDown[iKey] == false)
+		{
+			m_bKeyDown[iKey] = true;
+			return true;
+		}
+	}
+	else
+	{
+		m_bKeyDown[iKey] = false;
+	}
+
+	return false;
+}
+
+bool CKeyMgr::OnceKeyUp(int iKey)
+{
+	if (GetAsyncKeyState(iKey) & 0x8000)
+	{
+		m_bKeyUp[iKey] = true;
+	}
+	else
+	{
+		if (m_bKeyUp[iKey] == true)
+		{
+			m_bKeyUp[iKey] = false;
+			return true;
+		}
+	}
+
+	return false;
+}
+
+bool CKeyMgr::IsToggleKey(int iKey)
+{
+	if (GetKeyState(iKey) & 0x0001)
 		return true;
 
 	return false;

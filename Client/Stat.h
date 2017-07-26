@@ -11,18 +11,23 @@ private:
 	HFONT				m_myFont;
 	DWORD				m_dwTime;
 	STAT				m_tStat;
+	int					m_iStat_Limit;								//스텟 증가 한계치
+	bool				m_bLevelUp_Check;
 
 private: //Button
 	INFO				m_tButton_Info[4];
 	RECT				m_tButton_Rect[4];
 	int					m_iButtonOption[4];
+	RECT				m_tStatMove_rect;
 
 private:
 	void				Stat_Key(void);
 	void				Stat_Poisiton(STAT& _rStat, HDC _dc);
 	void				Stat_Button(void);
+	void				Stat_Move(void);
 
 private:
+	void				Save_Data(void);
 	void				Load_Data(void);
 
 public:
