@@ -1,3 +1,12 @@
 ﻿  Player.cpp
+<<<<<<< HEAD
   Client.vcxproj -> C:\Users\user\Desktop\git\maple\MapleStory\Debug\Client.exe
   Client.vcxproj -> C:\Users\user\Desktop\git\maple\MapleStory\Debug\Client.pdb (Partial PDB)
+=======
+c:\users\user\desktop\git\maple\maplestory\client\player.cpp(101): error C2065: 'STATE_UP': 선언되지 않은 식별자입니다.
+c:\users\user\desktop\git\maple\maplestory\client\player.cpp(101): error C2131: 식이 상수로 계산되지 않았습니다.
+  c:\users\user\desktop\git\maple\maplestory\client\player.cpp(101): note: 비상수 인수 또는 비상수 기호를 참조하여 실패했습니다.
+  c:\users\user\desktop\git\maple\maplestory\client\player.cpp(101): note: 'STATE_UP' 사용량 참조
+c:\users\user\desktop\git\maple\maplestory\client\player.cpp(101): error C2051: case 식이 상수가 아닙니다.
+c:\users\user\desktop\git\maple\maplestory\client\player.cpp(155): error C2065: 'STATE_UP': 선언되지 않은 식별자입니다.
+>>>>>>> 395cd70a580a4e81890192914e79c3478ad7b0a8
