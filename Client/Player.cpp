@@ -10,8 +10,8 @@ CPlayer::CPlayer(void) {
 	memset(&m_tFrame, 0, sizeof(FRAME));
 	m_dwFrameTime = 0;
 
-//	m_ptOffset.y = 200;
-//	m_ptOffset.x = 100;
+	m_ptOffset.y = 200;
+	m_ptOffset.x = 200;
 }
 
 CPlayer::~CPlayer(void) {
@@ -32,7 +32,7 @@ void CPlayer::Initialize(void) {
 	m_dwPrevState = STATE_STAND;
 
 	m_dwFrameTime = GetTickCount();
-	m_fSpeed = 15.f;
+	m_fSpeed = 1.f;
 
 	m_eRenderType = RENDER_WORLDOBJ;
 }
@@ -43,6 +43,8 @@ int CPlayer::Update(void) {
 	CObj::Update();
 	FrameMove();
 
+	Scroll();
+	DynamicScroll();
 	return 0;
 }
 
@@ -96,6 +98,29 @@ void CPlayer::FrameMove(void)
 			m_tFrame.iYIndex = 2;
 			m_tFrame.dwFrameTime = 150;
 			break;
+		case STATE_JUMP:
+			m_tFrame.iFrameStart = 0;
+			m_tFrame.iFrameEnd = 0;
+			m_tFrame.iYIndex = 6;
+			m_tFrame.dwFrameTime = 150;
+			break;
+		case STATE_UP:
+			m_tFrame.iFrameStart = 0;
+			m_tFrame.iFrameEnd = 1;
+			m_tFrame.iYIndex = 0;
+			m_tFrame.dwFrameTime = 150;
+		case STATE_DOWN:
+			m_tFrame.iFrameStart = 0;
+			m_tFrame.iFrameEnd = 0;
+			m_tFrame.iYIndex = 5;
+			m_tFrame.dwFrameTime = 150;
+			break;
+		case STATE_SKILL:
+			m_tFrame.iFrameStart = 0;
+			m_tFrame.iFrameEnd = 3;
+			m_tFrame.iYIndex = 3;
+			m_tFrame.dwFrameTime = 150;
+			break;
 		}
 		m_dwPrevState = m_dwState;
 	}
@@ -126,15 +151,15 @@ void CPlayer::KeyCheck(void)
 			g_fScrollY += m_fSpeed;
 
 			m_pName = L"Player_Up";
-			m_dwState = STATE_WALK;
+			m_dwState = STATE_UP;
 		}
 		if (GetAsyncKeyState(VK_DOWN))
 		{
-			m_tInfo.fy += m_fSpeed;
-			g_fScrollY -= m_fSpeed;
-
-			m_pName = L"Player_Up";
-			m_dwState = STATE_WALK;
+			if (m_pName == L"Player_Up") {
+				m_tInfo.fy += m_fSpeed;
+				g_fScrollY -= m_fSpeed;
+			}
+			m_dwState = STATE_DOWN;
 		}
 		if (GetAsyncKeyState(VK_LEFT))
 		{
@@ -152,6 +177,103 @@ void CPlayer::KeyCheck(void)
 			m_pName = L"Player_Right";
 			m_dwState = STATE_WALK;
 		}
+		if (GetAsyncKeyState(VK_CONTROL))
+		{
+			m_dwState = STATE_HIT;
+		}
+		if (GetAsyncKeyState(VK_MENU))
+		{
+			m_dwState = STATE_JUMP;
+		}
+		if (GetAsyncKeyState(VK_SHIFT))
+		{
+			m_dwState = STATE_SKILL;
 		}
 
+		}
 	}
+void CPlayer::Scroll(void)
+{
+
+	if (m_tInfo.fx + g_fScrollX > WINCX / 2 + m_ptOffset.x)
+	{
+		g_fScrollX -= int(m_fSpeed);
+
+		if (g_fScrollX < WINCX - 2048)
+			g_fScrollX = WINCX - 2048;
+	}
+
+	if (m_tInfo.fx + g_fScrollX < WINCX / 2 - m_ptOffset.x)
+	{
+		g_fScrollX += int(m_fSpeed);
+
+		if (g_fScrollX > 0)
+			g_fScrollX = 0;
+	}
+
+	if (m_tInfo.fy + g_fScrollY > WINCY / 2 + m_ptOffset.y)
+	{
+		g_fScrollY -= int(m_fSpeed);
+
+		if (g_fScrollY < WINCY - 1440)
+			g_fScrollY = WINCY - 1440;
+	}
+
+	if (m_tInfo.fy + g_fScrollY < WINCY / 2 - m_ptOffset.y)
+	{
+		g_fScrollY += int(m_fSpeed);
+
+		if (g_fScrollY > 0)
+			g_fScrollY = 0;
+	}
+
+}
+
+void CPlayer::DynamicScroll(void)
+{
+	if (m_tInfo.fx + g_fScrollX > WINCX / 2)
+	{
+		float fSpeed = (m_tInfo.fx + g_fScrollX) - WINCX / 2;
+
+		fSpeed /= 32.f;
+
+		g_fScrollX -= (int)fSpeed;
+
+		if (g_fScrollX < WINCX - 2048)
+			g_fScrollX = WINCX - 2048;
+	}
+
+	if (m_tInfo.fx + g_fScrollX < WINCX / 2)
+	{
+		float fSpeed = WINCX / 2 - (m_tInfo.fx + g_fScrollX);
+		fSpeed /= 32.f;
+
+		g_fScrollX += (int)fSpeed;
+
+		if (g_fScrollX > 0)
+			g_fScrollX = 0;
+	}
+
+	if (m_tInfo.fy + g_fScrollY > WINCY / 2)
+	{
+		float fSpeed = (m_tInfo.fy + g_fScrollY) - WINCY / 2;
+		fSpeed /= 32.f;
+
+		g_fScrollY -= (int)fSpeed;
+
+		if (g_fScrollY < WINCY - 1440)
+			g_fScrollY = WINCY - 1440;
+	}
+
+	if (m_tInfo.fy + g_fScrollY < WINCY / 2)
+	{
+		float fSpeed = WINCY / 2 - (m_tInfo.fy + g_fScrollY);
+		fSpeed /= 32.f;
+
+		g_fScrollY += (int)fSpeed;
+
+		if (g_fScrollY > 0)
+			g_fScrollY = 0;
+
+	}
+}
