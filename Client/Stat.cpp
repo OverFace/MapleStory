@@ -93,7 +93,7 @@ int CStat::Update(void)
 	//Key Setting
 	Stat_Key();
 
-	//Button
+	//Buttongit 
 	Stat_Button();
 
 	return 0;
