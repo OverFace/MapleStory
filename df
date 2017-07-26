@@ -1,0 +1,172 @@
+[33mcommit 01614aec131e58ac83c0815fb431f62b54a0171e[m[33m ([m[1;36mHEAD[m[33m, [m[1;31mupstream/master[m[33m)[m
+Author: OverFace <ygchoi2001@naver.com>
+Date:   Mon Jul 24 21:34:20 2017 +0900
+
+    Stat창 정보 띄우기 완료, 버튼 작업중
+
+[33mcommit c1dc90299f847b435a001f73df256d7703251eb7[m
+Merge: 54cc291 aa3d009
+Author: OverFace <ygchoi2001@naver.com>
+Date:   Mon Jul 24 15:04:56 2017 +0900
+
+    Tool 타일 크기 수정
+
+[33mcommit 54cc29167c2a959c85ec2b2a1e6bade601790803[m
+Author: OverFace <ygchoi2001@naver.com>
+Date:   Mon Jul 24 15:03:56 2017 +0900
+
+    Tool 타일 크기 수정 완료
+
+[33mcommit aa3d009af321e99d41f568a4c72446f8690701a3[m
+Merge: 82f8ff2 e8b1b9b
+Author: OverFace <ygchoi2001@naver.com>
+Date:   Mon Jul 24 00:45:44 2017 +0900
+
+    Merge pull request #4 from a110b1110/master
+    
+    Player 동작 잡는중
+
+[33mcommit e8b1b9bac01611509c977a66f82a5dc071fa3cd1[m[33m ([m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Merge: 04b45ff 82f8ff2
+Author: a110b1110 <q970806@daum.net>
+Date:   Sun Jul 23 16:49:56 2017 +0900
+
+    Player 작업중
+
+[33mcommit 04b45ffb649e319e640bf2379a99db9681864fec[m
+Author: a110b1110 <q970806@daum.net>
+Date:   Sun Jul 23 16:28:56 2017 +0900
+
+    player동작 작업 중
+
+[33mcommit 82f8ff274c57aaf4fa921afdb0e247355b61d7a1[m
+Author: OverFace <ygchoi2001@naver.com>
+Date:   Sat Jul 22 22:42:07 2017 +0900
+
+    UI 추가 완료(미완성)
+
+[33mcommit d8d1eb3caa45d961eec3d669c895cb317de2af6a[m
+Author: OverFace <ygchoi2001@naver.com>
+Date:   Sat Jul 22 18:33:59 2017 +0900
+
+    UI 이미지 추가 완료
+
+[33mcommit eb13402fb55367b51293f45ae7eaf49312b11215[m
+Merge: 3b2db91 a9c865a
+Author: OverFace <ygchoi2001@naver.com>
+Date:   Thu Jul 20 18:27:00 2017 +0900
+
+    Login 작업중
+
+[33mcommit 3b2db914eac9641689704a8cde7d89cb9824f950[m
+Author: OverFace <ygchoi2001@naver.com>
+Date:   Thu Jul 20 18:24:20 2017 +0900
+
+    Login 화면 작업중
+
+[33mcommit a9c865afc613b155bd239dcfa4d67db85f1fbd9f[m
+Merge: 6f94edc e30bcbd
+Author: OverFace <ygchoi2001@naver.com>
+Date:   Thu Jul 20 18:12:29 2017 +0900
+
+    Merge pull request #3 from a110b1110/master
+    
+    player추가2
+
+[33mcommit e30bcbdf1e6a2e08720fcff3bbb683ceccd0f91e[m
+Author: a110b1110 <q970806@daum.net>
+Date:   Thu Jul 20 17:05:48 2017 +0900
+
+    player추가
+
+[33mcommit 6f94edc527fd74b421e7ea5bf925d197f63fc7fc[m
+Author: OverFace <ygchoi2001@naver.com>
+Date:   Thu Jul 20 00:51:03 2017 +0900
+
+    Tool 완성
+
+[33mcommit 250f40e163c874a60c742218fe96df1fbe76ffbc[m
+Author: OverFace <ygchoi2001@naver.com>
+Date:   Wed Jul 19 11:08:05 2017 +0900
+
+    Stage1 까지 생성 완료
+
+[33mcommit 7e305913fe5812ff7a06467f35b3c9271a57981a[m
+Author: OverFace <ygchoi2001@naver.com>
+Date:   Wed Jul 19 09:43:00 2017 +0900
+
+    솔루션 정리
+
+[33mcommit 455b823baa9f163d20da1beb95b80d3ad24c9f18[m
+Author: OverFace <ygchoi2001@naver.com>
+Date:   Wed Jul 19 09:33:38 2017 +0900
+
+    Resource 수정
+
+[33mcommit 29b755277e80a92656e5ddd71dc2997a6bd0427c[m
+Merge: 0ef8d26 3386e26
+Author: OverFace <ygchoi2001@naver.com>
+Date:   Wed Jul 19 09:31:19 2017 +0900
+
+    Stage 작업중
+
+[33mcommit 0ef8d2697884027abb7a5b88ba8b25a07ff6029e[m
+Author: OverFace <ygchoi2001@naver.com>
+Date:   Wed Jul 19 09:28:44 2017 +0900
+
+    Stage 작업중
+
+[33mcommit 3386e2691b143e3a1950f187402a15a899d34f98[m
+Merge: bd4a746 9c5bf3b
+Author: OverFace <ygchoi2001@naver.com>
+Date:   Wed Jul 19 01:35:21 2017 +0900
+
+    Merge pull request #2 from a110b1110/master
+    
+    Player 추가
+
+[33mcommit 9c5bf3b11de40d12c8555ee6e5a28669b6bdf3a6[m
+Author: a110b1110 <q970806@daum.net>
+Date:   Wed Jul 19 01:11:25 2017 +0900
+
+    Player 추가
+
+[33mcommit bd4a7465731e9512c9b1ba120ac5036fbe7b4735[m
+Merge: a79d96a d5b54c9
+Author: OverFace <ygchoi2001@naver.com>
+Date:   Tue Jul 18 22:35:35 2017 +0900
+
+    Resource
+
+[33mcommit a79d96a793af9a98364670104b254d2ab073f1f6[m
+Author: OverFace <ygchoi2001@naver.com>
+Date:   Tue Jul 18 22:30:15 2017 +0900
+
+    Resource Complete
+
+[33mcommit d5b54c98a6fb3883859da1423fd890fc6c4bfddf[m
+Merge: 6fac3bc 63d427e
+Author: OverFace <ygchoi2001@naver.com>
+Date:   Tue Jul 18 22:10:34 2017 +0900
+
+    Merge pull request #1 from a110b1110/master
+    
+    Test 올림
+
+[33mcommit 63d427edb98caaf707ba04fa6f3cfcdba0b74d03[m
+Author: a110b1110 <q970806@daum.net>
+Date:   Mon Jul 17 14:03:24 2017 +0900
+
+    Test 올림
+
+[33mcommit 6fac3bc84d06ec6932f07a33cc5c22656e93e084[m
+Author: OverFace <ygchoi2001@naver.com>
+Date:   Mon Jul 17 11:10:12 2017 +0900
+
+    Frist Project Upload
+
+[33mcommit faa4fdd1776a08e45242382a5f7162daf2f5d331[m
+Author: OverFace <ygchoi2001@naver.com>
+Date:   Mon Jul 17 10:51:30 2017 +0900
+
+    Initial commit
