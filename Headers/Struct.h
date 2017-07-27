@@ -88,7 +88,7 @@ typedef struct tagTile
 //---------------------------------------------------------------------------------
 typedef struct tagItem
 {
-	TCHAR		m_szName;			//아이템 이름
+	TCHAR		m_szName[128];		//아이템 이름
 	int			m_iStr;				//STR
 	int			m_iDex;				//DEX
 	int			m_iInt;				//INT

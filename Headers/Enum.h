@@ -7,6 +7,7 @@ enum eObjType
 	OBJ_MAP,				//Map
 	OBJ_PLAYER,				//Player
 	OBJ_MONSTER,			//Monster
+	OBJ_NPC,				//Npc
 	OBJ_ITEM,				//Item
 	OBJ_PROP,				//Stage Object(물건, 장애물) 
 	OBJ_UI,
@@ -89,7 +90,7 @@ enum eItemType
 	ITEM_BELT,
 	ITEM_HP_POTION,
 	ITEM_MP_POTION,
-	ITEM_MESSOY,
+	ITEM_MESSO,
 	ITEM_EXP,
 	ITEM_END
 };

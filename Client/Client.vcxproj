@@ -154,12 +154,17 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Accessory.h" />
+    <ClInclude Include="Armor.h" />
     <ClInclude Include="Boss_Stage.h" />
     <ClInclude Include="BStage_Back.h" />
     <ClInclude Include="BStage_Map.h" />
     <ClInclude Include="Edit.h" />
     <ClInclude Include="Equip.h" />
+    <ClInclude Include="Exp.h" />
     <ClInclude Include="ExpBar.h" />
+    <ClInclude Include="Glove.h" />
+    <ClInclude Include="Helmet.h" />
     <ClInclude Include="HpBar.h" />
     <ClInclude Include="Inven.h" />
     <ClInclude Include="Item.h" />
@@ -172,14 +177,17 @@
     <ClInclude Include="KeyMgr.h" />
     <ClInclude Include="Logo.h" />
     <ClInclude Include="MainGame.h" />
+    <ClInclude Include="Messo.h" />
     <ClInclude Include="Mouse.h" />
     <ClInclude Include="MpBar.h" />
     <ClInclude Include="Obj.h" />
     <ClInclude Include="ObjMgr.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="Potion.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneMgr.h" />
+    <ClInclude Include="Shoes.h" />
     <ClInclude Include="Skill.h" />
     <ClInclude Include="Skill_Input.h" />
     <ClInclude Include="SoundMgr.h" />
@@ -194,16 +202,23 @@
     <ClInclude Include="Status.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Store.h" />
+    <ClInclude Include="Store_Npc.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="UI.h" />
+    <ClInclude Include="Weapon.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Accessory.cpp" />
+    <ClCompile Include="Armor.cpp" />
     <ClCompile Include="Boss_Stage.cpp" />
     <ClCompile Include="BStage_Back.cpp" />
     <ClCompile Include="BStage_Map.cpp" />
     <ClCompile Include="Edit.cpp" />
     <ClCompile Include="Equip.cpp" />
+    <ClCompile Include="Exp.cpp" />
     <ClCompile Include="ExpBar.cpp" />
+    <ClCompile Include="Glove.cpp" />
+    <ClCompile Include="Helmet.cpp" />
     <ClCompile Include="HpBar.cpp" />
     <ClCompile Include="Inven.cpp" />
     <ClCompile Include="Item.cpp" />
@@ -216,13 +231,16 @@
     <ClCompile Include="KeyMgr.cpp" />
     <ClCompile Include="Logo.cpp" />
     <ClCompile Include="MainGame.cpp" />
+    <ClCompile Include="Messo.cpp" />
     <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="MpBar.cpp" />
     <ClCompile Include="Obj.cpp" />
     <ClCompile Include="ObjMgr.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Potion.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneMgr.cpp" />
+    <ClCompile Include="Shoes.cpp" />
     <ClCompile Include="Skill.cpp" />
     <ClCompile Include="Skill_Input.cpp" />
     <ClCompile Include="SoundMgr.cpp" />
@@ -242,7 +260,9 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Store.cpp" />
+    <ClCompile Include="Store_Npc.cpp" />
     <ClCompile Include="UI.cpp" />
+    <ClCompile Include="Weapon.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc" />

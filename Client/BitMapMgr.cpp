@@ -83,7 +83,9 @@ void CBitMapMgr::LoadImageByScene(eSceneType eType)
 		//UI_Button
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/UI/Button/Botton1.bmp", L"Button_Plus");
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/UI/Button/Botton2.bmp", L"Button_Minus");
-		
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/UI/Button/XButton.bmp", L"Button_Esc");
+		//Npc
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/NPC/Npc_Store.bmp", L"Store_Npc");
 #pragma region Item Resource
 		//Item_Accessory
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Accessory/Accessory.bmp", L"Accessory");
@@ -169,7 +171,7 @@ void CBitMapMgr::LoadImageByScene(eSceneType eType)
 		//UI_Button
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/UI/Button/Botton1.bmp", L"Button_Plus");
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/UI/Button/Botton2.bmp", L"Button_Minus");
-		
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/UI/Button/XButton.bmp", L"Button_Esc");
 #pragma region Item Resource
 		//Item_Accessory
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Accessory/Accessory.bmp", L"Accessory");
@@ -255,7 +257,7 @@ void CBitMapMgr::LoadImageByScene(eSceneType eType)
 		//UI_Button
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/UI/Button/Botton1.bmp", L"Button_Plus");
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/UI/Button/Botton2.bmp", L"Button_Minus");
-		
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/UI/Button/XButton.bmp", L"Button_Esc");
 #pragma region Item Resource
 		//Item_Accessory
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Accessory/Accessory.bmp", L"Accessory");
@@ -360,7 +362,7 @@ void CBitMapMgr::LoadImageByScene(eSceneType eType)
 		//UI_Button
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/UI/Button/Botton1.bmp", L"Button_Plus");
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/UI/Button/Botton2.bmp", L"Button_Minus");
-		
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/UI/Button/XButton.bmp", L"Button_Esc");
 #pragma region Item Resource
 		//Item_Accessory
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Accessory/Accessory.bmp", L"Accessory");

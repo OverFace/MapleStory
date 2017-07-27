@@ -7,6 +7,10 @@
 #include "Stage1_Map.h"
 #include "Player.h"
 
+//Npc
+//-------------------------------------
+#include "Store_Npc.h"
+//-------------------------------------
 //UI
 //-------------------------------------
 #include "Status.h"
@@ -14,7 +18,6 @@
 #include "Equip.h"
 #include "Skill.h"
 #include "Skill_Input.h"
-#include "Store.h"
 #include "Stat.h"
 #include "HpBar.h"
 #include "MpBar.h"
@@ -49,7 +52,14 @@ void CStage1::Initialize(void)
 	//Player
 	pObj = new CPlayer;
 	pObj->Initialize();
+	pObj->SetPos(800.f, 600.f);
 	GETS(CObjMgr)->AddObject(OBJ_PLAYER, pObj);
+
+	//NPC
+	pObj = new CStore_Npc;
+	pObj->Initialize();
+	pObj->SetPos(WINCX / 2 + 600.f, WINCY / 2 + 305.f);
+	GETS(CObjMgr)->AddObject(OBJ_NPC, pObj);
 
 	//UI
 	//---------------------------------------------------------------------
@@ -71,11 +81,7 @@ void CStage1::Initialize(void)
 	GETS(CObjMgr)->AddObject(OBJ_UI, pSkill);
 	pObj = new CSkill_Input(*(pSkill->GetInfo()));
 	pObj->Initialize();
-	GETS(CObjMgr)->AddObject(OBJ_UI, pObj);
-	//Store
-	pObj = new CStore;
-	pObj->Initialize();
-	GETS(CObjMgr)->AddObject(OBJ_UI, pObj);
+	GETS(CObjMgr)->AddObject(OBJ_UI, pObj);	
 	//Stat
 	pObj = new CStat;
 	pObj->Initialize();

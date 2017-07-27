@@ -121,6 +121,36 @@
     <ClCompile Include="Item.cpp">
       <Filter>02.Object\05.Item</Filter>
     </ClCompile>
+    <ClCompile Include="Armor.cpp">
+      <Filter>02.Object\05.Item\Armor</Filter>
+    </ClCompile>
+    <ClCompile Include="Exp.cpp">
+      <Filter>02.Object\05.Item\Exp</Filter>
+    </ClCompile>
+    <ClCompile Include="Potion.cpp">
+      <Filter>02.Object\05.Item\Potion</Filter>
+    </ClCompile>
+    <ClCompile Include="Weapon.cpp">
+      <Filter>02.Object\05.Item\Weapon</Filter>
+    </ClCompile>
+    <ClCompile Include="Glove.cpp">
+      <Filter>02.Object\05.Item\Glove</Filter>
+    </ClCompile>
+    <ClCompile Include="Accessory.cpp">
+      <Filter>02.Object\05.Item\Accessory</Filter>
+    </ClCompile>
+    <ClCompile Include="Shoes.cpp">
+      <Filter>02.Object\05.Item\Shoes</Filter>
+    </ClCompile>
+    <ClCompile Include="Helmet.cpp">
+      <Filter>02.Object\05.Item\Helmet</Filter>
+    </ClCompile>
+    <ClCompile Include="Messo.cpp">
+      <Filter>02.Object\05.Item\Messo</Filter>
+    </ClCompile>
+    <ClCompile Include="Store_Npc.cpp">
+      <Filter>02.Object\06.NPC\Store_Npc</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainGame.h">
@@ -248,6 +278,36 @@
     </ClInclude>
     <ClInclude Include="Item.h">
       <Filter>02.Object\05.Item</Filter>
+    </ClInclude>
+    <ClInclude Include="Armor.h">
+      <Filter>02.Object\05.Item\Armor</Filter>
+    </ClInclude>
+    <ClInclude Include="Exp.h">
+      <Filter>02.Object\05.Item\Exp</Filter>
+    </ClInclude>
+    <ClInclude Include="Potion.h">
+      <Filter>02.Object\05.Item\Potion</Filter>
+    </ClInclude>
+    <ClInclude Include="Weapon.h">
+      <Filter>02.Object\05.Item\Weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="Glove.h">
+      <Filter>02.Object\05.Item\Glove</Filter>
+    </ClInclude>
+    <ClInclude Include="Accessory.h">
+      <Filter>02.Object\05.Item\Accessory</Filter>
+    </ClInclude>
+    <ClInclude Include="Shoes.h">
+      <Filter>02.Object\05.Item\Shoes</Filter>
+    </ClInclude>
+    <ClInclude Include="Helmet.h">
+      <Filter>02.Object\05.Item\Helmet</Filter>
+    </ClInclude>
+    <ClInclude Include="Messo.h">
+      <Filter>02.Object\05.Item\Messo</Filter>
+    </ClInclude>
+    <ClInclude Include="Store_Npc.h">
+      <Filter>02.Object\06.NPC\Store_Npc</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -387,6 +447,27 @@
     </Filter>
     <Filter Include="02.Object\05.Item\Exp">
       <UniqueIdentifier>{df43953f-712a-4666-a54d-03ec3ec4eabf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Object\05.Item\Glove">
+      <UniqueIdentifier>{6cc4a635-5622-4442-86a0-01c333e67436}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Object\05.Item\Accessory">
+      <UniqueIdentifier>{be115bd4-9c10-4b9b-af2a-6b1408cf27f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Object\05.Item\Shoes">
+      <UniqueIdentifier>{fe9eb03d-a3e7-4f02-ad94-bff771b3c067}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Object\05.Item\Helmet">
+      <UniqueIdentifier>{6c71ec59-f747-44eb-a176-dc81307c7a3c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Object\05.Item\Messo">
+      <UniqueIdentifier>{fa9cdc4d-478c-4921-a0ab-93126e47b5a9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Object\06.NPC">
+      <UniqueIdentifier>{7f7872b0-a2ff-45a1-9651-cd5d92e778c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Object\06.NPC\Store_Npc">
+      <UniqueIdentifier>{26cb4e5e-52b0-4f8c-a50c-cfaac9f3c37c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
