@@ -31,10 +31,12 @@ void CWeapon::SetWeapon_Data(int _iStr, int _iDex, int _iInt, int _iLuk, int _iH
 	m_tItem.m_dwOption = _dwOption;
 }
 
-void CWeapon::Initalize(void)
+void CWeapon::Initialize(void)
 {
 	m_tInfo.fcx = 32.f;
 	m_tInfo.fcy = 32.f;
+
+	m_eRenderType = RENDER_WORLDOBJ;
 }
 
 int CWeapon::Update(void)

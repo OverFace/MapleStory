@@ -95,4 +95,12 @@ enum eItemType
 	ITEM_END
 };
 
+//Npc
+enum eNpcType
+{
+	NPC_STORE,
+	NPC_QUEST,
+	NPC_END
+};
+
 #endif // !Enum_h__

@@ -15,6 +15,7 @@ protected:
 public:
 	inline POINT*	GetPtMouse(void) { return &m_ptMouse; }
 	inline eUiType	GetUiType(void) { return m_eUiType; }
+	inline bool		GetUiVisible(void) { return m_bVisible; }
 
 public:
 	inline void		SetVisible(void) { m_bVisible = true; }

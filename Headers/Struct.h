@@ -88,16 +88,17 @@ typedef struct tagTile
 //---------------------------------------------------------------------------------
 typedef struct tagItem
 {
-	TCHAR		m_szName[128];		//아이템 이름
-	int			m_iStr;				//STR
-	int			m_iDex;				//DEX
-	int			m_iInt;				//INT
-	int			m_iLuk;				//LUK
-	int			m_iHp;				//HP
-	int			m_iMp;				//MP
-	int			m_iPrice;			//PRICE
-	eItemType	m_eType;			//타입
-	DWORD		m_dwOption;			//조건을 주기 위한 옵션값.
+	TCHAR		m_szName[128];			//아이템 이름
+	TCHAR		m_szDescription[128];	//아이템 설명.
+	int			m_iStr;					//STR
+	int			m_iDex;					//DEX
+	int			m_iInt;					//INT
+	int			m_iLuk;					//LUK
+	int			m_iHp;					//HP
+	int			m_iMp;					//MP
+	int			m_iPrice;				//PRICE
+	eItemType	m_eType;				//타입
+	DWORD		m_dwOption;				//조건을 주기 위한 옵션값.
 }ITEM;
 //---------------------------------------------------------------------------------
 

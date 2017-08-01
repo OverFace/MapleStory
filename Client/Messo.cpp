@@ -35,7 +35,7 @@ void CMesso::SetMesso_Data(int _iStr, int _iDex, int _iInt, int _iLuk, int _iHp,
 	m_tItem.m_dwOption = _dwOption;
 }
 
-void CMesso::Initalize(void)
+void CMesso::Initialize(void)
 {
 	m_tInfo.fcx = 32.f;
 	m_tInfo.fcy = 32.f;

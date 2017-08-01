@@ -1,10 +1,11 @@
 #pragma once
-#include "Obj.h"
+#include "Npc.h"
 
-class CStore_Npc : public CObj
+class CStore_Npc : public CNpc
 {
 public: 
 	CStore_Npc(void);
+	CStore_Npc(CObj* pStore);
 	virtual ~CStore_Npc(void);
 
 private:

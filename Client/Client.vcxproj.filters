@@ -151,6 +151,9 @@
     <ClCompile Include="Store_Npc.cpp">
       <Filter>02.Object\06.NPC\Store_Npc</Filter>
     </ClCompile>
+    <ClCompile Include="Npc.cpp">
+      <Filter>02.Object\06.NPC</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainGame.h">
@@ -308,6 +311,9 @@
     </ClInclude>
     <ClInclude Include="Store_Npc.h">
       <Filter>02.Object\06.NPC\Store_Npc</Filter>
+    </ClInclude>
+    <ClInclude Include="Npc.h">
+      <Filter>02.Object\06.NPC</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -15,7 +15,17 @@ CStore_Npc::CStore_Npc(void)
 	m_pStore = NULL;
 	m_bStoreOpen_Check = false;
 	m_dwFrameTime = 0;
+}
 
+CStore_Npc::CStore_Npc(CObj * pStore)
+{
+	m_pStore = pStore;
+
+	ZeroMemory(&m_tNpc_Frame, sizeof(FRAME));
+	ZeroMemory(&m_tNpc_Rect, sizeof(RECT));
+
+	m_bStoreOpen_Check = false;
+	m_dwFrameTime = 0;
 }
 
 CStore_Npc::~CStore_Npc(void)
@@ -37,7 +47,7 @@ void CStore_Npc::FrameMove(void)
 	}
 
 	if (m_tNpc_Frame.iFrameStart > m_tNpc_Frame.iFrameEnd)
-m_tNpc_Frame.iFrameStart = 0;
+		m_tNpc_Frame.iFrameStart = 0;
 }
 
 void CStore_Npc::Initialize(void)
@@ -49,9 +59,9 @@ void CStore_Npc::Initialize(void)
 	m_dwFrameTime = GetTickCount();
 
 	//Store
-	m_pStore = new CStore;
-	m_pStore->Initialize();
-	GETS(CObjMgr)->AddObject(OBJ_UI, m_pStore);
+	//m_pStore = new CStore;
+	//m_pStore->Initialize();
+	//GETS(CObjMgr)->AddObject(OBJ_UI, m_pStore);
 
 	//Rect
 	m_tNpc_Rect.left = long(m_tInfo.fx + (m_tInfo.fcx / 2.f) - m_tInfo.fcx / 2);
@@ -59,6 +69,7 @@ void CStore_Npc::Initialize(void)
 	m_tNpc_Rect.top = long(m_tInfo.fy + (m_tInfo.fcy / 2.f) - m_tInfo.fcy / 2);
 	m_tNpc_Rect.bottom = long(m_tInfo.fy + (m_tInfo.fcy / 2.f) + m_tInfo.fcy / 2);
 
+	m_eNpcType = NPC_STORE;
 	m_eRenderType = RENDER_WORLDOBJ;
 }
 
@@ -132,8 +143,11 @@ void CStore_Npc::Store_Key(void)
 
 	if (PtInRect(((CStore*)m_pStore)->GetEscButton_Rect(), pt) && GETS(CKeyMgr)->OnceKeyDown(VK_LBUTTON) && m_bStoreOpen_Check == true)
 	{
-		((CStore*)m_pStore)->SetUnVisible();
-		m_bStoreOpen_Check = false;
+		if (((CStore*)m_pStore)->GetUiVisible() == true)
+		{
+			((CStore*)m_pStore)->SetUnVisible();
+			m_bStoreOpen_Check = false;
+		}		
 	}
 
 	/*

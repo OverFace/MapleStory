@@ -17,7 +17,7 @@ public:
 	inline void		SetPotion_Pos(float _fx, float _fy) { m_tInfo.fx = _fx; m_tInfo.fy = _fy; }
 
 public:
-	virtual void	Initalize(void);
+	virtual void	Initialize(void);
 	virtual int		Update(void);
 	virtual void	Render(HDC _dc);
 	virtual void	Release(void);

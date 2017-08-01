@@ -13,6 +13,7 @@
 //-------------------------------------
 //UI
 //-------------------------------------
+#include "Store.h"
 #include "Status.h"
 #include "Inven.h"
 #include "Equip.h"
@@ -55,8 +56,13 @@ void CStage1::Initialize(void)
 	pObj->SetPos(800.f, 600.f);
 	GETS(CObjMgr)->AddObject(OBJ_PLAYER, pObj);
 
+	//Store
+	CObj* pStore = new CStore;
+	pStore->Initialize();
+	GETS(CObjMgr)->AddObject(OBJ_UI, pStore);
+
 	//NPC
-	pObj = new CStore_Npc;
+	pObj = new CStore_Npc(pStore);
 	pObj->Initialize();
 	pObj->SetPos(WINCX / 2 + 600.f, WINCY / 2 + 305.f);
 	GETS(CObjMgr)->AddObject(OBJ_NPC, pObj);

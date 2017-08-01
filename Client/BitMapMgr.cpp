@@ -28,8 +28,12 @@ void CBitMapMgr::LoadImage(const TCHAR * pFileName, const TCHAR * pKey)
 
 CBitMap * CBitMapMgr::FindImage(const TCHAR * pKey)
 {
-	map<const TCHAR*, CBitMap*>::iterator iter = m_MapBit.find(pKey);
-
+	map<const TCHAR*, CBitMap*>::iterator iter = m_MapBit.begin();
+	
+	//const TCHAR* 형이라서 못찾는 경우가 생긴다.
+	//그래서 STRCOMPARE에서 비교, find_if로 찾아준다.
+	iter = find_if(iter, m_MapBit.end(), STRCOMPARE(pKey));
+	
 	if (iter == m_MapBit.end())
 		return NULL;
 
@@ -84,6 +88,8 @@ void CBitMapMgr::LoadImageByScene(eSceneType eType)
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/UI/Button/Botton1.bmp", L"Button_Plus");
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/UI/Button/Botton2.bmp", L"Button_Minus");
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/UI/Button/XButton.bmp", L"Button_Esc");
+		//UI_Scroll
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/UI/Scroll.bmp", L"UI_Scroll");
 		//Npc
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/NPC/Npc_Store.bmp", L"Store_Npc");
 #pragma region Item Resource
@@ -172,6 +178,8 @@ void CBitMapMgr::LoadImageByScene(eSceneType eType)
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/UI/Button/Botton1.bmp", L"Button_Plus");
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/UI/Button/Botton2.bmp", L"Button_Minus");
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/UI/Button/XButton.bmp", L"Button_Esc");
+		//UI_Scroll
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/UI/Scroll.bmp", L"UI_Scroll");
 #pragma region Item Resource
 		//Item_Accessory
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Accessory/Accessory.bmp", L"Accessory");
@@ -258,6 +266,8 @@ void CBitMapMgr::LoadImageByScene(eSceneType eType)
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/UI/Button/Botton1.bmp", L"Button_Plus");
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/UI/Button/Botton2.bmp", L"Button_Minus");
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/UI/Button/XButton.bmp", L"Button_Esc");
+		//UI_Scroll
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/UI/Scroll.bmp", L"UI_Scroll");
 #pragma region Item Resource
 		//Item_Accessory
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Accessory/Accessory.bmp", L"Accessory");
@@ -363,6 +373,8 @@ void CBitMapMgr::LoadImageByScene(eSceneType eType)
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/UI/Button/Botton1.bmp", L"Button_Plus");
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/UI/Button/Botton2.bmp", L"Button_Minus");
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/UI/Button/XButton.bmp", L"Button_Esc");
+		//UI_Scroll
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/UI/Scroll.bmp", L"UI_Scroll");
 #pragma region Item Resource
 		//Item_Accessory
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Accessory/Accessory.bmp", L"Accessory");

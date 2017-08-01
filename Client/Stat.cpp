@@ -279,7 +279,7 @@ void CStat::Stat_Button(void)
 	}
 
 	//0, 1, 2, 3 * 버튼 하나의 사이즈, y값(0)
-	if (m_bLevelUp_Check == true)
+	if (m_bLevelUp_Check == true && m_bVisible == true)
 	{
 		POINT pt;
 		pt = CMouse::GetPos();

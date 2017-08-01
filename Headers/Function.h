@@ -46,5 +46,18 @@ static inline bool GetKey(int iKey)
 }
 //---------------------------------------------------------------------------------
 
+//Key Compare
+//---------------------------------------------------------------------------------
+typedef struct	tagStrCompare
+{
+	template<typename T>
+	bool	operator()(T Data)
+	{
+		return !lstrcmp(Data.first, m_pString);
+	}
+	const TCHAR*	m_pString;
+	tagStrCompare(const TCHAR* pKey) :m_pString(pKey) {}
+}STRCOMPARE;
+//---------------------------------------------------------------------------------
 
 #endif // !Function_h__
