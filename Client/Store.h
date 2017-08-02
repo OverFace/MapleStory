@@ -10,10 +10,9 @@ public:
 
 private:
 	list<CItem*>		 m_Store_ItemList;			
-	list<CItem*>		 m_Store_ViewList;
 	CObj*				 m_pStore_Npc;
-	RECT				 m_tScroll_Rect;
 	INFO				 m_tScroll_Info;
+	RECT				 m_tScroll_Rect;
 	INFO				 m_tEscButton_Info;
 	RECT				 m_tEscButton_Rect;
 
