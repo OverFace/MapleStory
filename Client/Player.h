@@ -11,15 +11,18 @@ private:
 	DWORD	m_dwFrameTime;
 	POINT	m_ptOffset;
 
-	int m_iAlpha;
-	int m_isizex;
-	int m_isizey;
+	bool	m_bJump;
+	float  m_bJumpAcc;
+	float	m_bOldY;
+	float  m_fDownSpeed;
 
+	eSceneType m_eSceneType;
 private:
 	void FrameMove(void);
 	void KeyCheck(void);
 	void Scroll(void);
 	void DynamicScroll(void);
+	void Jump(void);
 public:
 	virtual void Initialize(void);
 	virtual int Update(void);
