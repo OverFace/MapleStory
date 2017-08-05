@@ -14,9 +14,9 @@ CPlayer::CPlayer(void) {
 	m_ptOffset.x = 200;
 
 	m_bJump = false;
-	m_bJumpAcc = 0.f;
-	m_bOldY = 0.f;
-	m_fDownSpeed = 5.f;
+	m_fJumpAcc = 0.f;
+	m_fOldY = 0.f;
+
 }
 
 CPlayer::~CPlayer(void) {
@@ -30,6 +30,7 @@ void CPlayer::Initialize(void) {
 	m_tInfo.fy = float(WINCY / 2);
 	m_tInfo.fcx = 100.f;
 	m_tInfo.fcy = 100.f;
+	m_fDownSpeed = 5.f;
 
 	m_tFrame = FRAME(0, 3, 0, 150);
 
@@ -48,6 +49,8 @@ int CPlayer::Update(void) {
 	CObj::Update();
 	FrameMove();
 
+	LineCollision();
+	//Jump();
 	Scroll();
 	//DynamicScroll();
 	return 0;
@@ -66,6 +69,13 @@ void CPlayer::Render(HDC _dc) {
 		int(m_tInfo.fcx),
 		int(m_tInfo.fcy),														
 		RGB(71, 0, 60));
+	/*
+	Rectangle(_dc,
+		m_Rect.left,
+		m_Rect.top,
+		m_Rect.right,
+		m_Rect.bottom);
+	*/
 }
 
 void CPlayer::Release(void) {
@@ -168,7 +178,7 @@ void CPlayer::KeyCheck(void)
 		}
 		if (GetAsyncKeyState(VK_LEFT))
 		{
-			m_tInfo.fx -= m_fSpeed;
+		//	m_tInfo.fx -= m_fSpeed;
 			g_fScrollX += m_fSpeed * 2;
 
 			m_pName = L"Player_Left";
@@ -176,7 +186,7 @@ void CPlayer::KeyCheck(void)
 		}
 		if (GetAsyncKeyState(VK_RIGHT))
 		{
-			m_tInfo.fx += m_fSpeed;
+		//	m_tInfo.fx += m_fSpeed;
 			g_fScrollX -= m_fSpeed * 2;
 
 			m_pName = L"Player_Right";
@@ -193,7 +203,6 @@ void CPlayer::KeyCheck(void)
 		}
 		if (GetAsyncKeyState(VK_SPACE))
 		{
-//			m_bJump = true;
 //			Jump();
 			m_dwState = STATE_JUMP;
 		}
@@ -354,22 +363,43 @@ void CPlayer::DynamicScroll(void)
 	}
 }
 
-void CPlayer::Jump(void)
+void CPlayer::SetLineList(list<LINE*> pLine)
 {
-
-	if (m_bJump)
-	{
-		m_bOldY = m_tInfo.fy;
-		m_bJumpAcc += 0.1f;
-		m_tInfo.fy += 0.98f * m_bJumpAcc * m_bJumpAcc * 0.5f - 10.f;
-
-	}
-
-	if (m_tInfo.fy > m_bOldY && m_bJump == true)
-	{
-		m_tInfo.fy = m_bOldY;
-		m_bJump = false;
-		m_bJumpAcc = 0.f;
-	}
+	m_pLineList = pLine;
 }
 
+void CPlayer::LineCollision(void)
+{
+	LINE* pLine = NULL;
+
+	for (list<LINE*>::iterator iter = m_pLineList.begin();
+		iter != m_pLineList.end(); ++iter)
+	{
+		if ((*iter)->tLeft_Point.fx < m_tInfo.fx && (*iter)->tRight_Point.fx > m_tInfo.fx)
+		{
+			pLine = (*iter);
+			break;
+		}
+	}
+
+	if (pLine == NULL)
+		return;
+
+	float fWidth = pLine->tRight_Point.fx - pLine->tLeft_Point.fx;
+	float fHeight = pLine->tRight_Point.fy - pLine->tLeft_Point.fy;
+
+
+	//기울기는 y증가량 / x증가량...
+	float fGradient = fHeight / fWidth;
+
+	float fY = fGradient * (m_tInfo.fx - pLine->tLeft_Point.fx) + pLine->tLeft_Point.fy;
+
+	if (m_tInfo.fy > fY)
+	{
+		m_bJump = false;
+		m_fJumpAcc = 0.f;
+	}
+
+	if (m_bJump == false)
+		m_tInfo.fy = fY;
+}

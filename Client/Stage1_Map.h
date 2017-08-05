@@ -14,6 +14,10 @@ private:
 	bool			m_bStage_Check;
 	vector<TILE*>	m_vecStage1_Tile;
 
+private:
+	INFO			m_tRopeInfo;
+	RECT			m_tRopeRect;
+
 public:
 	inline void		SetRedner(bool _bRender) { m_bRender = _bRender; }
 

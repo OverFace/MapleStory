@@ -20,13 +20,13 @@
       <Filter>02.Object\03.Map\Stage1</Filter>
     </ClCompile>
     <ClCompile Include="Logo.cpp">
-      <Filter>03.Scene\Logo</Filter>
+      <Filter>02.Object\03.Scene\Logo</Filter>
     </ClCompile>
     <ClCompile Include="Scene.cpp">
-      <Filter>03.Scene</Filter>
+      <Filter>02.Object\03.Scene</Filter>
     </ClCompile>
     <ClCompile Include="Stage1.cpp">
-      <Filter>03.Scene\Stage1</Filter>
+      <Filter>02.Object\03.Scene\Stage1</Filter>
     </ClCompile>
     <ClCompile Include="BitMap.cpp">
       <Filter>04.Manager\BitMapMgr\BitMap</Filter>
@@ -56,7 +56,7 @@
       <Filter>99.Default</Filter>
     </ClCompile>
     <ClCompile Include="Edit.cpp">
-      <Filter>03.Scene\Edit</Filter>
+      <Filter>02.Object\03.Scene\Edit</Filter>
     </ClCompile>
     <ClCompile Include="Stage2_Map.cpp">
       <Filter>02.Object\03.Map\Stage2</Filter>
@@ -71,7 +71,7 @@
       <Filter>02.Object\03.Map\Boss_Stage</Filter>
     </ClCompile>
     <ClCompile Include="LogIn.cpp">
-      <Filter>03.Scene\LogIn</Filter>
+      <Filter>02.Object\03.Scene\LogIn</Filter>
     </ClCompile>
     <ClCompile Include="LogIn_Back.cpp">
       <Filter>02.Object\03.Map\Login</Filter>
@@ -110,13 +110,13 @@
       <Filter>02.Object\04.UI\Status\ExpBar</Filter>
     </ClCompile>
     <ClCompile Include="Stage2.cpp">
-      <Filter>03.Scene\Stage2</Filter>
+      <Filter>02.Object\03.Scene\Stage2</Filter>
     </ClCompile>
     <ClCompile Include="Stage3.cpp">
-      <Filter>03.Scene\Stage3</Filter>
+      <Filter>02.Object\03.Scene\Stage3</Filter>
     </ClCompile>
     <ClCompile Include="Boss_Stage.cpp">
-      <Filter>03.Scene\Boss_Stage</Filter>
+      <Filter>02.Object\03.Scene\Boss_Stage</Filter>
     </ClCompile>
     <ClCompile Include="Item.cpp">
       <Filter>02.Object\05.Item</Filter>
@@ -175,13 +175,13 @@
       <Filter>02.Object\03.Map\Stage1</Filter>
     </ClInclude>
     <ClInclude Include="Logo.h">
-      <Filter>03.Scene\Logo</Filter>
+      <Filter>02.Object\03.Scene\Logo</Filter>
     </ClInclude>
     <ClInclude Include="Scene.h">
-      <Filter>03.Scene</Filter>
+      <Filter>02.Object\03.Scene</Filter>
     </ClInclude>
     <ClInclude Include="Stage1.h">
-      <Filter>03.Scene\Stage1</Filter>
+      <Filter>02.Object\03.Scene\Stage1</Filter>
     </ClInclude>
     <ClInclude Include="BitMap.h">
       <Filter>04.Manager\BitMapMgr\BitMap</Filter>
@@ -217,7 +217,7 @@
       <Filter>99.Default</Filter>
     </ClInclude>
     <ClInclude Include="Edit.h">
-      <Filter>03.Scene\Edit</Filter>
+      <Filter>02.Object\03.Scene\Edit</Filter>
     </ClInclude>
     <ClInclude Include="Stage2_Map.h">
       <Filter>02.Object\03.Map\Stage2</Filter>
@@ -232,7 +232,7 @@
       <Filter>02.Object\03.Map\Boss_Stage</Filter>
     </ClInclude>
     <ClInclude Include="LogIn.h">
-      <Filter>03.Scene\LogIn</Filter>
+      <Filter>02.Object\03.Scene\LogIn</Filter>
     </ClInclude>
     <ClInclude Include="LogIn_Back.h">
       <Filter>02.Object\03.Map\Login</Filter>
@@ -271,13 +271,13 @@
       <Filter>02.Object\04.UI\Status\ExpBar</Filter>
     </ClInclude>
     <ClInclude Include="Stage2.h">
-      <Filter>03.Scene\Stage2</Filter>
+      <Filter>02.Object\03.Scene\Stage2</Filter>
     </ClInclude>
     <ClInclude Include="Stage3.h">
-      <Filter>03.Scene\Stage3</Filter>
+      <Filter>02.Object\03.Scene\Stage3</Filter>
     </ClInclude>
     <ClInclude Include="Boss_Stage.h">
-      <Filter>03.Scene\Boss_Stage</Filter>
+      <Filter>02.Object\03.Scene\Boss_Stage</Filter>
     </ClInclude>
     <ClInclude Include="Item.h">
       <Filter>02.Object\05.Item</Filter>
@@ -331,9 +331,6 @@
     <Filter Include="02.Object">
       <UniqueIdentifier>{77db69c5-630f-43b8-a3aa-df9f4ac99c11}</UniqueIdentifier>
     </Filter>
-    <Filter Include="03.Scene">
-      <UniqueIdentifier>{d043a77f-71fb-423f-9920-d5e11dd9ec10}</UniqueIdentifier>
-    </Filter>
     <Filter Include="04.Manager">
       <UniqueIdentifier>{88aac50a-d472-4942-8743-acf87c8cd83d}</UniqueIdentifier>
     </Filter>
@@ -348,12 +345,6 @@
     </Filter>
     <Filter Include="02.Object\03.Map">
       <UniqueIdentifier>{975fc4fd-5cca-4573-85f1-bfc76018e11c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03.Scene\Stage1">
-      <UniqueIdentifier>{565652c0-9d53-4ce0-bc50-bf4310ddfa6c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03.Scene\Logo">
-      <UniqueIdentifier>{57311606-5869-4285-b66f-5e5811054652}</UniqueIdentifier>
     </Filter>
     <Filter Include="02.Object\03.Map\Stage1">
       <UniqueIdentifier>{776a7cb2-4070-4552-8085-32e078212df5}</UniqueIdentifier>
@@ -382,9 +373,6 @@
     <Filter Include="04.Manager\SceneMgr">
       <UniqueIdentifier>{488f3a59-1d1e-4910-a219-e0f52aefd303}</UniqueIdentifier>
     </Filter>
-    <Filter Include="03.Scene\Edit">
-      <UniqueIdentifier>{43f830f5-b75e-409b-bdf6-92c978457a5a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.Object\03.Map\Stage2">
       <UniqueIdentifier>{3fdc5919-5656-4ce2-abc0-f3e533735a86}</UniqueIdentifier>
     </Filter>
@@ -393,9 +381,6 @@
     </Filter>
     <Filter Include="02.Object\03.Map\Boss_Stage">
       <UniqueIdentifier>{aeea727b-6bd8-4de4-9240-b29478ca3bff}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03.Scene\LogIn">
-      <UniqueIdentifier>{5f4fe65e-4794-45be-bdd8-f5fc9b0e6cfa}</UniqueIdentifier>
     </Filter>
     <Filter Include="02.Object\03.Map\Login">
       <UniqueIdentifier>{bc7aa66c-666c-4614-9aa3-322470e4eba0}</UniqueIdentifier>
@@ -420,15 +405,6 @@
     </Filter>
     <Filter Include="02.Object\04.UI\Skill">
       <UniqueIdentifier>{cfddd690-f938-46c9-80ca-39639bbd7bbe}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03.Scene\Stage2">
-      <UniqueIdentifier>{3288bb7f-5ebb-4aa9-a202-815d8ee457a5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03.Scene\Stage3">
-      <UniqueIdentifier>{caf92095-65cd-44d2-8ac6-70bbeec79a7a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03.Scene\Boss_Stage">
-      <UniqueIdentifier>{0dd6f838-b06f-40f5-aa77-add5296fb135}</UniqueIdentifier>
     </Filter>
     <Filter Include="02.Object\04.UI\Status\ExpBar">
       <UniqueIdentifier>{ce9c7c76-fa66-4e27-b5df-fda54bdebdfb}</UniqueIdentifier>
@@ -474,6 +450,30 @@
     </Filter>
     <Filter Include="02.Object\06.NPC\Store_Npc">
       <UniqueIdentifier>{26cb4e5e-52b0-4f8c-a50c-cfaac9f3c37c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Object\03.Scene">
+      <UniqueIdentifier>{d043a77f-71fb-423f-9920-d5e11dd9ec10}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Object\03.Scene\Stage1">
+      <UniqueIdentifier>{565652c0-9d53-4ce0-bc50-bf4310ddfa6c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Object\03.Scene\Logo">
+      <UniqueIdentifier>{57311606-5869-4285-b66f-5e5811054652}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Object\03.Scene\Edit">
+      <UniqueIdentifier>{43f830f5-b75e-409b-bdf6-92c978457a5a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Object\03.Scene\LogIn">
+      <UniqueIdentifier>{5f4fe65e-4794-45be-bdd8-f5fc9b0e6cfa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Object\03.Scene\Stage2">
+      <UniqueIdentifier>{3288bb7f-5ebb-4aa9-a202-815d8ee457a5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Object\03.Scene\Stage3">
+      <UniqueIdentifier>{caf92095-65cd-44d2-8ac6-70bbeec79a7a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Object\03.Scene\Boss_Stage">
+      <UniqueIdentifier>{0dd6f838-b06f-40f5-aa77-add5296fb135}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

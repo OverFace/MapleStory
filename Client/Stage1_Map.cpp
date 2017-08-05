@@ -8,6 +8,9 @@ CStage1_Map::CStage1_Map(void)
 	m_bRender = false;
 	m_bRender_Tile = false;
 	m_bStage_Check = false;
+
+	ZeroMemory(&m_tRopeInfo, sizeof(INFO));
+	ZeroMemory(&m_tRopeRect, sizeof(RECT));		
 }
 
 CStage1_Map::CStage1_Map(bool bCheck)
@@ -59,6 +62,18 @@ void CStage1_Map::Initialize(void)
 	m_tInfo.fcx = 1620.f;
 	m_tInfo.fcy = 1025.f;
 
+	//Stage1 Rope Info
+	m_tRopeInfo.fx = 1090.f;
+	m_tRopeInfo.fy = 310.f;
+	m_tRopeInfo.fcx = 5.f;
+	m_tRopeInfo.fcy = 400.f;
+
+	//Stage1 Rope Rect
+	m_tRopeRect.left = long(m_tRopeInfo.fx - m_tRopeInfo.fcx / 2);
+	m_tRopeRect.right = long(m_tRopeInfo.fx + m_tRopeInfo.fcx / 2);
+	m_tRopeRect.top = long(m_tRopeInfo.fy - m_tRopeInfo.fcy / 2);
+	m_tRopeRect.bottom = long(m_tRopeInfo.fy + m_tRopeInfo.fcy / 2);
+
 	m_eRenderType = RENDER_BACKGROUND;
 
 	if(m_bStage_Check == false)
@@ -67,6 +82,12 @@ void CStage1_Map::Initialize(void)
 
 int CStage1_Map::Update(void)
 {
+	//Stage1 Rope Rect
+	m_tRopeRect.left = long(m_tRopeInfo.fx - m_tRopeInfo.fcx / 2);
+	m_tRopeRect.right = long(m_tRopeInfo.fx + m_tRopeInfo.fcx / 2);
+	m_tRopeRect.top = long(m_tRopeInfo.fy - m_tRopeInfo.fcy / 2);
+	m_tRopeRect.bottom = long(m_tRopeInfo.fy + m_tRopeInfo.fcy / 2);
+
 	static bool bIsPress_Five = false;
 	if (GetAsyncKeyState('5') && bIsPress_Five == false)
 	{
@@ -77,7 +98,7 @@ int CStage1_Map::Update(void)
 	{
 		m_bRender_Tile = false;
 		bIsPress_Five = false;
-	}		
+	}
 
 	return 0;
 }
@@ -92,7 +113,7 @@ void CStage1_Map::Render(HDC _dc)
 			GETS(CBitMapMgr)->FindImage(L"Stage1_Map")->GetMemDC(),
 			0, 0,
 			int(m_tInfo.fcx), int(m_tInfo.fcy),
-			RGB(0, 0, 255));
+			RGB(0, 0, 255));		
 	}	
 
 	//나중에 특정키를 누르면 Render 되게 해야됨
@@ -133,6 +154,14 @@ void CStage1_Map::Render(HDC _dc)
 			}
 		}
 	}
+
+	/*
+	Rectangle(_dc,
+		m_tRopeRect.left,
+		m_tRopeRect.top,
+		m_tRopeRect.right,
+		m_tRopeRect.bottom);
+	*/
 }
 
 void CStage1_Map::Release(void)
