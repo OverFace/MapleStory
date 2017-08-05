@@ -112,6 +112,8 @@ int CStat::Update(void)
 	//Stat Move
 	Stat_Move();
 
+
+
 	return 0;
 }
 
