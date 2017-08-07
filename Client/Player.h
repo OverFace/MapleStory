@@ -12,9 +12,9 @@ private:
 	POINT	m_ptOffset;
 
 	bool	m_bJump;
-	float  m_bJumpAcc;
+	float   m_bJumpAcc;
 	float	m_bOldY;
-	float  m_fDownSpeed;
+	float   m_fDownSpeed;
 
 	eSceneType m_eSceneType;
 private:

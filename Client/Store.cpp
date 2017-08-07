@@ -409,9 +409,11 @@ void CStore::Item_View_Control(void)
 			}
 		}
 
+		/*
 		system("cls");
 		cout << m_tScroll_Info.fy << endl;
 		cout << m_tScroll_Rect.top << endl;
 		cout << m_tScroll_Rect.bottom << endl;
+		*/	
 	}		
 }

@@ -12,7 +12,7 @@ CPlayer::CPlayer(void) {
 
 	m_ptOffset.y = 200;
 	m_ptOffset.x = 200;
-
+	
 	m_bJump = false;
 	m_bJumpAcc = 0.f;
 	m_bOldY = 0.f;
@@ -158,6 +158,7 @@ void CPlayer::KeyCheck(void)
 			m_pName = L"Player_Up";
 			m_dwState = STATE_UP;
 		}
+
 		if (GetAsyncKeyState(VK_DOWN))
 		{
 			if (m_pName == L"Player_Up") {
@@ -197,8 +198,8 @@ void CPlayer::KeyCheck(void)
 //			Jump();
 			m_dwState = STATE_JUMP;
 		}
-		}
 	}
+}
 void CPlayer::Scroll(void)
 {
 	if (m_tInfo.fx >= 806.f)
