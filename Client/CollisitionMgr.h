@@ -5,7 +5,7 @@ class CCollisitionMgr
 	DECLARE_SINGLETON(CCollisitionMgr);
 
 public:
-	bool BoxCollision(CObj* p1, TILE* p2, float* pX, float* pY);
+	bool TileCollision(CObj* p1, TILE* p2, float* pX, float* pY, float _fTempY);
 
 public:
 	~CCollisitionMgr(void);

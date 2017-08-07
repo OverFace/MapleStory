@@ -17,7 +17,6 @@ CPlayer::CPlayer(void) {
 	m_bJump = false;
 	m_fJumpAcc = 0.f;
 	m_fOldY = 0.f;
-	m_bTile_Check = false;
 }
 
 CPlayer::~CPlayer(void) {
@@ -34,6 +33,9 @@ void CPlayer::Initialize(void) {
 	m_tInfo.fcy = 100.f;
 	m_fDownSpeed = 5.f;
 
+	//OldY 
+	m_fOldY = m_tInfo.fy;
+
 	m_tFrame = FRAME(0, 3, 0, 150);
 
 	m_dwState = STATE_STAND;
@@ -46,12 +48,11 @@ void CPlayer::Initialize(void) {
  
 int CPlayer::Update(void) {
 
-	KeyCheck();
+	KeyCheck();	
 	Jump();
 	CObj::Update();
 
 	FrameMove();
-	LineCollision();
 
 	Scroll();
 	//DynamicScroll();
@@ -213,10 +214,12 @@ void CPlayer::KeyCheck(void)
 		{
 			m_dwState = STATE_SKILL;
 		}
-		if (GETS(CKeyMgr)->StayKeyDown(VK_SPACE))
+		if (GETS(CKeyMgr)->StayKeyDown(VK_SPACE) && m_bJump == false)
 		{
-			//Jump();
-			m_dwState = STATE_JUMP;
+			//Jump
+			m_bJump = true;
+			m_fOldY = m_tInfo.fy;
+			m_dwState = STATE_JUMP;			
 		}
 	}
 }
@@ -342,93 +345,26 @@ void CPlayer::DynamicScroll(void)
 
 		if (g_fScrollY > 0)
 			g_fScrollY = 0;
-
-
 	}
 }
 
 void CPlayer::Jump(void)
 {
 	//y = 중력가속도 * 시간 * 시간 * 0.5f + 시간 * 점프속도 + 점프파워
-	if(m_bTile_Check == false)
+	
+	if(m_bJump)
 	{
 		//점프 시작으로부터 흐른 시간...
-		m_fJumpAcc += 0.1f;
-		m_tInfo.fy += 0.98f * m_fJumpAcc * m_fJumpAcc * 0.5f;/* - 10.f;*/
-		m_fOldY = m_tInfo.fy;
+		m_fJumpAcc += 0.2f;
+		m_tInfo.fy += 0.98f * m_fJumpAcc * m_fJumpAcc * 1.5f - 8.f;
 	}
 
-	if (m_bTile_Check == true)
+	if (m_tInfo.fy > m_fOldY && m_bJump == true)
 	{
 		m_tInfo.fy = m_fOldY;
-		cout << "!" << endl;
-	}
-
-	//cout << m_bTile_Check << endl;
-}
-
-void CPlayer::SetLineList(list<LINE*> pLine)
-{
-	m_pLineList = pLine;
-}
-
-void CPlayer::LineCollision(void)
-{
-	LINE* pLine = NULL;
-
-	for (list<LINE*>::iterator iter = m_pLineList.begin();
-		iter != m_pLineList.end(); ++iter)
-	{
-		if ((*iter)->tLeft_Point.fx < m_tInfo.fx && (*iter)->tRight_Point.fx > m_tInfo.fx)
-		{
-			pLine = (*iter);
-			break;
-		}
-	}
-
-	if (pLine == NULL)
-		return;
-/*
-	float fWidth = pLine->tRight_Point.fx - pLine->tLeft_Point.fx;
-	float fHeight = pLine->tRight_Point.fy - pLine->tLeft_Point.fy;
-
-
-	float fGradient = fHeight / fWidth;
-
-	float fY = fGradient * (m_tInfo.fx - pLine->tLeft_Point.fx) + pLine->tLeft_Point.fy;
-
-	if (m_tInfo.fy > fY)
-	{
 		m_bJump = false;
 		m_fJumpAcc = 0.f;
 	}
-
-	if (m_bJump == false) 
-	{
-		m_tInfo.fy = fY;
-	}
-	*/
 }
 
-/*void CPlayer::CheckBox(void)
-{
-	list<CObj*>*	pBoxList = CObjMgr::GetInstance()->GetObjList(OBJ_PROP);
 
-	list<CObj*>::iterator iter = pBoxList->begin();
-
-	float fX = 0.f;
-	float fY = 0.f;
-
-	for (iter; iter != pBoxList->end(); ++iter)
-	{
-		if (CObjMgr::GetInstance()->BoxCollision(this, (*iter), &fX, &fY) == true)
-		{
-			if (fX > fY)
-			{
-				m_tInfo.fy -= fY;
-			}
-			else
-				m_tInfo.fx -= fX;
-		}
-	}
-}*/

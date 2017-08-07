@@ -11,10 +11,15 @@ CCollisitionMgr::~CCollisitionMgr(void)
 {
 }
 
-bool CCollisitionMgr::BoxCollision(CObj* p1, TILE* p2, float* pX, float* pY)
+bool CCollisitionMgr::TileCollision(CObj* p1, TILE* p2, float* pX, float* pY, float _fTempY)
 {
-	float fWidth = abs(p1->GetInfo()->fx - p2->fx);
-	float fHeight = abs(p1->GetInfo()->fy - p2->fy);
+	/*
+	fTempY : ScrollY 값 적용시에 타일보다 위에 플레이어가 떠 있으므로
+	         그 값을 바닥에 맞게 맞춰 주기 위해서 주는 Y 값.
+	*/
+
+	float fWidth = abs(p1->GetInfo()->fx - p2->fx - g_fScrollX);
+	float fHeight = abs(p1->GetInfo()->fy - p2->fy - g_fScrollY - _fTempY);
 
 	float fSizeX = p1->GetInfo()->fcx / 2 + p2->fcx / 2;
 	float fSizeY = p1->GetInfo()->fcy / 2 + p2->fcy / 2;
@@ -23,8 +28,8 @@ bool CCollisitionMgr::BoxCollision(CObj* p1, TILE* p2, float* pX, float* pY)
 	{
 		if (pX != NULL && pY != NULL)
 		{
-			*pX = fSizeX - fWidth;
-			*pY = fSizeY - fHeight;
+			*pX = abs(fSizeX - fWidth);
+			*pY = abs(fSizeY - fHeight);
 
 			if (*pX > *pY)
 			{
@@ -45,7 +50,7 @@ bool CCollisitionMgr::BoxCollision(CObj* p1, TILE* p2, float* pX, float* pY)
 
 		if (fWidth < fSizeX && fHeight < fSizeY)
 			return true;
-	}	
+	}
 
 	return false;
 }

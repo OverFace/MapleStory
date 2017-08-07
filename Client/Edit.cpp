@@ -402,11 +402,24 @@ void CEdit::Picking(void)
 
 	int iIndex = 0;	
 
+	/*
+	system("cls");
+	cout << pt.x << endl;
+	cout << pt.y << endl;
+	*/
+
 	if (m_iChangeCount == 0)
 	{
 		int iX = (pt.x - (int)g_fScrollX) / STAGE1_TILESIZEX;
 		int iY = (pt.y - (int)g_fScrollY) / STAGE1_TILESIZEY;
 		iIndex = iY * (STAGE1_MAPSIZEX / STAGE1_TILESIZEX) + iX;	
+
+		/*
+		cout << "--------------------------------" << endl;
+		cout << "Index : " << iIndex << endl;
+		cout << "fx : " << m_vecTile[iIndex]->fx << endl;
+		cout << "fy : " << m_vecTile[iIndex]->fy << endl;
+		*/
 
 		++m_vecTile[iIndex]->iDrawID;
 
@@ -428,7 +441,10 @@ void CEdit::Picking(void)
 		}
 
 		if (m_vecTile[iIndex]->iDrawID > 3)
+		{
 			m_vecTile[iIndex]->iDrawID = 0;
+			m_vecTile[iIndex]->iOption = 0;
+		}		
 	}	
 	else if (m_iChangeCount == 1)
 	{
@@ -456,7 +472,10 @@ void CEdit::Picking(void)
 		}
 
 		if (m_vecTile_Stage2[iIndex]->iDrawID > 3)
+		{
 			m_vecTile_Stage2[iIndex]->iDrawID = 0;
+			m_vecTile_Stage2[iIndex]->iOption = 0;
+		}
 	}
 	else if (m_iChangeCount == 2)
 	{
@@ -484,7 +503,10 @@ void CEdit::Picking(void)
 		}
 
 		if (m_vecTile_Stage3[iIndex]->iDrawID > 3)
+		{
 			m_vecTile_Stage3[iIndex]->iDrawID = 0;
+			m_vecTile_Stage3[iIndex]->iOption = 0;
+		}
 	}
 	else if (m_iChangeCount == 3)
 	{
@@ -512,7 +534,10 @@ void CEdit::Picking(void)
 		}
 
 		if (m_vecTile_BStage[iIndex]->iDrawID > 3)
+		{
 			m_vecTile_BStage[iIndex]->iDrawID = 0;
+			m_vecTile_BStage[iIndex]->iOption = 0;
+		}
 	}
 }
 

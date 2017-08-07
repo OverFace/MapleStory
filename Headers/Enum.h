@@ -103,4 +103,12 @@ enum eNpcType
 	NPC_END
 };
 
+//Map
+enum eBackGroundType
+{
+	BG_BACK,
+	BG_MAP,
+	BG_END
+};
+
 #endif // !Enum_h__

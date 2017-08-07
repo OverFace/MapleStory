@@ -13,6 +13,7 @@ private:
 	bool			m_bRender_Tile;
 	bool			m_bStage_Check;
 	vector<TILE*>	m_vecStage1_Tile;
+	eBackGroundType m_eBgType;
 
 private:
 	INFO			m_tRopeInfo;
@@ -20,6 +21,9 @@ private:
 
 public:
 	inline void		SetRedner(bool _bRender) { m_bRender = _bRender; }
+
+public:
+	inline eBackGroundType GetBgType(void) { return m_eBgType; }
 
 public:
 	inline vector<TILE*>*	GetStage1_Tile(void) { return &m_vecStage1_Tile; }

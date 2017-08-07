@@ -37,6 +37,7 @@
 
 class CObj;
 typedef list<CObj*>::iterator OBJITER;
+typedef vector<TILE*>::iterator TILEITER;
 
 //#define MSG(string) MessageBox(g_hWnd, string, L"System Messge", MB_OK);
 

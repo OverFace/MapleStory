@@ -11,6 +11,8 @@ CStage1_Map::CStage1_Map(void)
 
 	ZeroMemory(&m_tRopeInfo, sizeof(INFO));
 	ZeroMemory(&m_tRopeRect, sizeof(RECT));		
+
+	m_eBgType = BG_END;
 }
 
 CStage1_Map::CStage1_Map(bool bCheck)
@@ -18,6 +20,8 @@ CStage1_Map::CStage1_Map(bool bCheck)
 	m_bRender = false;
 	m_bRender_Tile = false;
 	m_bStage_Check = bCheck;
+
+	m_eBgType = BG_END;
 }
 
 CStage1_Map::~CStage1_Map(void)
@@ -74,6 +78,7 @@ void CStage1_Map::Initialize(void)
 	m_tRopeRect.top = long(m_tRopeInfo.fy - m_tRopeInfo.fcy / 2);
 	m_tRopeRect.bottom = long(m_tRopeInfo.fy + m_tRopeInfo.fcy / 2);
 
+	m_eBgType = BG_MAP;
 	m_eRenderType = RENDER_BACKGROUND;
 
 	if(m_bStage_Check == false)

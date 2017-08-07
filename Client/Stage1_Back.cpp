@@ -6,6 +6,7 @@
 CStage1_Back::CStage1_Back(void)
 {
 	m_bRender = false;
+	m_eBgType = BG_END;
 }
 
 CStage1_Back::~CStage1_Back(void)
@@ -18,6 +19,7 @@ void CStage1_Back::Initialize(void)
 	m_tInfo.fcx = 1620.f;
 	m_tInfo.fcy = 1012.f;
 
+	m_eBgType = BG_BACK;
 	m_eRenderType = RENDER_BACKGROUND;
 }
 

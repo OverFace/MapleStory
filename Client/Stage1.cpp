@@ -26,8 +26,6 @@
 #include "ExpBar.h"
 //-------------------------------------
 
-typedef vector<TILE*>::iterator TILEITER;
-
 CStage1::CStage1(void)
 {
 	m_pMap = NULL;
@@ -51,15 +49,15 @@ void CStage1::Initialize(void)
 	((CStage1_Back*)pObj)->SetRedner(true);
 
 	//Stage1 Map Object Create
-	m_pMap = new CStage1_Map();
-	m_pMap->Initialize();
-	GETS(CObjMgr)->AddObject(OBJ_BACKGROUND, m_pMap);
-	((CStage1_Map*)m_pMap)->SetRedner(true);
+	pObj = new CStage1_Map();
+	pObj->Initialize();
+	GETS(CObjMgr)->AddObject(OBJ_BACKGROUND, pObj);
+	((CStage1_Map*)pObj)->SetRedner(true);
 
 	//Player
-	m_pPlayer = new CPlayer;
-	m_pPlayer->Initialize();
-	GETS(CObjMgr)->AddObject(OBJ_PLAYER, m_pPlayer);
+	pObj = new CPlayer;
+	pObj->Initialize();
+	GETS(CObjMgr)->AddObject(OBJ_PLAYER, pObj);
 
 	//Store
 	CObj* pStore = new CStore;
@@ -117,12 +115,7 @@ int CStage1::Update(void)
 	GETS(CObjMgr)->Update();
 
 	//Stage1_Tile Check
-	Stage1_TileCheck();
-
-	if (m_pPlayer != NULL)
-	{
-		((CPlayer*)m_pPlayer)->SetTile_Check(m_bCollisiton_Check);
-	}
+	Stage1_TileCheck();	
 
 	return 0;
 }
@@ -139,29 +132,34 @@ void CStage1::Release(void)
 
 void CStage1::Stage1_TileCheck(void)
 {
+	//Stage1 Tile
+	OBJITER iter_Map = GETS(CObjMgr)->GetObjList(OBJ_BACKGROUND)->begin();
+	OBJITER iter_Map_End = GETS(CObjMgr)->GetObjList(OBJ_BACKGROUND)->end();
+
+	for (iter_Map; iter_Map != iter_Map_End; ++iter_Map)
+	{
+		if (((CStage1_Map*)(*iter_Map))->GetBgType() == BG_MAP)
+			m_pMap = (*iter_Map);
+	}
+
 	TILEITER iter_Tile = ((CStage1_Map*)m_pMap)->GetStage1_Tile()->begin();
 	TILEITER iter_Tile_End = ((CStage1_Map*)m_pMap)->GetStage1_Tile()->end();
 
+	//Player
+	m_pPlayer = GETS(CObjMgr)->GetObjList(OBJ_PLAYER)->front();
+
+	//Coliistion value
 	float fx = 0.f;
 	float fy = 0.f;
 
 	for (iter_Tile; iter_Tile != iter_Tile_End; ++iter_Tile)
 	{
-		if (GETS(CCollisitionMgr)->BoxCollision(m_pPlayer, (*iter_Tile), &fx, &fy))
+		if (GETS(CCollisitionMgr)->TileCollision(m_pPlayer, (*iter_Tile), &fx, &fy, 20.f) == true)
 		{
-			//cout << "IN" << endl;
-			//cout << (*iter_Tile)->iOption << endl;
-
 			if (fx > fy)
-			{
-				//m_pPlayer->GetRect()->fy -= fy;
 				m_pPlayer->GetInfo()->fy -= fy;
-			}
 			else
-			{
-				//m_pPlayer->GetRect()->fx -= fx;
 				m_pPlayer->GetInfo()->fx -= fx;
-			}
 
 			m_bCollisiton_Check = true;
 		}
@@ -169,5 +167,5 @@ void CStage1::Stage1_TileCheck(void)
 		{
 			m_bCollisiton_Check = false;
 		}
-	}
+	}	
 }

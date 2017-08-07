@@ -4,8 +4,6 @@
 
 class CPlayer : public CObj {
 private:
-	list<LINE*>	m_pLineList;
-
 	TCHAR * m_pName;
 	FRAME   m_tFrame;
 	DWORD	m_dwState;
@@ -20,18 +18,12 @@ private:
 
 	eSceneType m_eSceneType;
 
-	bool	m_bTile_Check;
-public:
-	void	SetLineList(list<LINE*>	pLine);
-	inline void	SetTile_Check(bool _bCheck) { m_bTile_Check = _bCheck; }
 private:
 	void FrameMove(void);
 	void KeyCheck(void);
 	void Scroll(void);
 	void DynamicScroll(void);
 	void Jump(void);
-	void LineCollision(void);
-	//void CheckBox(void);
 
 public:
 	virtual void Initialize(void);
