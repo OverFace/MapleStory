@@ -4,6 +4,7 @@
 #include "BitMapMgr.h"
 #include "ObjMgr.h"
 #include "KeyMgr.h"
+
 CPlayer::CPlayer(void) {
 
 	m_pName = NULL;
@@ -14,9 +15,9 @@ CPlayer::CPlayer(void) {
 	m_ptOffset.x = 200;
 	
 	m_bJump = false;
-	m_bJumpAcc = 0.f;
-	m_bOldY = 0.f;
-	m_fDownSpeed = 5.f;
+	m_fJumpAcc = 0.f;
+	m_fOldY = 0.f;
+	m_bTile_Check = false;
 }
 
 CPlayer::~CPlayer(void) {
@@ -24,29 +25,33 @@ CPlayer::~CPlayer(void) {
 }
 
 void CPlayer::Initialize(void) {
+
 	m_pName = L"Player_Right";
 
 	m_tInfo.fx = float(WINCX / 2);
-	m_tInfo.fy = float(WINCY / 2);
+	m_tInfo.fy = 504.f;
 	m_tInfo.fcx = 100.f;
 	m_tInfo.fcy = 100.f;
+	m_fDownSpeed = 5.f;
 
 	m_tFrame = FRAME(0, 3, 0, 150);
 
 	m_dwState = STATE_STAND;
-	m_dwPrevState = STATE_STAND;
 
 	m_dwFrameTime = GetTickCount();
 	m_fSpeed = 2.f;
 
 	m_eRenderType = RENDER_WORLDOBJ;
 }
-
+ 
 int CPlayer::Update(void) {
 
 	KeyCheck();
+	Jump();
 	CObj::Update();
+
 	FrameMove();
+	LineCollision();
 
 	Scroll();
 	//DynamicScroll();
@@ -66,6 +71,13 @@ void CPlayer::Render(HDC _dc) {
 		int(m_tInfo.fcx),
 		int(m_tInfo.fcy),														
 		RGB(71, 0, 60));
+	/*
+	Rectangle(_dc,
+		m_Rect.left,
+		m_Rect.top,
+		m_Rect.right,
+		m_Rect.bottom);
+	*/
 }
 
 void CPlayer::Release(void) {
@@ -150,7 +162,7 @@ void CPlayer::KeyCheck(void)
 {
 	if (m_dwState != STATE_ATT)
 	{
-		if (GetAsyncKeyState(VK_UP))
+		if (GETS(CKeyMgr)->StayKeyDown(VK_UP))
 		{
 			m_tInfo.fy -= m_fSpeed;
 			g_fScrollY += m_fSpeed;
@@ -158,16 +170,17 @@ void CPlayer::KeyCheck(void)
 			m_pName = L"Player_Up";
 			m_dwState = STATE_UP;
 		}
-
-		if (GetAsyncKeyState(VK_DOWN))
+		else if (GETS(CKeyMgr)->StayKeyDown(VK_DOWN))
 		{
+			
 			if (m_pName == L"Player_Up") {
 				m_tInfo.fy += m_fSpeed;
 				g_fScrollY -= m_fSpeed;
 			}
+			
 			m_dwState = STATE_DOWN;
 		}
-		if (GetAsyncKeyState(VK_LEFT))
+		else if (GETS(CKeyMgr)->StayKeyDown(VK_LEFT))
 		{
 			m_tInfo.fx -= m_fSpeed;
 			g_fScrollX += m_fSpeed * 2;
@@ -175,7 +188,7 @@ void CPlayer::KeyCheck(void)
 			m_pName = L"Player_Left";
 			m_dwState = STATE_WALK;
 		}
-		if (GetAsyncKeyState(VK_RIGHT))
+		else if (GETS(CKeyMgr)->StayKeyDown(VK_RIGHT))
 		{
 			m_tInfo.fx += m_fSpeed;
 			g_fScrollX -= m_fSpeed * 2;
@@ -183,87 +196,66 @@ void CPlayer::KeyCheck(void)
 			m_pName = L"Player_Right";
 			m_dwState = STATE_WALK;
 		}
-		if (GetAsyncKeyState(VK_CONTROL))
+		else if (GETS(CKeyMgr)->OnceKeyUp(VK_UP)
+				|| GETS(CKeyMgr)->OnceKeyUp(VK_DOWN)
+				|| GETS(CKeyMgr)->OnceKeyUp(VK_LEFT)
+				|| GETS(CKeyMgr)->OnceKeyUp(VK_RIGHT))
+		{
+			m_dwState = STATE_STAND;
+		}
+				
+		if (GETS(CKeyMgr)->StayKeyDown(VK_CONTROL))
 		{
 			m_dwState = STATE_HIT;
 		}
 
-		if (GetAsyncKeyState(VK_SHIFT))
+		if (GETS(CKeyMgr)->StayKeyDown(VK_SHIFT))
 		{
 			m_dwState = STATE_SKILL;
 		}
-		if (GetAsyncKeyState(VK_SPACE))
+		if (GETS(CKeyMgr)->StayKeyDown(VK_SPACE))
 		{
-//			m_bJump = true;
-//			Jump();
+			//Jump();
 			m_dwState = STATE_JUMP;
 		}
 	}
 }
 void CPlayer::Scroll(void)
 {
-	if (m_tInfo.fx >= 806.f)
+#pragma region 스테이지1
+	if (m_tInfo.fx <= 516.f)
 	{
 		m_fSpeed = 4.f;
-		g_fScrollX = -588.f;
-	}
-	else
-		m_fSpeed = 2.f;
-	
-	if (m_tInfo.fx <= 338.f)
-	{
-		m_fSpeed = 4.f;
-		g_fScrollX = 160.f;
+		g_fScrollX = -8.f;
 	}
 	else
 		m_fSpeed = 2.f;
 
-
-	//400
-
-	/*
-	if (m_tInfo.fx > WINCX / 2.f + 300)
+	if (m_tInfo.fx >= 808.f)
 	{
-		g_fScrollX -= m_fSpeed;
+		m_fSpeed = 4.f;
+		g_fScrollX = -592.f;
 	}
-	if (m_tInfo.fx < WINCX / 2.f - 300)
+	else
+		m_fSpeed = 2.f;
+
+	if (m_tInfo.fy <= 116.f)
 	{
-		g_fScrollX += m_fSpeed;
+		m_fSpeed = 4.f;
+		g_fScrollY = -88.f;
 	}
+	else
+		m_fSpeed = 2.f;
 
-	
-	if (m_tInfo.fx + g_fScrollX > WINCX / 2 + m_ptOffset.x)
+	if (m_tInfo.fy >= 268.f)
 	{
-		g_fScrollX -= int(m_fSpeed);
-
-		if (g_fScrollX < WINCX - 2048)
-			g_fScrollX = WINCX - 2048;
+		m_fSpeed = 4.f;
+		g_fScrollY = -240.f;
 	}
+	else
+		m_fSpeed = 2.f;
+#pragma endregion
 
-	if (m_tInfo.fx + g_fScrollX < WINCX / 2 - m_ptOffset.x)
-	{
-		g_fScrollX += int(m_fSpeed);
-
-		if (g_fScrollX > 0)
-			g_fScrollX = 0;
-	}
-
-	if (m_tInfo.fy + g_fScrollY > WINCY / 2 + m_ptOffset.y)
-	{
-		g_fScrollY -= int(m_fSpeed);
-
-		if (g_fScrollY < WINCY - 1440)
-			g_fScrollY = WINCY - 1440;
-	}
-
-	if (m_tInfo.fy + g_fScrollY < WINCY / 2 - m_ptOffset.y)
-	{
-		g_fScrollY += int(m_fSpeed);
-
-		if (g_fScrollY > 0)
-			g_fScrollY = 0;
-	}
-	*/
 }
 
 void CPlayer::DynamicScroll(void)
@@ -357,20 +349,86 @@ void CPlayer::DynamicScroll(void)
 
 void CPlayer::Jump(void)
 {
-
-	if (m_bJump)
+	//y = 중력가속도 * 시간 * 시간 * 0.5f + 시간 * 점프속도 + 점프파워
+	if(m_bTile_Check == false)
 	{
-		m_bOldY = m_tInfo.fy;
-		m_bJumpAcc += 0.1f;
-		m_tInfo.fy += 0.98f * m_bJumpAcc * m_bJumpAcc * 0.5f - 10.f;
-
+		//점프 시작으로부터 흐른 시간...
+		m_fJumpAcc += 0.1f;
+		m_tInfo.fy += 0.98f * m_fJumpAcc * m_fJumpAcc * 0.5f;/* - 10.f;*/
+		m_fOldY = m_tInfo.fy;
 	}
 
-	if (m_tInfo.fy > m_bOldY && m_bJump == true)
+	if (m_bTile_Check == true)
 	{
-		m_tInfo.fy = m_bOldY;
-		m_bJump = false;
-		m_bJumpAcc = 0.f;
+		m_tInfo.fy = m_fOldY;
+		cout << "!" << endl;
 	}
+
+	//cout << m_bTile_Check << endl;
 }
 
+void CPlayer::SetLineList(list<LINE*> pLine)
+{
+	m_pLineList = pLine;
+}
+
+void CPlayer::LineCollision(void)
+{
+	LINE* pLine = NULL;
+
+	for (list<LINE*>::iterator iter = m_pLineList.begin();
+		iter != m_pLineList.end(); ++iter)
+	{
+		if ((*iter)->tLeft_Point.fx < m_tInfo.fx && (*iter)->tRight_Point.fx > m_tInfo.fx)
+		{
+			pLine = (*iter);
+			break;
+		}
+	}
+
+	if (pLine == NULL)
+		return;
+/*
+	float fWidth = pLine->tRight_Point.fx - pLine->tLeft_Point.fx;
+	float fHeight = pLine->tRight_Point.fy - pLine->tLeft_Point.fy;
+
+
+	float fGradient = fHeight / fWidth;
+
+	float fY = fGradient * (m_tInfo.fx - pLine->tLeft_Point.fx) + pLine->tLeft_Point.fy;
+
+	if (m_tInfo.fy > fY)
+	{
+		m_bJump = false;
+		m_fJumpAcc = 0.f;
+	}
+
+	if (m_bJump == false) 
+	{
+		m_tInfo.fy = fY;
+	}
+	*/
+}
+
+/*void CPlayer::CheckBox(void)
+{
+	list<CObj*>*	pBoxList = CObjMgr::GetInstance()->GetObjList(OBJ_PROP);
+
+	list<CObj*>::iterator iter = pBoxList->begin();
+
+	float fX = 0.f;
+	float fY = 0.f;
+
+	for (iter; iter != pBoxList->end(); ++iter)
+	{
+		if (CObjMgr::GetInstance()->BoxCollision(this, (*iter), &fX, &fY) == true)
+		{
+			if (fX > fY)
+			{
+				m_tInfo.fy -= fY;
+			}
+			else
+				m_tInfo.fx -= fX;
+		}
+	}
+}*/
