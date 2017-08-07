@@ -7,6 +7,14 @@ public:
 	CStage1(void);
 	virtual ~CStage1(void);
 
+private:
+	CObj*		 m_pMap;
+	CObj*		 m_pPlayer;
+	bool		 m_bCollisiton_Check;
+
+private:
+	void		 Stage1_TileCheck(void);
+
 public:
 	virtual void Initialize(void);
 	virtual int	 Update(void);

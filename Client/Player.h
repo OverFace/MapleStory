@@ -14,20 +14,25 @@ private:
 	POINT	m_ptOffset;
 
 	bool	m_bJump;
-	float  m_fJumpAcc;
+	float   m_fJumpAcc;
 	float	m_fOldY;
-	float  m_fDownSpeed;
+	float   m_fDownSpeed;
 
 	eSceneType m_eSceneType;
+
+	bool	m_bTile_Check;
 public:
 	void	SetLineList(list<LINE*>	pLine);
+	inline void	SetTile_Check(bool _bCheck) { m_bTile_Check = _bCheck; }
 private:
 	void FrameMove(void);
 	void KeyCheck(void);
 	void Scroll(void);
 	void DynamicScroll(void);
-	//void Jump(void);
+	void Jump(void);
 	void LineCollision(void);
+	//void CheckBox(void);
+
 public:
 	virtual void Initialize(void);
 	virtual int Update(void);
