@@ -159,6 +159,7 @@
     <ClInclude Include="Boss_Stage.h" />
     <ClInclude Include="BStage_Back.h" />
     <ClInclude Include="BStage_Map.h" />
+    <ClInclude Include="CollisitionMgr.h" />
     <ClInclude Include="Edit.h" />
     <ClInclude Include="Equip.h" />
     <ClInclude Include="Exp.h" />
@@ -214,6 +215,7 @@
     <ClCompile Include="Boss_Stage.cpp" />
     <ClCompile Include="BStage_Back.cpp" />
     <ClCompile Include="BStage_Map.cpp" />
+    <ClCompile Include="CollisitionMgr.cpp" />
     <ClCompile Include="Edit.cpp" />
     <ClCompile Include="Equip.cpp" />
     <ClCompile Include="Exp.cpp" />

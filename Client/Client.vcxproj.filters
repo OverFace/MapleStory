@@ -154,6 +154,9 @@
     <ClCompile Include="Npc.cpp">
       <Filter>02.Object\06.NPC</Filter>
     </ClCompile>
+    <ClCompile Include="CollisitionMgr.cpp">
+      <Filter>04.Manager\CollisitionMgr</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainGame.h">
@@ -315,6 +318,9 @@
     <ClInclude Include="Npc.h">
       <Filter>02.Object\06.NPC</Filter>
     </ClInclude>
+    <ClInclude Include="CollisitionMgr.h">
+      <Filter>04.Manager\CollisitionMgr</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -474,6 +480,9 @@
     </Filter>
     <Filter Include="02.Object\03.Scene\Boss_Stage">
       <UniqueIdentifier>{0dd6f838-b06f-40f5-aa77-add5296fb135}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.Manager\CollisitionMgr">
+      <UniqueIdentifier>{2321fede-280e-4de6-bf58-0290090916b1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

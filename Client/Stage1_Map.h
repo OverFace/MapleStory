@@ -21,6 +21,9 @@ private:
 public:
 	inline void		SetRedner(bool _bRender) { m_bRender = _bRender; }
 
+public:
+	inline vector<TILE*>*	GetStage1_Tile(void) { return &m_vecStage1_Tile; }
+
 private:
 	void			LoadData(void);
 
