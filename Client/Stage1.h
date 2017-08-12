@@ -14,6 +14,8 @@ private:
 
 private:
 	void		 Stage1_TileCheck(void);
+	void		 Rope_Check(void);
+
 
 public:
 	virtual void Initialize(void);

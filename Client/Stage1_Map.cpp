@@ -12,7 +12,7 @@ CStage1_Map::CStage1_Map(void)
 	ZeroMemory(&m_tRopeInfo, sizeof(INFO));
 	ZeroMemory(&m_tRopeRect, sizeof(RECT));		
 
-	m_eBgType = BG_END;
+	m_eBGType = BG_END;
 }
 
 CStage1_Map::CStage1_Map(bool bCheck)
@@ -21,7 +21,7 @@ CStage1_Map::CStage1_Map(bool bCheck)
 	m_bRender_Tile = false;
 	m_bStage_Check = bCheck;
 
-	m_eBgType = BG_END;
+	m_eBGType = BG_END;
 }
 
 CStage1_Map::~CStage1_Map(void)
@@ -67,10 +67,10 @@ void CStage1_Map::Initialize(void)
 	m_tInfo.fcy = 1025.f;
 
 	//Stage1 Rope Info
-	m_tRopeInfo.fx = 1090.f;
-	m_tRopeInfo.fy = 310.f;
+	m_tRopeInfo.fx = 1095.f;
+	m_tRopeInfo.fy = 500.f;
 	m_tRopeInfo.fcx = 5.f;
-	m_tRopeInfo.fcy = 400.f;
+	m_tRopeInfo.fcy = 420.f;
 
 	//Stage1 Rope Rect
 	m_tRopeRect.left = long(m_tRopeInfo.fx - m_tRopeInfo.fcx / 2);
@@ -78,7 +78,7 @@ void CStage1_Map::Initialize(void)
 	m_tRopeRect.top = long(m_tRopeInfo.fy - m_tRopeInfo.fcy / 2);
 	m_tRopeRect.bottom = long(m_tRopeInfo.fy + m_tRopeInfo.fcy / 2);
 
-	m_eBgType = BG_MAP;
+	m_eBGType = BG_MAP;
 	m_eRenderType = RENDER_BACKGROUND;
 
 	if(m_bStage_Check == false)
@@ -87,11 +87,20 @@ void CStage1_Map::Initialize(void)
 
 int CStage1_Map::Update(void)
 {
+	/*
+	system("cls");
+	cout << m_tRopeRect.left << endl;
+	cout << m_tRopeRect.right << endl;
+	cout << m_tRopeRect.top << endl;
+	cout << m_tRopeRect.bottom << endl;
+	*/
+	
+
 	//Stage1 Rope Rect
-	m_tRopeRect.left = long(m_tRopeInfo.fx - m_tRopeInfo.fcx / 2);
-	m_tRopeRect.right = long(m_tRopeInfo.fx + m_tRopeInfo.fcx / 2);
-	m_tRopeRect.top = long(m_tRopeInfo.fy - m_tRopeInfo.fcy / 2);
-	m_tRopeRect.bottom = long(m_tRopeInfo.fy + m_tRopeInfo.fcy / 2);
+	m_tRopeRect.left = long(m_tRopeInfo.fx + g_fScrollX - m_tRopeInfo.fcx / 2);
+	m_tRopeRect.right = long(m_tRopeInfo.fx + g_fScrollX + m_tRopeInfo.fcx / 2);
+	m_tRopeRect.top = long(m_tRopeInfo.fy + g_fScrollY - m_tRopeInfo.fcy / 2);
+	m_tRopeRect.bottom = long(m_tRopeInfo.fy + g_fScrollY + m_tRopeInfo.fcy / 2);
 
 	static bool bIsPress_Five = false;
 	if (GetAsyncKeyState('5') && bIsPress_Five == false)
@@ -160,13 +169,13 @@ void CStage1_Map::Render(HDC _dc)
 		}
 	}
 
-	/*
+	
 	Rectangle(_dc,
 		m_tRopeRect.left,
 		m_tRopeRect.top,
 		m_tRopeRect.right,
 		m_tRopeRect.bottom);
-	*/
+	
 }
 
 void CStage1_Map::Release(void)

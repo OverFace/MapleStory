@@ -9,13 +9,15 @@ public:
 
 private:
 	bool			m_bRender;
-	eBackGroundType m_eBgType;
+
+private:
+	eBGType			m_eBGType;
+
+public:
+	inline eBGType  GetBgType(void) { return m_eBGType; }
 
 public:
 	inline void		SetRedner(bool _bRender) { m_bRender = _bRender; }
-
-public:
-	inline eBackGroundType GetBgType(void) { return m_eBgType; }
 
 public:
 	virtual void	Initialize(void);

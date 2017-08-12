@@ -1,6 +1,6 @@
 #pragma once
 #include "Obj.h"
-
+#include "SceneMgr.h"
 
 class CPlayer : public CObj {
 private:
@@ -15,8 +15,15 @@ private:
 	float   m_fJumpAcc;
 	float	m_fOldY;
 	float   m_fDownSpeed;
+	int		m_dSceneType;
 
-	eSceneType m_eSceneType;
+	bool	m_bTile_Check;
+	bool	m_bRope_Check;
+
+public:
+	void	SetLineList(list<LINE*>	pLine);
+	inline void	SetTile_Check(bool _bCheck) { m_bTile_Check = _bCheck; }
+	inline void SetRope_Check(bool _bCheck) { m_bRope_Check = _bCheck; }
 
 private:
 	void FrameMove(void);
@@ -24,6 +31,7 @@ private:
 	void Scroll(void);
 	void DynamicScroll(void);
 	void Jump(void);
+	void Rope_Ride(void);
 
 public:
 	virtual void Initialize(void);
