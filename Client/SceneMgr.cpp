@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "SceneMgr.h"
 #include "Scene.h"
-
 //Stage Header Include
 //--------------------------------------
 #include "Logo.h"
@@ -19,6 +18,7 @@ CSceneMgr::CSceneMgr(void)
 	: m_pScene(NULL), m_pNextScene(NULL)
 {
 	m_bChangeScene = false;
+	m_eSceneType = SCENE_END;
 }
 
 CSceneMgr::~CSceneMgr(void)
@@ -37,30 +37,37 @@ void CSceneMgr::SetScene(eSceneType eType)
 	{
 	case SCENE_LOGO:
 		m_pNextScene = new CLogo();
+		m_eSceneType = SCENE_LOGO;
 		break;
 	case SCENE_SGININ:
-		
+		m_eSceneType = SCENE_SGININ;
 		break;
 	case SCENE_LOGIN:
 		m_pNextScene = new CLogIn();
+		m_eSceneType = SCENE_LOGIN;
 		break;
 	case SCENE_PLAYERSELECT:
-
+		m_eSceneType = SCENE_PLAYERSELECT;
 		break;
 	case SCENE_STAGE1:
 		m_pNextScene = new CStage1();
+		m_eSceneType = SCENE_STAGE1;
 		break;
 	case SCENE_STAGE2:
 		m_pNextScene = new CStage2();
+		m_eSceneType = SCENE_STAGE2;
 		break;
 	case SCENE_STAGE3:
 		m_pNextScene = new CStage3();
+		m_eSceneType = SCENE_STAGE3;
 		break;
 	case SCENE_EDIT:
 		m_pNextScene = new CEdit();
+		m_eSceneType = SCENE_EDIT;
 		break;
 	case SCENE_BOSS:
 		m_pNextScene = new CBoss_Stage();
+		m_eSceneType = SCENE_BOSS;
 		break;
 	}
 
@@ -74,7 +81,6 @@ void CSceneMgr::SetScene(eSceneType eType)
 		m_bChangeScene = true;
 	}
 }
-
 int CSceneMgr::Update(void)
 {
 	return m_pScene->Update();

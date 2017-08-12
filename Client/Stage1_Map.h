@@ -13,17 +13,20 @@ private:
 	bool			m_bRender_Tile;
 	bool			m_bStage_Check;
 	vector<TILE*>	m_vecStage1_Tile;
-	eBackGroundType m_eBgType;
 
 private:
 	INFO			m_tRopeInfo;
 	RECT			m_tRopeRect;
 
-public:
-	inline void		SetRedner(bool _bRender) { m_bRender = _bRender; }
+private:
+	eBGType			m_eBGType;
 
 public:
-	inline eBackGroundType GetBgType(void) { return m_eBgType; }
+	inline eBGType  GetBgType(void) { return m_eBGType; }
+	inline RECT		GetRope(void) { return m_tRopeRect; }
+	inline INFO     GetRopeInfo(void) { return m_tRopeInfo; }
+public:
+	inline void		SetRedner(bool _bRender) { m_bRender = _bRender; }
 
 public:
 	inline vector<TILE*>*	GetStage1_Tile(void) { return &m_vecStage1_Tile; }

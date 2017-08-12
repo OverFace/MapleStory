@@ -103,8 +103,8 @@ enum eNpcType
 	NPC_END
 };
 
-//Map
-enum eBackGroundType
+//BackGround
+enum eBGType
 {
 	BG_BACK,
 	BG_MAP,

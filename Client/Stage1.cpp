@@ -75,7 +75,7 @@ void CStage1::Initialize(void)
 	//Status
 	pObj = new CStatus;
 	pObj->Initialize();
-	GETS(CObjMgr)->AddObject(OBJ_UI, pObj);	
+	GETS(CObjMgr)->AddObject(OBJ_UI, pObj);
 	//Inven
 	pObj = new CInven;
 	pObj->Initialize();
@@ -90,7 +90,7 @@ void CStage1::Initialize(void)
 	GETS(CObjMgr)->AddObject(OBJ_UI, pSkill);
 	pObj = new CSkill_Input(*(pSkill->GetInfo()));
 	pObj->Initialize();
-	GETS(CObjMgr)->AddObject(OBJ_UI, pObj);	
+	GETS(CObjMgr)->AddObject(OBJ_UI, pObj);
 	//Stat
 	pObj = new CStat;
 	pObj->Initialize();
@@ -115,7 +115,10 @@ int CStage1::Update(void)
 	GETS(CObjMgr)->Update();
 
 	//Stage1_Tile Check
-	Stage1_TileCheck();	
+	Stage1_TileCheck();
+
+	//Rope Check
+	Rope_Check();
 
 	return 0;
 }
@@ -168,4 +171,15 @@ void CStage1::Stage1_TileCheck(void)
 			m_bCollisiton_Check = false;
 		}
 	}	
+}
+
+void CStage1::Rope_Check(void)
+{
+	bool bCheck = false;
+
+	bCheck = GETS(CCollisitionMgr)->RopeCollision();
+
+	CObj* pPlayer = GETS(CObjMgr)->GetObjList(OBJ_PLAYER)->front();
+
+	((CPlayer*)pPlayer)->SetRope_Check(bCheck);
 }

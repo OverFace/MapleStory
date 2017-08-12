@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "CollisitionMgr.h"
 #include "Obj.h"
+#include "ObjMgr.h"
+#include "Stage1_Map.h"
 
 IMPLEMENT_SINGLETON(CCollisitionMgr)
 CCollisitionMgr::CCollisitionMgr(void)
@@ -50,6 +52,45 @@ bool CCollisitionMgr::TileCollision(CObj* p1, TILE* p2, float* pX, float* pY, fl
 
 		if (fWidth < fSizeX && fHeight < fSizeY)
 			return true;
+	}
+
+	return false;
+}
+
+bool CCollisitionMgr::RopeCollision(void)
+{
+	/*
+	OBJITER iter_map = GETS(CObjMgr)->GetObjList(OBJ_BACKGROUND)->begin();
+	OBJITER iter_map_end = GETS(CObjMgr)->GetObjList(OBJ_BACKGROUND)->end();
+
+	CObj* pMap = NULL;
+
+	for (iter_map; iter_map != iter_map_end; ++iter_map)
+	{
+		if (((CStage1_Map*)(*iter_map))->GetBgType() == BG_MAP)
+		{
+			pMap = (*iter_map);
+		}
+	}
+
+	CObj* pPlayer = GETS(CObjMgr)->GetObjList(OBJ_PLAYER)->front();
+	*/
+	CObj * pPlayer = GETS(CObjMgr)->GetObjList(OBJ_PLAYER)->front();
+	
+	OBJITER iter_map = GETS(CObjMgr)->GetObjList(OBJ_BACKGROUND)->begin();
+	OBJITER iter_map_end = GETS(CObjMgr)->GetObjList(OBJ_BACKGROUND)->end();
+	
+	CObj* pMap = NULL;
+
+	for (iter_map; iter_map != iter_map_end; ++iter_map) {
+		if (((CStage1_Map*)(*iter_map))->GetBgType() == BG_MAP) {
+			pMap = (*iter_map);
+		}
+	}
+
+	RECT rc;
+	if ((IntersectRect(&rc, pPlayer->GetRect(), &((CStage1_Map*)(pMap))->GetRope())) == true) {
+		return true;
 	}
 
 	return false;

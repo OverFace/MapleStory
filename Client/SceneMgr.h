@@ -11,8 +11,10 @@ private:
 	CScene*			m_pScene;
 	CScene*			m_pNextScene;
 	bool			m_bChangeScene;
+	eSceneType		m_eSceneType;
 
 public:
+	inline eSceneType GetSceneType(void) { return m_eSceneType; }
 	const CScene*	GetCurrentScene(void);
 
 public:
