@@ -196,8 +196,7 @@ void CPlayer::KeyCheck(void)
 			}		
 		}
 		else if (GETS(CKeyMgr)->StayKeyDown(VK_DOWN))
-		{
-			
+		{			
 			if (m_pName == L"Player_Up") {
 				m_tInfo.fy += m_fSpeed;
 				g_fScrollY -= m_fSpeed;
@@ -241,9 +240,9 @@ void CPlayer::KeyCheck(void)
 		if (GETS(CKeyMgr)->StayKeyDown(VK_SPACE) && m_bJump == false)
 		{
 			//Jump
-			m_bJump = true;
 			m_fOldY = m_tInfo.fy;
-			m_dwState = STATE_JUMP;			
+			m_dwState = STATE_JUMP;	
+			m_bJump = true;
 		}
 	}
 }
@@ -484,7 +483,6 @@ void CPlayer::DynamicScroll(void)
 void CPlayer::Jump(void)
 {
 	//y = 중력가속도 * 시간 * 시간 * 0.5f + 시간 * 점프속도 + 점프파워
-	
 	if(m_bJump)
 	{
 		//점프 시작으로부터 흐른 시간...
@@ -496,8 +494,10 @@ void CPlayer::Jump(void)
 	{
 		m_tInfo.fy = m_fOldY;
 		m_bJump = false;
-		cout << m_bJump << endl;
 	}
+
+	system("cls");
+	cout << m_bJump << endl;
 }
 
 void CPlayer::Rope_Ride(void)
