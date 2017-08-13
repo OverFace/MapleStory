@@ -169,13 +169,13 @@ void CStage1_Map::Render(HDC _dc)
 		}
 	}
 
-	
+	/*
 	Rectangle(_dc,
 		m_tRopeRect.left,
 		m_tRopeRect.top,
 		m_tRopeRect.right,
 		m_tRopeRect.bottom);
-	
+	*/
 }
 
 void CStage1_Map::Release(void)
