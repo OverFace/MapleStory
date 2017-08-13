@@ -16,7 +16,7 @@ CPlayer::CPlayer(void) {
 
 	m_ptOffset.y = 200;
 	m_ptOffset.x = 200;
-	
+
 	m_bJump = false;
 	m_fJumpAcc = 0.f;
 	m_fOldY = 0.f;
@@ -30,17 +30,17 @@ void CPlayer::Initialize(void) {
 
 	m_pName = L"Player_Right";
 	m_tInfo.fx = float(WINCX / 2);
-	if (GETS(CSceneMgr)->GetSceneType() ==  SCENE_STAGE1) {
+	if (GETS(CSceneMgr)->GetSceneType() == SCENE_STAGE1) {
 		m_tInfo.fy = 512.f;
 	}
-	if (GETS(CSceneMgr)->GetSceneType() ==  SCENE_STAGE2) {
+	if (GETS(CSceneMgr)->GetSceneType() == SCENE_STAGE2) {
 		g_fScrollY = -650.f;
-		m_tInfo.fy = 532.f;
+		m_tInfo.fy = 560.f;
 	}
-	if (GETS(CSceneMgr)->GetSceneType() ==  SCENE_STAGE3) {
-		m_tInfo.fy =454.f;
+	if (GETS(CSceneMgr)->GetSceneType() == SCENE_STAGE3) {
+		m_tInfo.fy = 454.f;
 	}
-	if (GETS(CSceneMgr)->GetSceneType() ==  SCENE_BOSS) {
+	if (GETS(CSceneMgr)->GetSceneType() == SCENE_BOSS) {
 		m_tInfo.fy = 530.f;
 	}
 
@@ -60,18 +60,19 @@ void CPlayer::Initialize(void) {
 
 	m_eRenderType = RENDER_WORLDOBJ;
 }
- 
+
 int CPlayer::Update() {
 
-	KeyCheck();	
+	KeyCheck();
 	Jump();
+	Player_InfoCheck();
 	CObj::Update();
 
 	m_Rect.left = long(m_tInfo.fx - (m_tInfo.fcx - 30) / 2);
 	m_Rect.right = long(m_tInfo.fx + (m_tInfo.fcx - 30) / 2);
 	m_Rect.top = long(m_tInfo.fy - (m_tInfo.fcy - 30) / 2);
 	m_Rect.bottom = long(m_tInfo.fy + (m_tInfo.fcy - 30) / 2);
-		
+
 	FrameMove();
 
 	Scroll();
@@ -86,13 +87,13 @@ void CPlayer::Render(HDC _dc) {
 		int(m_tInfo.fy - m_tInfo.fcy / 2.f),
 		int(m_tInfo.fcx),
 		int(m_tInfo.fcy),
-		CBitMapMgr::GetInstance()->FindImage(m_pName)->GetMemDC(),				
+		CBitMapMgr::GetInstance()->FindImage(m_pName)->GetMemDC(),
 		int(m_tInfo.fcx * m_tFrame.iFrameStart),
 		int(m_tInfo.fcy * m_tFrame.iYIndex),
 		int(m_tInfo.fcx),
-		int(m_tInfo.fcy),														
+		int(m_tInfo.fcy),
 		RGB(71, 0, 60));
-	
+
 	/*
 	Rectangle(_dc,
 		m_Rect.left,
@@ -182,8 +183,8 @@ void CPlayer::FrameMove(void)
 
 void CPlayer::KeyCheck(void)
 {
-	if (m_dwState != STATE_ATT)
-	{
+	if (m_dwState != STATE_ATT) {
+
 		if (GETS(CKeyMgr)->StayKeyDown(VK_UP))
 		{
 			if (m_bRope_Check == true)
@@ -193,7 +194,7 @@ void CPlayer::KeyCheck(void)
 
 				m_pName = L"Player_Up";
 				m_dwState = STATE_UP;
-			}		
+			}
 		}
 		else if (GETS(CKeyMgr)->StayKeyDown(VK_DOWN))
 		{			
@@ -201,12 +202,14 @@ void CPlayer::KeyCheck(void)
 				m_tInfo.fy += m_fSpeed;
 				g_fScrollY -= m_fSpeed;
 			}
-			
+
 			m_dwState = STATE_DOWN;
 		}
 		else if (GETS(CKeyMgr)->StayKeyDown(VK_LEFT))
 		{
-			m_tInfo.fx -= m_fSpeed;
+			if (GETS(CSceneMgr)->GetSceneType() != SCENE_STAGE2) {
+				m_tInfo.fx -= m_fSpeed;
+			}
 			g_fScrollX += m_fSpeed * 2;
 
 			m_pName = L"Player_Left";
@@ -214,20 +217,28 @@ void CPlayer::KeyCheck(void)
 		}
 		else if (GETS(CKeyMgr)->StayKeyDown(VK_RIGHT))
 		{
-			m_tInfo.fx += m_fSpeed;
+			if (GETS(CSceneMgr)->GetSceneType() != SCENE_STAGE2) {
+				m_tInfo.fx += m_fSpeed;
+			}
 			g_fScrollX -= m_fSpeed * 2;
-
 			m_pName = L"Player_Right";
 			m_dwState = STATE_WALK;
 		}
 		else if (GETS(CKeyMgr)->OnceKeyUp(VK_UP)
-				|| GETS(CKeyMgr)->OnceKeyUp(VK_DOWN)
-				|| GETS(CKeyMgr)->OnceKeyUp(VK_LEFT)
-				|| GETS(CKeyMgr)->OnceKeyUp(VK_RIGHT))
+			|| GETS(CKeyMgr)->OnceKeyUp(VK_DOWN)
+			|| GETS(CKeyMgr)->OnceKeyUp(VK_LEFT)
+			|| GETS(CKeyMgr)->OnceKeyUp(VK_RIGHT))
 		{
 			m_dwState = STATE_STAND;
 		}
-				
+
+		if (GETS(CKeyMgr)->OnceKeyDown(VK_SPACE) && m_bJump == false)
+		{
+			//Jump
+			m_bJump = true;
+			m_fOldY = m_tInfo.fy;
+			m_dwState = STATE_JUMP;
+		}
 		if (GETS(CKeyMgr)->StayKeyDown(VK_CONTROL))
 		{
 			m_dwState = STATE_HIT;
@@ -248,47 +259,10 @@ void CPlayer::KeyCheck(void)
 }
 
 void CPlayer::Scroll()
-{	
+{
 #pragma region 스테이지1
 	if (GETS(CSceneMgr)->GetSceneType() == SCENE_STAGE1) {
-			if (m_tInfo.fx <= 516.f)
-			{
-				m_fSpeed = 4.f;
-				g_fScrollX = -8.f;
-			}
-			else
-				m_fSpeed = 2.f;
-
-			if (m_tInfo.fx >= 808.f)
-			{
-				m_fSpeed = 4.f;
-				g_fScrollX = -592.f;
-			}
-			else
-				m_fSpeed = 2.f;
-
-			if (m_tInfo.fy <= 116.f)
-			{
-				m_fSpeed = 4.f;
-				g_fScrollY = -88.f;
-			}
-			else
-				m_fSpeed = 2.f;
-
-			if (m_tInfo.fy >= 268.f)
-			{
-				m_fSpeed = 4.f;
-				g_fScrollY = -240.f;
-			}
-			else
-				m_fSpeed = 2.f;	
-	}
-		
-		
-#pragma endregion	
-#pragma region 스테이지2
-	if (GETS(CSceneMgr)->GetSceneType() == SCENE_STAGE2) {
-		if (m_tInfo.fx <= 96.f)
+		if (m_tInfo.fx <= 516.f)
 		{
 			m_fSpeed = 4.f;
 			g_fScrollX = -8.f;
@@ -296,6 +270,64 @@ void CPlayer::Scroll()
 		else
 			m_fSpeed = 2.f;
 
+		if (m_tInfo.fx >= 808.f)
+		{
+			m_fSpeed = 4.f;
+			g_fScrollX = -592.f;
+		}
+		else
+			m_fSpeed = 2.f;
+
+		if (m_tInfo.fy <= 116.f)
+		{
+			m_fSpeed = 4.f;
+			g_fScrollY = -88.f;
+		}
+		else
+			m_fSpeed = 2.f;
+
+		if (m_tInfo.fy >= 268.f)
+		{
+			m_fSpeed = 4.f;
+			g_fScrollY = -240.f;
+		}
+		else
+			m_fSpeed = 2.f;
+	}
+
+
+#pragma endregion	
+#pragma region 스테이지2
+	if (GETS(CSceneMgr)->GetSceneType() == SCENE_STAGE2) {
+		if (g_fScrollX >= -4.f)
+		{
+			m_fSpeed = 4.f;
+			g_fScrollX = 0;
+
+			if (GETS(CKeyMgr)->StayKeyDown(VK_LEFT))
+			{
+				m_tInfo.fx -= m_fSpeed;
+			}
+			if (GETS(CKeyMgr)->StayKeyDown(VK_RIGHT))
+			{
+				m_tInfo.fx += m_fSpeed * 2;
+			}
+		}
+		if (g_fScrollX <= -1972.f)
+		{
+			m_fSpeed = 4.f;
+			g_fScrollX = -1972.f;
+
+			if (GETS(CKeyMgr)->StayKeyDown(VK_LEFT))
+			{
+				m_tInfo.fx -= m_fSpeed * 2;
+			}
+			if (GETS(CKeyMgr)->StayKeyDown(VK_RIGHT))
+			{
+				m_tInfo.fx += m_fSpeed ;
+			}
+		}
+		/* 원래 기존의 방식 스크롤 방법.
 		if (m_tInfo.fx >= 2910.f)
 		{
 			m_fSpeed = 4.f;
@@ -303,22 +335,22 @@ void CPlayer::Scroll()
 		}
 		else
 			m_fSpeed = 2.f;
-		
+
 		if (m_tInfo.fy <= 95.f)
-	{
+		{
 		m_fSpeed = 4.f;
 			g_fScrollY = 152.f;
 		}
 		else
 			m_fSpeed = 2.f;
-			
+
 		if (m_tInfo.fy >= 1200.f)
 		{
 			m_fSpeed = 4.f;
 			g_fScrollY = -408.f;
 		}
 		else
-			m_fSpeed = 2.f;
+			m_fSpeed = 2.f;*/
 	}
 #pragma endregion
 #pragma region 스테이지3
@@ -346,7 +378,7 @@ void CPlayer::Scroll()
 		}
 		else
 			m_fSpeed = 2.f;
-			
+
 		if (m_tInfo.fy <= 570.f)
 		{
 			m_fSpeed = 4.f;
@@ -354,42 +386,42 @@ void CPlayer::Scroll()
 		}
 		else
 			m_fSpeed = 2.f;
-		}
+	}
 #pragma endregion
 #pragma region 보스스테이지
-    if ( GETS(CSceneMgr)->GetSceneType() == SCENE_BOSS) {
-	if (m_tInfo.fx <= 526.f)	//왼
-	{
-		m_fSpeed = 4.f;
-		g_fScrollX = -28.f;
-	}
+	if (GETS(CSceneMgr)->GetSceneType() == SCENE_BOSS) {
+		if (m_tInfo.fx <= 526.f)	//왼
+		{
+			m_fSpeed = 4.f;
+			g_fScrollX = -28.f;
+		}
 		else
-		m_fSpeed = 2.f;
-	
-	if (m_tInfo.fx >= 900.f)	//오
-	{
-		m_fSpeed = 4.f;
-		g_fScrollX = -776.f;
+			m_fSpeed = 2.f;
+
+		if (m_tInfo.fx >= 900.f)	//오
+		{
+			m_fSpeed = 4.f;
+			g_fScrollX = -776.f;
+		}
+		else
+			m_fSpeed = 2.f;
+
+		if (m_tInfo.fy <= 260.f)	//위
+		{
+			m_fSpeed = 4.f;
+			g_fScrollY = -252.f;
+		}
+		else
+			m_fSpeed = 2.f;
+
+		if (m_tInfo.fy >= 574.f)	//아래
+		{
+			m_fSpeed = 4.f;
+			g_fScrollY = -8.f;
+		}
+		else
+			m_fSpeed = 2.f;
 	}
-	else
-		m_fSpeed = 2.f;
-		
-	if (m_tInfo.fy <= 260.f)	//위
-	{
-		m_fSpeed = 4.f;
-		g_fScrollY = -252.f;
-	}
-	else
-		m_fSpeed = 2.f;
-		
-	if (m_tInfo.fy >= 574.f)	//아래
-	{
-		m_fSpeed = 4.f;
-		g_fScrollY = -8.f;
-	}
-	else
-		m_fSpeed = 2.f;
-}
 #pragma endregion
 }
 
@@ -405,7 +437,7 @@ void CPlayer::DynamicScroll(void)
 		g_fScrollX -= int(m_fSpeed);
 
 		if (g_fScrollX < WINCX - 2048)
-			g_fScrollX = WINCX - 2048;	
+			g_fScrollX = WINCX - 2048;
 	}
 
 	if (m_tInfo.fx + g_fScrollX < WINCX / 2 - m_ptOffset.x)
@@ -436,7 +468,7 @@ void CPlayer::DynamicScroll(void)
 	{
 		float fSpeed = (m_tInfo.fx + g_fScrollX) - WINCX / 2;
 
-		fSpeed /= 32.f;		
+		fSpeed /= 32.f;
 
 		g_fScrollX -= (int)fSpeed;
 
@@ -444,7 +476,7 @@ void CPlayer::DynamicScroll(void)
 			g_fScrollX = WINCX - (WINCX * 2);
 	}
 
-	
+
 	if (m_tInfo.fx + g_fScrollX < WINCX / 2)
 	{
 		float fSpeed = WINCX / 2 - (m_tInfo.fx + g_fScrollX);
@@ -455,7 +487,7 @@ void CPlayer::DynamicScroll(void)
 		if (g_fScrollX > 0)
 			g_fScrollX = 0;
 	}
-	
+
 
 	if (m_tInfo.fy + g_fScrollY > WINCY / 2)
 	{
@@ -483,7 +515,7 @@ void CPlayer::DynamicScroll(void)
 void CPlayer::Jump(void)
 {
 	//y = 중력가속도 * 시간 * 시간 * 0.5f + 시간 * 점프속도 + 점프파워
-	if(m_bJump)
+	if (m_bJump)
 	{
 		//점프 시작으로부터 흐른 시간...
 		m_fJumpAcc += 0.2f;
@@ -492,12 +524,10 @@ void CPlayer::Jump(void)
 
 	if (m_tInfo.fy > m_fOldY && m_bJump == true)
 	{
+		m_fJumpAcc = 0.f;
 		m_tInfo.fy = m_fOldY;
 		m_bJump = false;
-	}
-
-	system("cls");
-	cout << m_bJump << endl;
+	}	
 }
 
 void CPlayer::Rope_Ride(void)
@@ -516,4 +546,52 @@ void CPlayer::Rope_Ride(void)
 	}
 }
 
+bool CPlayer::Player_InfoCheck(void)
+{
+	if (GETS(CSceneMgr)->GetSceneType() == SCENE_STAGE1) {
+		if (24.f < m_tInfo.fx && m_tInfo.fx < 992.f) {
+			return true;
+		}
+		else if (24.f > m_tInfo.fx) {
+			m_tInfo.fx += m_fSpeed;
+		}
+		else if (992.f < m_tInfo.fx) {
+			m_tInfo.fx -= m_fSpeed;
+		}
+	}
+	if (GETS(CSceneMgr)->GetSceneType() == SCENE_STAGE2) {
+		if (24.f < m_tInfo.fx && m_tInfo.fx < 1000.f) {
+			return true;
+		}
+		else if (24.f > m_tInfo.fx) {
+			m_tInfo.fx += m_fSpeed;
+		}
+		else if (1000.f < m_tInfo.fx) {
+			m_tInfo.fx -= m_fSpeed;
+		}
+	}
+	if (GETS(CSceneMgr)->GetSceneType() == SCENE_STAGE3) {
+		if (24.f < m_tInfo.fx && m_tInfo.fx < 454.f) {
+			return true;
+		}
+		else if (24.f > m_tInfo.fx) {
+			m_tInfo.fx += m_fSpeed;
+		}
+		else if (454.f < m_tInfo.fx) {
+			m_tInfo.fx -= m_fSpeed;
+		}
+	}
+
+	if (GETS(CSceneMgr)->GetSceneType() == SCENE_BOSS) {
+		if (24.f < m_tInfo.fx && m_tInfo.fx < 998) {
+			return true;
+		}
+		else if (24.f > m_tInfo.fx) {
+			m_tInfo.fx += m_fSpeed;
+		}
+		else if (998.f < m_tInfo.fx) {
+			m_tInfo.fx -= m_fSpeed;
+		}
+	}
+}
 

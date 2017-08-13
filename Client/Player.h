@@ -21,7 +21,6 @@ private:
 	bool	m_bRope_Check;
 
 public:
-	void	SetLineList(list<LINE*>	pLine);
 	inline void	SetTile_Check(bool _bCheck) { m_bTile_Check = _bCheck; }
 	inline void SetRope_Check(bool _bCheck) { m_bRope_Check = _bCheck; }
 
@@ -32,7 +31,7 @@ private:
 	void DynamicScroll(void);
 	void Jump(void);
 	void Rope_Ride(void);
-
+	bool Player_InfoCheck(void);
 public:
 	virtual void Initialize(void);
 	virtual int Update(void);

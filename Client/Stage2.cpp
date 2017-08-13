@@ -2,6 +2,7 @@
 #include "Stage2.h"
 #include "BitMapMgr.h"
 #include "BitMap.h"
+#include "CollisitionMgr.h"
 #include "ObjMgr.h"
 #include "Stage2_Map.h"
 #include "Player.h"
@@ -92,6 +93,9 @@ int CStage2::Update(void)
 {
 	GETS(CObjMgr)->Update();
 
+	//Stage2_Tile Check
+	Stage2_TileCheck();
+
 	return 0;
 }
 
@@ -103,4 +107,43 @@ void CStage2::Render(HDC _dc)
 void CStage2::Release(void)
 {
 	GETS(CObjMgr)->DestroyInstance();
+}
+
+void CStage2::Stage2_TileCheck(void)
+{
+	//Stage2 Tile
+	OBJITER iter_Map = GETS(CObjMgr)->GetObjList(OBJ_BACKGROUND)->begin();
+	OBJITER iter_Map_End = GETS(CObjMgr)->GetObjList(OBJ_BACKGROUND)->end();
+	for (iter_Map; iter_Map != iter_Map_End; ++iter_Map)
+	{
+		if (((CStage2_Map*)(*iter_Map))->GetBgType() == BG_MAP)
+			m_pMap = (*iter_Map);
+	}
+
+	TILEITER iter_Tile = ((CStage2_Map*)m_pMap)->GetStage2_Tile()->begin();
+	TILEITER iter_Tile_End = ((CStage2_Map*)m_pMap)->GetStage2_Tile()->end();
+
+	//Player
+	m_pPlayer = GETS(CObjMgr)->GetObjList(OBJ_PLAYER)->front();
+
+	//Coliistion value
+	float fx = 0.f;
+	float fy = 0.f;
+
+	for (iter_Tile; iter_Tile != iter_Tile_End; ++iter_Tile)
+	{
+		if (GETS(CCollisitionMgr)->TileCollision(m_pPlayer, (*iter_Tile), &fx, &fy, 20.f) == true)
+		{
+			if (fx > fy)
+				m_pPlayer->GetInfo()->fy -= fy;
+			else
+				m_pPlayer->GetInfo()->fx -= fx;
+
+			m_bCollisiton_Check = true;
+		}
+		else
+		{
+			m_bCollisiton_Check = false;
+		}
+	}
 }
