@@ -8,6 +8,8 @@ CStage2_Map::CStage2_Map(void)
 	m_bRender = false;
 	m_bRender_Tile = false;
 	m_bStage_Check = false;
+
+	m_eBGType = BG_END;
 }
 
 CStage2_Map::CStage2_Map(bool bCheck)
@@ -15,6 +17,8 @@ CStage2_Map::CStage2_Map(bool bCheck)
 	m_bRender = false;
 	m_bRender_Tile = false;
 	m_bStage_Check = bCheck;
+
+	m_eBGType = BG_END;
 }
 
 CStage2_Map::~CStage2_Map(void)
@@ -59,8 +63,8 @@ void CStage2_Map::Initialize(void)
 	m_tInfo.fcx = 3056.f;
 	m_tInfo.fcy = 1462.f;
 
+	m_eBGType = BG_MAP;
 	m_eRenderType = RENDER_BACKGROUND;
-
 	if (m_bStage_Check == false)
 		LoadDate();
 }
