@@ -13,10 +13,14 @@ private:
 	bool			m_bRender_Tile;
 	bool			m_bStage_Check;
 	vector<TILE*>	m_vecStage2_Tile;
+private:
+	eBGType			m_eBGType;
 
 public:
 	inline void		SetRedner(bool _bRender) { m_bRender = _bRender; }
-
+	inline eBGType  GetBgType(void) { return m_eBGType; }
+public:
+	inline vector<TILE*>*	GetStage2_Tile(void) { return &m_vecStage2_Tile; }
 private:
 	void			LoadDate(void);
 
