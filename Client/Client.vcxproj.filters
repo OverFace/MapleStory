@@ -7,9 +7,6 @@
     <ClCompile Include="Obj.cpp">
       <Filter>02.Object</Filter>
     </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>02.Object\01.Player</Filter>
-    </ClCompile>
     <ClCompile Include="Logo_Back.cpp">
       <Filter>02.Object\03.Map\Logo</Filter>
     </ClCompile>
@@ -156,6 +153,9 @@
     </ClCompile>
     <ClCompile Include="CollisitionMgr.cpp">
       <Filter>04.Manager\CollisitionMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>02.Object\02.Monster</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
