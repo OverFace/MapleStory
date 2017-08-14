@@ -116,6 +116,7 @@ int CStage1::Update(void)
 
 	//Stage1_Tile Check
 	Stage1_TileCheck();
+	//OverTile_Check();
 
 	//Rope Check
 	Rope_Check();
@@ -182,4 +183,40 @@ void CStage1::Rope_Check(void)
 	CObj* pPlayer = GETS(CObjMgr)->GetObjList(OBJ_PLAYER)->front();
 
 	((CPlayer*)pPlayer)->SetRope_Check(bCheck);
+}
+
+void CStage1::OverTile_Check(void)
+{
+	/*
+	아직 미완성.......
+	*/
+
+	//Stage1 Tile
+	OBJITER iter_Map = GETS(CObjMgr)->GetObjList(OBJ_BACKGROUND)->begin();
+	OBJITER iter_Map_End = GETS(CObjMgr)->GetObjList(OBJ_BACKGROUND)->end();
+
+	for (iter_Map; iter_Map != iter_Map_End; ++iter_Map)
+	{
+		if (((CStage1_Map*)(*iter_Map))->GetBgType() == BG_MAP)
+			m_pMap = (*iter_Map);
+	}
+
+	//Player
+	m_pPlayer = GETS(CObjMgr)->GetObjList(OBJ_PLAYER)->front();
+	
+	float fx = 0.f, fy = 0.f;
+
+	if (GETS(CCollisitionMgr)->OverTileCollision(m_pPlayer, m_pMap, &fx, &fy, 0.f) == true)
+	{
+		if (fx > fy)
+			m_pPlayer->GetInfo()->fy -= fy;
+		else
+			m_pPlayer->GetInfo()->fx -= fx;
+
+		m_bCollisiton_Check = true;
+	}
+	else
+	{
+		m_bCollisiton_Check = false;
+	}
 }

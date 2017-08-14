@@ -12,6 +12,9 @@ CStage1_Map::CStage1_Map(void)
 	ZeroMemory(&m_tRopeInfo, sizeof(INFO));
 	ZeroMemory(&m_tRopeRect, sizeof(RECT));		
 
+	ZeroMemory(&m_tOverTile_Info, sizeof(INFO));
+	ZeroMemory(&m_tOverTile_Rect, sizeof(RECT));
+
 	m_eBGType = BG_END;
 }
 
@@ -78,6 +81,19 @@ void CStage1_Map::Initialize(void)
 	m_tRopeRect.top = long(m_tRopeInfo.fy - m_tRopeInfo.fcy / 2);
 	m_tRopeRect.bottom = long(m_tRopeInfo.fy + m_tRopeInfo.fcy / 2);
 
+	//Stage1 Over Tile Info
+	m_tOverTile_Info.fx = 1340.f;
+	m_tOverTile_Info.fy = 310.f;
+	m_tOverTile_Info.fcx = 560.f;
+	m_tOverTile_Info.fcy = 20.f;
+
+	//Stage1 Over Tile Rect
+	m_tOverTile_Rect.left = long(m_tOverTile_Info.fx - m_tOverTile_Info.fcx / 2);
+	m_tOverTile_Rect.right = long(m_tOverTile_Info.fx + m_tOverTile_Info.fcx / 2);
+	m_tOverTile_Rect.top = long(m_tOverTile_Info.fy - m_tOverTile_Info.fcy / 2);
+	m_tOverTile_Rect.bottom = long(m_tOverTile_Info.fy + m_tOverTile_Info.fcy / 2);
+
+
 	m_eBGType = BG_MAP;
 	m_eRenderType = RENDER_BACKGROUND;
 
@@ -93,14 +109,20 @@ int CStage1_Map::Update(void)
 	cout << m_tRopeRect.right << endl;
 	cout << m_tRopeRect.top << endl;
 	cout << m_tRopeRect.bottom << endl;
-	*/
-	
+	*/	
 
 	//Stage1 Rope Rect
-	m_tRopeRect.left = long(m_tRopeInfo.fx + g_fScrollX - m_tRopeInfo.fcx / 2);
-	m_tRopeRect.right = long(m_tRopeInfo.fx + g_fScrollX + m_tRopeInfo.fcx / 2);
-	m_tRopeRect.top = long(m_tRopeInfo.fy + g_fScrollY - m_tRopeInfo.fcy / 2);
-	m_tRopeRect.bottom = long(m_tRopeInfo.fy + g_fScrollY + m_tRopeInfo.fcy / 2);
+	m_tRopeRect.left	= long(m_tRopeInfo.fx + g_fScrollX - m_tRopeInfo.fcx / 2);
+	m_tRopeRect.right	= long(m_tRopeInfo.fx + g_fScrollX + m_tRopeInfo.fcx / 2);
+	m_tRopeRect.top		= long(m_tRopeInfo.fy + g_fScrollY - m_tRopeInfo.fcy / 2);
+	m_tRopeRect.bottom	= long(m_tRopeInfo.fy + g_fScrollY + m_tRopeInfo.fcy / 2);
+
+	//Stage1 Over Tile Rect
+	m_tOverTile_Rect.left	= long(m_tOverTile_Info.fx + g_fScrollX - m_tOverTile_Info.fcx / 2);
+	m_tOverTile_Rect.right	= long(m_tOverTile_Info.fx + g_fScrollX + m_tOverTile_Info.fcx / 2);
+	m_tOverTile_Rect.top	= long(m_tOverTile_Info.fy + g_fScrollY - m_tOverTile_Info.fcy / 2);
+	m_tOverTile_Rect.bottom = long(m_tOverTile_Info.fy + g_fScrollY + m_tOverTile_Info.fcy / 2);
+
 
 	static bool bIsPress_Five = false;
 	if (GetAsyncKeyState('5') && bIsPress_Five == false)
@@ -169,13 +191,19 @@ void CStage1_Map::Render(HDC _dc)
 		}
 	}
 
-	
+	/*
 	Rectangle(_dc,
 		m_tRopeRect.left,
 		m_tRopeRect.top,
 		m_tRopeRect.right,
 		m_tRopeRect.bottom);
-	
+	*/
+
+	Rectangle(_dc,
+		m_tOverTile_Rect.left,
+		m_tOverTile_Rect.top,
+		m_tOverTile_Rect.right,
+		m_tOverTile_Rect.bottom);
 }
 
 void CStage1_Map::Release(void)
