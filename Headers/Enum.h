@@ -51,6 +51,17 @@ enum ePlayerState
 	STATE_END
 };
 
+//Monsetr State
+enum eMonsterState
+{
+	MSTATE_STAND = 0,
+	MSTATE_WALK,
+	MSTATE_ATTACK,
+	MSTATE_HIT,
+	MSTATE_DEAD,
+	MSTATE_END
+};
+
 //Render 순서를 위한 열거체.
 enum eRenderType
 {

@@ -7,6 +7,7 @@
 #include "Stage1_Back.h"
 #include "Stage1_Map.h"
 #include "Player.h"
+#include "Slim.h"
 
 //Npc
 //-------------------------------------
@@ -58,6 +59,11 @@ void CStage1::Initialize(void)
 	pObj = new CPlayer;
 	pObj->Initialize();
 	GETS(CObjMgr)->AddObject(OBJ_PLAYER, pObj);
+
+	//Monster
+	pObj = new CSlim;
+	pObj->Initialize();
+	GETS(CObjMgr)->AddObject(OBJ_MONSTER, pObj);
 
 	//Store
 	CObj* pStore = new CStore;
@@ -187,10 +193,6 @@ void CStage1::Rope_Check(void)
 
 void CStage1::OverTile_Check(void)
 {
-	/*
-	아직 미완성.......
-	*/
-
 	//Stage1 Tile
 	OBJITER iter_Map = GETS(CObjMgr)->GetObjList(OBJ_BACKGROUND)->begin();
 	OBJITER iter_Map_End = GETS(CObjMgr)->GetObjList(OBJ_BACKGROUND)->end();
@@ -203,20 +205,25 @@ void CStage1::OverTile_Check(void)
 
 	//Player
 	m_pPlayer = GETS(CObjMgr)->GetObjList(OBJ_PLAYER)->front();
+
+	//Tile
+	TILEITER iter_Tile = ((CStage1_Map*)m_pMap)->GetStage1_Tile()->begin();
+	TILEITER iter_Tile_End = ((CStage1_Map*)m_pMap)->GetStage1_Tile()->end();
 	
 	float fx = 0.f, fy = 0.f;
 
-	if (GETS(CCollisitionMgr)->OverTileCollision(m_pPlayer, m_pMap, &fx, &fy, 0.f) == true)
+	for (iter_Tile; iter_Tile != iter_Tile_End; ++iter_Tile)
 	{
-		if (fx > fy)
-			m_pPlayer->GetInfo()->fy -= fy;
-		else
-			m_pPlayer->GetInfo()->fx -= fx;
+		if (GETS(CCollisitionMgr)->OverTileCollision(m_pPlayer, *iter_Tile, &fx, &fy, -40.f) == true)
+		{
+			//if (fx > fy)
+				m_pPlayer->GetInfo()->fy -= fy;
 
-		m_bCollisiton_Check = true;
-	}
-	else
-	{
-		m_bCollisiton_Check = false;
+			m_bCollisiton_Check = true;
+		}
+		else
+		{
+			m_bCollisiton_Check = false;
+		}
 	}
 }

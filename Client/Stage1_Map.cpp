@@ -197,13 +197,14 @@ void CStage1_Map::Render(HDC _dc)
 		m_tRopeRect.top,
 		m_tRopeRect.right,
 		m_tRopeRect.bottom);
-	*/
+	
 
 	Rectangle(_dc,
 		m_tOverTile_Rect.left,
 		m_tOverTile_Rect.top,
 		m_tOverTile_Rect.right,
 		m_tOverTile_Rect.bottom);
+	*/
 }
 
 void CStage1_Map::Release(void)

@@ -67,7 +67,7 @@ int CPlayer::Update() {
 	KeyCheck();
 	Jump();
 	Player_InfoCheck();
-	
+
 	FrameMove();
 	Scroll();
 
@@ -170,10 +170,12 @@ void CPlayer::FrameMove(void)
 	if (m_dwFrameTime + m_tFrame.dwFrameTime < GetTickCount())
 	{
 		m_dwFrameTime = GetTickCount();
-		
+
 		//로프를 탈때 애니메이션 멈추게 하기 위해서
-		if(m_bAnimation_Stop == false)		
+		//제대로 안됨. 바닥에서 스케이트 탐.
+		if (m_bAnimation_Stop == false) {
 			++m_tFrame.iFrameStart;
+		}
 	}
 
 	if (m_tFrame.iFrameStart > m_tFrame.iFrameEnd)
@@ -218,10 +220,18 @@ void CPlayer::KeyCheck(void)
 				m_dwState = STATE_UP;
 			}
 		}
-		
+		else if (GETS(CKeyMgr)->OnceKeyUp(VK_UP))
+		{
+			if (m_bRope_Check == true)
+			{
+				m_bAnimation_Stop = true;
+			}
+		}
+
 		if (GETS(CKeyMgr)->StayKeyDown(VK_DOWN))
 		{
 			if (m_bRope_Check == true) {
+				m_bAnimation_Stop = false;
 				m_pName = L"Player_Up";
 				m_tInfo.fy += m_fSpeed;
 				g_fScrollY -= m_fSpeed;
@@ -229,7 +239,15 @@ void CPlayer::KeyCheck(void)
 
 			m_dwState = STATE_DOWN;
 		}
-		else if (GETS(CKeyMgr)->StayKeyDown(VK_LEFT) && m_bRope_Check == false)
+		else if (GETS(CKeyMgr)->OnceKeyUp(VK_DOWN))
+		{
+			if (m_bRope_Check == true)
+			{
+				m_bAnimation_Stop = true;
+			}
+		}
+
+		if (GETS(CKeyMgr)->StayKeyDown(VK_LEFT) && m_bRope_Check == false)
 		{
 			if (GETS(CSceneMgr)->GetSceneType() != SCENE_STAGE2) {
 				m_tInfo.fx -= m_fSpeed;
@@ -249,7 +267,7 @@ void CPlayer::KeyCheck(void)
 			m_dwState = STATE_WALK;
 		}
 		else if (GETS(CKeyMgr)->OnceKeyUp(VK_UP)
-		   	|| GETS(CKeyMgr)->OnceKeyUp(VK_DOWN)
+			|| GETS(CKeyMgr)->OnceKeyUp(VK_DOWN)
 			|| GETS(CKeyMgr)->OnceKeyUp(VK_LEFT)
 			|| GETS(CKeyMgr)->OnceKeyUp(VK_RIGHT))
 		{
@@ -258,9 +276,9 @@ void CPlayer::KeyCheck(void)
 				m_dwState = STATE_STAND;
 			}
 			else
-			{				
+			{
 				m_dwState = STATE_UP;
-			}			
+			}
 		}
 
 		if (GETS(CKeyMgr)->OnceKeyDown(VK_SPACE) && m_bJump == false)
@@ -278,7 +296,7 @@ void CPlayer::KeyCheck(void)
 		if (GETS(CKeyMgr)->StayKeyDown(VK_SHIFT))
 		{
 			m_dwState = STATE_SKILL;
-		}		
+		}
 	}
 }
 
@@ -348,7 +366,7 @@ void CPlayer::Scroll()
 			}
 			if (GETS(CKeyMgr)->StayKeyDown(VK_RIGHT))
 			{
-				m_tInfo.fx += m_fSpeed ;
+				m_tInfo.fx += m_fSpeed;
 			}
 		}
 		/* 원래 기존의 방식 스크롤 방법.
@@ -465,7 +483,7 @@ void CPlayer::Jump(void)
 		m_tInfo.fy = m_fOldY;
 		m_bJump = false;
 		m_bRope_ColStop = false;
-	}	
+	}
 }
 
 INFO* CPlayer::Rope_Ride(void)

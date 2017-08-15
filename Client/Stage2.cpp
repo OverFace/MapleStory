@@ -44,7 +44,7 @@ void CStage2::Initialize(void)
 	pObj = new CPlayer;
 	pObj->Initialize();
 	GETS(CObjMgr)->AddObject(OBJ_PLAYER, pObj);
-
+	
 	//UI
 	//---------------------------------------------------------------------
 	//Status

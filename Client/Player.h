@@ -24,7 +24,7 @@ private:
 public:
 	inline void	SetTile_Check(bool _bCheck) { m_bTile_Check = _bCheck; }
 	inline void SetRope_Check(bool _bCheck) { if(m_bRope_ColStop == false) m_bRope_Check = _bCheck; }
-
+	inline void SetRope_CollStop(bool _bcheck) { m_bRope_ColStop = _bcheck; }
 private:
 	void FrameMove(void);
 	void KeyCheck(void);
