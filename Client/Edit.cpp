@@ -444,7 +444,7 @@ void CEdit::Picking(void)
 		{
 			m_vecTile[iIndex]->iDrawID = 0;
 			m_vecTile[iIndex]->iOption = 0;
-		}		
+		}
 	}	
 	else if (m_iChangeCount == 1)
 	{

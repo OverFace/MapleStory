@@ -70,6 +70,10 @@ void CBitMapMgr::LoadImageByScene(eSceneType eType)
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Player/Player_LEFT.bmp", L"Player_Left");
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Player/Player_RIGHT.bmp", L"Player_Right");
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Player/Player_UP.bmp", L"Player_Up");
+
+		//Monster Slim
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Monster/Slim/SlimL.bmp", L"Slim_L");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Monster/Slim/SlimR.bmp", L"Slim_R");
 		
 		//UI
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/UI/StateBar.bmp", L"Status");
@@ -160,6 +164,10 @@ void CBitMapMgr::LoadImageByScene(eSceneType eType)
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Player/Player_LEFT.bmp", L"Player_Left");
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Player/Player_RIGHT.bmp", L"Player_Right");
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Player/Player_UP.bmp", L"Player_Up");
+
+		//Monster Slim
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Monster/Slim/SlimL.bmp", L"Slim_L");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Monster/Slim/SlimR.bmp", L"Slim_R");
 
 		//UI
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/UI/StateBar.bmp", L"Status");
