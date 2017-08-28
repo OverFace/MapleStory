@@ -179,6 +179,8 @@
     <ClInclude Include="Logo.h" />
     <ClInclude Include="MainGame.h" />
     <ClInclude Include="Messo.h" />
+    <ClInclude Include="Monster.h" />
+    <ClInclude Include="Slim.h" />
     <ClInclude Include="Mouse.h" />
     <ClInclude Include="MpBar.h" />
     <ClInclude Include="Npc.h" />
@@ -235,6 +237,8 @@
     <ClCompile Include="Logo.cpp" />
     <ClCompile Include="MainGame.cpp" />
     <ClCompile Include="Messo.cpp" />
+    <ClCompile Include="Monster.cpp" />
+    <ClCompile Include="Slim.cpp" />
     <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="MpBar.cpp" />
     <ClCompile Include="Npc.cpp" />

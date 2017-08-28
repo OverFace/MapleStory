@@ -5,7 +5,6 @@
 #include "SceneMgr.h"
 #include "ObjMgr.h"
 #include "KeyMgr.h"
-
 #include "Stage1_Map.h"
 
 CPlayer::CPlayer(void) {
@@ -18,6 +17,8 @@ CPlayer::CPlayer(void) {
 	m_ptOffset.x = 200;
 
 	m_bJump = false;
+	m_bAnimation_Stop = false;
+	m_bRope_ColStop = false;
 	m_fJumpAcc = 0.f;
 	m_fOldY = 0.f;
 }
@@ -66,22 +67,23 @@ int CPlayer::Update() {
 	KeyCheck();
 	Jump();
 	Player_InfoCheck();
-	CObj::Update();
-
-	m_Rect.left = long(m_tInfo.fx - (m_tInfo.fcx - 30) / 2);
-	m_Rect.right = long(m_tInfo.fx + (m_tInfo.fcx - 30) / 2);
-	m_Rect.top = long(m_tInfo.fy - (m_tInfo.fcy - 30) / 2);
-	m_Rect.bottom = long(m_tInfo.fy + (m_tInfo.fcy - 30) / 2);
 
 	FrameMove();
-
 	Scroll();
-	//DynamicScroll();
+
+	CObj::Update();
+
+	//Rope랑 충돌 안될시에 바로 스텐드 자세로 돌아가도록 만들어야 된다.
+	m_Rect.left = long(m_tInfo.fx - (m_tInfo.fcx - 30) / 2);
+	m_Rect.right = long(m_tInfo.fx + (m_tInfo.fcx - 30) / 2);
+	m_Rect.top = long(m_tInfo.fy - (m_tInfo.fcy - 40) / 2);
+	m_Rect.bottom = long(m_tInfo.fy + (m_tInfo.fcy - 40) / 2);
+
 	return 0;
 }
 
 void CPlayer::Render(HDC _dc) {
-	//Rectangle(_dc, m_Rect.left, m_Rect.top, m_Rect.right, m_Rect.bottom);
+
 	TransparentBlt(_dc,
 		int(m_tInfo.fx - m_tInfo.fcx / 2.f),
 		int(m_tInfo.fy - m_tInfo.fcy / 2.f),
@@ -151,8 +153,8 @@ void CPlayer::FrameMove(void)
 			break;
 		case STATE_DOWN:
 			m_tFrame.iFrameStart = 0;
-			m_tFrame.iFrameEnd = 0;
-			m_tFrame.iYIndex = 5;
+			m_tFrame.iFrameEnd = 1;
+			m_tFrame.iYIndex = 0;
 			m_tFrame.dwFrameTime = 150;
 			break;
 		case STATE_SKILL:
@@ -168,12 +170,17 @@ void CPlayer::FrameMove(void)
 	if (m_dwFrameTime + m_tFrame.dwFrameTime < GetTickCount())
 	{
 		m_dwFrameTime = GetTickCount();
-		++m_tFrame.iFrameStart;
+
+		//로프를 탈때 애니메이션 멈추게 하기 위해서
+		//제대로 안됨. 바닥에서 스케이트 탐.
+		if (m_bAnimation_Stop == false) {
+			++m_tFrame.iFrameStart;
+		}
 	}
 
 	if (m_tFrame.iFrameStart > m_tFrame.iFrameEnd)
 	{
-		if (m_dwState != STATE_STAND)
+		if (m_dwState != STATE_STAND && m_bRope_Check == false)
 		{
 			m_dwState = STATE_STAND;
 		}
@@ -184,11 +191,28 @@ void CPlayer::FrameMove(void)
 void CPlayer::KeyCheck(void)
 {
 	if (m_dwState != STATE_ATT) {
+		//로프 타다가 점프 할때
+		if ((m_bRope_Check == true && GETS(CKeyMgr)->OnceKeyDown(VK_SPACE))
+			&& (GETS(CKeyMgr)->StayKeyDown(VK_LEFT) || GETS(CKeyMgr)->StayKeyDown(VK_RIGHT)))
+		{
+			m_bRope_Check = false;
+			m_bJump = true;
+			m_dwState = STATE_JUMP;
+
+			//Rope 충돌 체크 안함.
+			m_bRope_ColStop = true;
+		}
+
+		//일반 점프시 로프 충돌 막기(수정해야됨)
+		//if (GETS(CKeyMgr)->OnceKeyDown(VK_SPACE) && GETS(CKeyMgr)->OnceKeyUp(VK_UP) && m_bJump == true)
+			//m_bRope_ColStop = true;
 
 		if (GETS(CKeyMgr)->StayKeyDown(VK_UP))
 		{
 			if (m_bRope_Check == true)
 			{
+				m_bAnimation_Stop = false;			//Animation 진행
+				m_tInfo.fx = Rope_Ride()->fx + g_fScrollX;
 				m_tInfo.fy -= m_fSpeed;
 				g_fScrollY += m_fSpeed;
 
@@ -196,16 +220,34 @@ void CPlayer::KeyCheck(void)
 				m_dwState = STATE_UP;
 			}
 		}
-		else if (GETS(CKeyMgr)->StayKeyDown(VK_DOWN))
-		{			
-			if (m_pName == L"Player_Up") {
+		else if (GETS(CKeyMgr)->OnceKeyUp(VK_UP))
+		{
+			if (m_bRope_Check == true)
+			{
+				m_bAnimation_Stop = true;
+			}
+		}
+
+		if (GETS(CKeyMgr)->StayKeyDown(VK_DOWN))
+		{
+			if (m_bRope_Check == true) {
+				m_bAnimation_Stop = false;
+				m_pName = L"Player_Up";
 				m_tInfo.fy += m_fSpeed;
 				g_fScrollY -= m_fSpeed;
 			}
 
 			m_dwState = STATE_DOWN;
 		}
-		else if (GETS(CKeyMgr)->StayKeyDown(VK_LEFT))
+		else if (GETS(CKeyMgr)->OnceKeyUp(VK_DOWN))
+		{
+			if (m_bRope_Check == true)
+			{
+				m_bAnimation_Stop = true;
+			}
+		}
+
+		if (GETS(CKeyMgr)->StayKeyDown(VK_LEFT) && m_bRope_Check == false)
 		{
 			if (GETS(CSceneMgr)->GetSceneType() != SCENE_STAGE2) {
 				m_tInfo.fx -= m_fSpeed;
@@ -215,7 +257,7 @@ void CPlayer::KeyCheck(void)
 			m_pName = L"Player_Left";
 			m_dwState = STATE_WALK;
 		}
-		else if (GETS(CKeyMgr)->StayKeyDown(VK_RIGHT))
+		else if (GETS(CKeyMgr)->StayKeyDown(VK_RIGHT) && m_bRope_Check == false)
 		{
 			if (GETS(CSceneMgr)->GetSceneType() != SCENE_STAGE2) {
 				m_tInfo.fx += m_fSpeed;
@@ -229,7 +271,14 @@ void CPlayer::KeyCheck(void)
 			|| GETS(CKeyMgr)->OnceKeyUp(VK_LEFT)
 			|| GETS(CKeyMgr)->OnceKeyUp(VK_RIGHT))
 		{
-			m_dwState = STATE_STAND;
+			if (m_bRope_Check == false)
+			{
+				m_dwState = STATE_STAND;
+			}
+			else
+			{
+				m_dwState = STATE_UP;
+			}
 		}
 
 		if (GETS(CKeyMgr)->OnceKeyDown(VK_SPACE) && m_bJump == false)
@@ -247,13 +296,6 @@ void CPlayer::KeyCheck(void)
 		if (GETS(CKeyMgr)->StayKeyDown(VK_SHIFT))
 		{
 			m_dwState = STATE_SKILL;
-		}
-		if (GETS(CKeyMgr)->StayKeyDown(VK_SPACE) && m_bJump == false)
-		{
-			//Jump
-			m_fOldY = m_tInfo.fy;
-			m_dwState = STATE_JUMP;	
-			m_bJump = true;
 		}
 	}
 }
@@ -324,7 +366,7 @@ void CPlayer::Scroll()
 			}
 			if (GETS(CKeyMgr)->StayKeyDown(VK_RIGHT))
 			{
-				m_tInfo.fx += m_fSpeed ;
+				m_tInfo.fx += m_fSpeed;
 			}
 		}
 		/* 원래 기존의 방식 스크롤 방법.
@@ -425,97 +467,10 @@ void CPlayer::Scroll()
 #pragma endregion
 }
 
-void CPlayer::DynamicScroll(void)
-{
-	//system("cls");
-	//cout << m_tInfo.fx + g_fScrollX << endl;
-	//cout << WINCX / 2 + m_ptOffset.x << endl;
-	//cout << g_fScrollX << endl;
-
-	if (m_tInfo.fx + g_fScrollX > WINCX / 2 + m_ptOffset.x)
-	{
-		g_fScrollX -= int(m_fSpeed);
-
-		if (g_fScrollX < WINCX - 2048)
-			g_fScrollX = WINCX - 2048;
-	}
-
-	if (m_tInfo.fx + g_fScrollX < WINCX / 2 - m_ptOffset.x)
-	{
-		g_fScrollX += int(m_fSpeed);
-
-		if (g_fScrollX > 0)
-			g_fScrollX = 0;
-	}
-
-	if (m_tInfo.fy + g_fScrollY > WINCY / 2 + m_ptOffset.y)
-	{
-		g_fScrollY -= int(m_fSpeed);
-
-		if (g_fScrollY < WINCY - 1440)
-			g_fScrollY = WINCY - 1440;
-	}
-
-	if (m_tInfo.fy + g_fScrollY < WINCY / 2 - m_ptOffset.y)
-	{
-		g_fScrollY += int(m_fSpeed);
-
-		if (g_fScrollY > 0)
-			g_fScrollY = 0;
-	}
-
-	if (m_tInfo.fx + g_fScrollX > WINCX / 2)
-	{
-		float fSpeed = (m_tInfo.fx + g_fScrollX) - WINCX / 2;
-
-		fSpeed /= 32.f;
-
-		g_fScrollX -= (int)fSpeed;
-
-		if (g_fScrollX < WINCX - (WINCX * 2))
-			g_fScrollX = WINCX - (WINCX * 2);
-	}
-
-
-	if (m_tInfo.fx + g_fScrollX < WINCX / 2)
-	{
-		float fSpeed = WINCX / 2 - (m_tInfo.fx + g_fScrollX);
-		fSpeed /= 32.f;
-
-		g_fScrollX += (int)fSpeed;
-
-		if (g_fScrollX > 0)
-			g_fScrollX = 0;
-	}
-
-
-	if (m_tInfo.fy + g_fScrollY > WINCY / 2)
-	{
-		float fSpeed = (m_tInfo.fy + g_fScrollY) - WINCY / 2;
-		fSpeed /= 32.f;
-
-		g_fScrollY -= (int)fSpeed;
-
-		if (g_fScrollY < WINCY - (WINCY * 2))
-			g_fScrollY = WINCY - (WINCY * 2);
-	}
-
-	if (m_tInfo.fy + g_fScrollY < WINCY / 2)
-	{
-		float fSpeed = WINCY / 2 - (m_tInfo.fy + g_fScrollY);
-		fSpeed /= 32.f;
-
-		g_fScrollY += (int)fSpeed;
-
-		if (g_fScrollY > 0)
-			g_fScrollY = 0;
-	}
-}
-
 void CPlayer::Jump(void)
 {
 	//y = 중력가속도 * 시간 * 시간 * 0.5f + 시간 * 점프속도 + 점프파워
-	if (m_bJump)
+	if (m_bJump && m_bRope_Check == false)
 	{
 		//점프 시작으로부터 흐른 시간...
 		m_fJumpAcc += 0.2f;
@@ -527,10 +482,11 @@ void CPlayer::Jump(void)
 		m_fJumpAcc = 0.f;
 		m_tInfo.fy = m_fOldY;
 		m_bJump = false;
-	}	
+		m_bRope_ColStop = false;
+	}
 }
 
-void CPlayer::Rope_Ride(void)
+INFO* CPlayer::Rope_Ride(void)
 {
 	CObj* pMap = NULL;
 
@@ -544,6 +500,8 @@ void CPlayer::Rope_Ride(void)
 			pMap = (*iter_map);
 		}
 	}
+
+	return &((CStage1_Map*)pMap)->GetRopeInfo();
 }
 
 bool CPlayer::Player_InfoCheck(void)
@@ -593,5 +551,7 @@ bool CPlayer::Player_InfoCheck(void)
 			m_tInfo.fx -= m_fSpeed;
 		}
 	}
+
+	return false;
 }
 

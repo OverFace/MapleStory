@@ -7,9 +7,6 @@
     <ClCompile Include="Obj.cpp">
       <Filter>02.Object</Filter>
     </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>02.Object\01.Player</Filter>
-    </ClCompile>
     <ClCompile Include="Logo_Back.cpp">
       <Filter>02.Object\03.Map\Logo</Filter>
     </ClCompile>
@@ -157,6 +154,15 @@
     <ClCompile Include="CollisitionMgr.cpp">
       <Filter>04.Manager\CollisitionMgr</Filter>
     </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>02.Object\01.Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Slim.cpp">
+      <Filter>02.Object\02.Monster\Slim</Filter>
+    </ClCompile>
+    <ClCompile Include="Monster.cpp">
+      <Filter>02.Object\02.Monster</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainGame.h">
@@ -170,12 +176,6 @@
     </ClInclude>
     <ClInclude Include="Logo_Back.h">
       <Filter>02.Object\03.Map\Logo</Filter>
-    </ClInclude>
-    <ClInclude Include="Stage1_Back.h">
-      <Filter>02.Object\03.Map\Stage1</Filter>
-    </ClInclude>
-    <ClInclude Include="Stage1_Map.h">
-      <Filter>02.Object\03.Map\Stage1</Filter>
     </ClInclude>
     <ClInclude Include="Logo.h">
       <Filter>02.Object\03.Scene\Logo</Filter>
@@ -221,9 +221,6 @@
     </ClInclude>
     <ClInclude Include="Edit.h">
       <Filter>02.Object\03.Scene\Edit</Filter>
-    </ClInclude>
-    <ClInclude Include="Stage2_Map.h">
-      <Filter>02.Object\03.Map\Stage2</Filter>
     </ClInclude>
     <ClInclude Include="Stage3_Map.h">
       <Filter>02.Object\03.Map\Stage3</Filter>
@@ -320,6 +317,21 @@
     </ClInclude>
     <ClInclude Include="CollisitionMgr.h">
       <Filter>04.Manager\CollisitionMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="Stage1_Back.h">
+      <Filter>02.Object\03.Map\Stage1</Filter>
+    </ClInclude>
+    <ClInclude Include="Stage1_Map.h">
+      <Filter>02.Object\03.Map\Stage1</Filter>
+    </ClInclude>
+    <ClInclude Include="Slim.h">
+      <Filter>02.Object\02.Monster\Slim</Filter>
+    </ClInclude>
+    <ClInclude Include="Monster.h">
+      <Filter>02.Object\02.Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="Stage2_Map.h">
+      <Filter>02.Object\03.Map\Stage2</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -483,6 +495,9 @@
     </Filter>
     <Filter Include="04.Manager\CollisitionMgr">
       <UniqueIdentifier>{2321fede-280e-4de6-bf58-0290090916b1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Object\02.Monster\Slim">
+      <UniqueIdentifier>{63e063be-1e68-4e8f-9d5c-6830874766fc}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

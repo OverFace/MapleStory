@@ -15,7 +15,7 @@ private:
 private:
 	void		 Stage1_TileCheck(void);
 	void		 Rope_Check(void);
-
+	void		 OverTile_Check(void);
 
 public:
 	virtual void Initialize(void);

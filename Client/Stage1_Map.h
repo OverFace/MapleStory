@@ -19,12 +19,19 @@ private:
 	RECT			m_tRopeRect;
 
 private:
+	INFO			m_tOverTile_Info;
+	RECT			m_tOverTile_Rect;
+
+private:
 	eBGType			m_eBGType;
 
 public:
 	inline eBGType  GetBgType(void) { return m_eBGType; }
 	inline RECT		GetRope(void) { return m_tRopeRect; }
 	inline INFO     GetRopeInfo(void) { return m_tRopeInfo; }
+	inline RECT     GetOverTIleRect(void) { return m_tOverTile_Rect; }
+	inline INFO     GetOverTileInfo(void) { return m_tOverTile_Info; }
+
 public:
 	inline void		SetRedner(bool _bRender) { m_bRender = _bRender; }
 
