@@ -39,6 +39,7 @@ void CShoes::Initialize(void)
 
 int CShoes::Update(void)
 {
+	CItem::Setting_ItemRect();
 	return 0;
 }
 

@@ -90,10 +90,10 @@ int CStore_Npc::Update(void)
 	m_tNpc_Rect.top = long(m_tInfo.fy + (m_tInfo.fcy / 2.f) - m_tInfo.fcy / 2);
 	m_tNpc_Rect.bottom = long(m_tInfo.fy + (m_tInfo.fcy / 2.f) + m_tInfo.fcy / 2);
 
-	m_tNpc_Rect.left += g_fScrollX;
-	m_tNpc_Rect.right += g_fScrollX;
-	m_tNpc_Rect.top += g_fScrollY;
-	m_tNpc_Rect.bottom += g_fScrollY;
+	m_tNpc_Rect.left += long(g_fScrollX);
+	m_tNpc_Rect.right += long(g_fScrollX);
+	m_tNpc_Rect.top += long(g_fScrollY);
+	m_tNpc_Rect.bottom += long(g_fScrollY);
 
 	CObj::Update();
 
@@ -141,7 +141,9 @@ void CStore_Npc::Store_Key(void)
 	POINT pt;
 	pt = CMouse::GetPos();
 
-	if (PtInRect(((CStore*)m_pStore)->GetEscButton_Rect(), pt) && GETS(CKeyMgr)->OnceKeyDown(VK_LBUTTON) && m_bStoreOpen_Check == true)
+	if ((PtInRect(((CStore*)m_pStore)->GetEscButton_Rect(0), pt) || PtInRect(((CStore*)m_pStore)->GetEscButton_Rect(1), pt))
+		&& GETS(CKeyMgr)->OnceKeyDown(VK_LBUTTON) 
+		&& m_bStoreOpen_Check == true)
 	{
 		if (((CStore*)m_pStore)->GetUiVisible() == true)
 		{

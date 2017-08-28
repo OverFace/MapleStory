@@ -37,3 +37,11 @@ void CItem::SetItemDescription_Render(HDC _dc, float fx, float fy)
 	SelectObject(_dc, oldFont);
 }
 
+void CItem::Setting_ItemRect(void)
+{
+	m_Rect.left = long(m_tInfo.fx + (m_tInfo.fcx / 2.f) - m_tInfo.fcx / 2);
+	m_Rect.right = long(m_tInfo.fx + (m_tInfo.fcx / 2.f) + m_tInfo.fcx / 2);
+	m_Rect.top = long(m_tInfo.fy + (m_tInfo.fcy / 2.f) - m_tInfo.fcy / 2);
+	m_Rect.bottom = long(m_tInfo.fy + (m_tInfo.fcy / 2.f) + m_tInfo.fcy / 2);
+}
+

@@ -23,4 +23,7 @@ public:
 	virtual int		Update(void)PURE;
 	virtual	void	Render(HDC _dc)PURE;
 	virtual void	Release(void)PURE;
+
+protected:
+	virtual void	Setting_ItemRect(void);
 };

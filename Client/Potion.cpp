@@ -41,6 +41,7 @@ void CPotion::Initialize(void)
 
 int CPotion::Update(void)
 {
+	CItem::Setting_ItemRect();
 	return 0;
 }
 

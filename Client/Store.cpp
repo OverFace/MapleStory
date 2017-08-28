@@ -6,6 +6,10 @@
 #include "Mouse.h"
 #include "KeyMgr.h"
 
+//UI
+#include "UI.h"
+#include "Inven.h"
+
 //Item----------------------------
 #include "Npc.h"
 #include "Item.h"
@@ -23,12 +27,22 @@ typedef list<CItem*>::iterator ITEMITER;
 CStore::CStore(void)
 {
 	m_eUiType = UI_STORE;
-	ZeroMemory(&m_tEscButton_Rect, sizeof(RECT));
-	ZeroMemory(&m_tEscButton_Info, sizeof(INFO));
+	for (int i = 0; i < 2; ++i)
+	{
+		ZeroMemory(&m_tEscButton_Rect[i], sizeof(RECT));
+		ZeroMemory(&m_tEscButton_Info[i], sizeof(INFO));
+	}	
 	ZeroMemory(&m_tScroll_Rect, sizeof(RECT));
 	ZeroMemory(&m_tScroll_Info, sizeof(INFO));
+	ZeroMemory(&m_tBuyButton_Info, sizeof(INFO));
+	ZeroMemory(&m_tBuyButton_Rect, sizeof(RECT));
 
 	m_pStore_Npc = NULL;
+	m_pSelect_Item = NULL;
+
+	m_bScrollMove = false;
+	for (int i = 0; i < 4; ++i)
+		m_bScroll_Item_Check[i] = false;
 }
 
 CStore::~CStore(void)
@@ -43,17 +57,29 @@ void CStore::Initialize(void)
 	m_tInfo.fcx = 508.f;
 	m_tInfo.fcy = 505.f;
 
-	//Esc Button
-	m_tEscButton_Info.fx = m_tInfo.fx + m_tInfo.fcx / 2.f;
-	m_tEscButton_Info.fy = m_tInfo.fy + 10.f;
-	m_tEscButton_Info.fcx = 9.f;
-	m_tEscButton_Info.fcy = 9.f;
+	//Esc Button / X 버튼
+	m_tEscButton_Info[0].fx = m_tInfo.fx + m_tInfo.fcx / 2.f;
+	m_tEscButton_Info[0].fy = m_tInfo.fy + 10.f;
+	m_tEscButton_Info[0].fcx = 9.f;
+	m_tEscButton_Info[0].fcy = 9.f;
+
+	//Esc Button / 상점 나가기 버튼
+	m_tEscButton_Info[1].fx = m_tInfo.fx +  200.f;
+	m_tEscButton_Info[1].fy = m_tInfo.fy + 53.f;
+	m_tEscButton_Info[1].fcx = 66.f;
+	m_tEscButton_Info[1].fcy = 16.f;
 
 	//Scroll 
 	m_tScroll_Info.fx = m_tInfo.fx + 258.f;
 	m_tScroll_Info.fy = m_tInfo.fy + 134.f;
 	m_tScroll_Info.fcx = 9.f;
 	m_tScroll_Info.fcy = 26.f;
+
+	//Buy Button
+	m_tBuyButton_Info.fx = m_tInfo.fx + 200.f;
+	m_tBuyButton_Info.fy = m_tInfo.fy + 73.f;
+	m_tBuyButton_Info.fcx = 66.f;
+	m_tBuyButton_Info.fcx = 16.f;
 
 #pragma region Item List
 	//Store Item
@@ -160,10 +186,20 @@ void CStore::Initialize(void)
 int CStore::Update(void)
 {
 	//Button Rect
-	m_tEscButton_Rect.left = long(m_tEscButton_Info.fx + (m_tEscButton_Info.fcx / 2.f) - m_tEscButton_Info.fcx / 2);
-	m_tEscButton_Rect.right = long(m_tEscButton_Info.fx + (m_tEscButton_Info.fcx / 2.f) + m_tEscButton_Info.fcx / 2);
-	m_tEscButton_Rect.top = long(m_tEscButton_Info.fy + (m_tEscButton_Info.fcy / 2.f) - m_tEscButton_Info.fcy / 2);
-	m_tEscButton_Rect.bottom = long(m_tEscButton_Info.fy + (m_tEscButton_Info.fcy / 2.f) + m_tEscButton_Info.fcy / 2);
+	m_tEscButton_Rect[0].left = long(m_tEscButton_Info[0].fx + (m_tEscButton_Info[0].fcx / 2.f) - m_tEscButton_Info[0].fcx / 2);
+	m_tEscButton_Rect[0].right = long(m_tEscButton_Info[0].fx + (m_tEscButton_Info[0].fcx / 2.f) + m_tEscButton_Info[0].fcx / 2);
+	m_tEscButton_Rect[0].top = long(m_tEscButton_Info[0].fy + (m_tEscButton_Info[0].fcy / 2.f) - m_tEscButton_Info[0].fcy / 2);
+	m_tEscButton_Rect[0].bottom = long(m_tEscButton_Info[0].fy + (m_tEscButton_Info[0].fcy / 2.f) + m_tEscButton_Info[0].fcy / 2);
+
+	m_tEscButton_Rect[1].left = long(m_tEscButton_Info[1].fx + (m_tEscButton_Info[1].fcx / 2.f) - m_tEscButton_Info[1].fcx / 2);
+	m_tEscButton_Rect[1].right = long(m_tEscButton_Info[1].fx + (m_tEscButton_Info[1].fcx / 2.f) + m_tEscButton_Info[1].fcx / 2);
+	m_tEscButton_Rect[1].top = long(m_tEscButton_Info[1].fy + (m_tEscButton_Info[1].fcy / 2.f) - m_tEscButton_Info[1].fcy / 2);
+	m_tEscButton_Rect[1].bottom = long(m_tEscButton_Info[1].fy + (m_tEscButton_Info[1].fcy / 2.f) + m_tEscButton_Info[1].fcy / 2);
+
+	m_tBuyButton_Rect.left = long(m_tBuyButton_Info.fx + (m_tBuyButton_Info.fcx / 2.f) - m_tBuyButton_Info.fcx / 2);
+	m_tBuyButton_Rect.right = long(m_tBuyButton_Info.fx + (m_tBuyButton_Info.fcx / 2.f) + m_tBuyButton_Info.fcx / 2);
+	m_tBuyButton_Rect.top = long(m_tBuyButton_Info.fy + (m_tBuyButton_Info.fcy / 2.f) - m_tBuyButton_Info.fcy / 2);
+	m_tBuyButton_Rect.bottom = long(m_tBuyButton_Info.fy + (m_tBuyButton_Info.fcy / 2.f) + m_tBuyButton_Info.fcy / 2);
 
 	//Scroll Rect
 	m_tScroll_Rect.left = long(m_tScroll_Info.fx + (m_tScroll_Info.fcx / 2.f) - m_tScroll_Info.fcx / 2);
@@ -171,10 +207,21 @@ int CStore::Update(void)
 	m_tScroll_Rect.top = long(m_tScroll_Info.fy + (m_tScroll_Info.fcy / 2.f) - m_tScroll_Info.fcy / 2);
 	m_tScroll_Rect.bottom = long(m_tScroll_Info.fy + (m_tScroll_Info.fcy / 2.f) + m_tScroll_Info.fcy / 2);
 
+	//Item Update(Store)
+	ITEMITER iter_Item = m_Store_ItemList.begin();
+	ITEMITER iter_Item_End = m_Store_ItemList.end();
+
+	for (iter_Item; iter_Item != iter_Item_End; ++iter_Item)
+	{
+		(*iter_Item)->Update();
+	}
+
 	if (m_bVisible == true)
 	{
 		Scroll_Move();
 		Item_View_Control();
+		Select_SotreItem();
+		Buy_Button_Click();
 	}
 
 	return 0;
@@ -193,11 +240,11 @@ void CStore::Render(HDC _dc)
 			RGB(0, 0, 0));		
 
 		TransparentBlt(_dc,
-			int(m_tEscButton_Info.fx), int(m_tEscButton_Info.fy),
-			int(m_tEscButton_Info.fcx), int(m_tEscButton_Info.fcy),
+			int(m_tEscButton_Info[0].fx), int(m_tEscButton_Info[0].fy),
+			int(m_tEscButton_Info[0].fcx), int(m_tEscButton_Info[0].fcy),
 			GETS(CBitMapMgr)->FindImage(L"Button_Esc")->GetMemDC(),
 			0, 0,
-			int(m_tEscButton_Info.fcx), int(m_tEscButton_Info.fcy),
+			int(m_tEscButton_Info[0].fcx), int(m_tEscButton_Info[0].fcy),
 			RGB(1, 1, 1));
 
 		TransparentBlt(_dc,
@@ -210,17 +257,23 @@ void CStore::Render(HDC _dc)
 
 		/*
 		Rectangle(_dc,
-			m_tEscButton_Rect.left,
-			m_tEscButton_Rect.top,
-			m_tEscButton_Rect.right,
-			m_tEscButton_Rect.bottom);
-
-		Rectangle(_dc,
 			m_tScroll_Rect.left,
 			m_tScroll_Rect.top,
 			m_tScroll_Rect.right,
 			m_tScroll_Rect.bottom);		
-		*/		
+
+		Rectangle(_dc,
+			m_tEscButton_Rect[1].left,
+			m_tEscButton_Rect[1].top,
+			m_tEscButton_Rect[1].right,
+			m_tEscButton_Rect[1].bottom);		
+		*/			
+
+		Rectangle(_dc,
+			m_tBuyButton_Rect.left,
+			m_tBuyButton_Rect.top,
+			m_tBuyButton_Rect.right,
+			m_tBuyButton_Rect.bottom);
 
 		ITEMITER iter = m_Store_ItemList.begin();
 		float fx = 10.f;
@@ -253,17 +306,16 @@ void CStore::Release(void)
 void CStore::Scroll_Move(void)
 {
 	//마우스로 클릭하고 밑으로 내릴때 스크롤 바가 움직이게 한다.
-	static bool bMove = false;
 	POINT pt;
 	pt = CMouse::GetPos();
 
 	if (PtInRect(&m_tScroll_Rect, pt) && GETS(CKeyMgr)->GetKeyState(VK_LBUTTON))
-		bMove = true;
+		m_bScrollMove = true;
 
-	if (!GETS(CKeyMgr)->GetKeyState(VK_LBUTTON) && bMove == true)
-		bMove = false;
+	if (!GETS(CKeyMgr)->GetKeyState(VK_LBUTTON) && m_bScrollMove == true)
+		m_bScrollMove = false;
 
-	if (bMove == true)
+	if (m_bScrollMove == true)
 	{
 		if (m_tScroll_Info.fy < m_tInfo.fy + 134.f)
 		{
@@ -285,14 +337,12 @@ void CStore::Scroll_Move(void)
 void CStore::Item_View_Control(void)
 {
 	/*
-	아이템 리스트에서 스크롤이 될 경우에 리스트의 맨 앞에 있는 것이 빠지고
-	그 밑에 있는 것들이 위로 올라오는 식으로 보여 주어야 한다.
-	지금 상태는 미리 13개 아이템을 다 넣어논 상태이고 지금 13개 다 보여주고 있다.
-
-	기준은 스크롤 바의 좌표 값을 기준으로 잡아보자.
+	Scroll 움직임에 따른 아이템 위치 변환
 	*/
 
+	static float fCurScrollPosY = 0.f;
 	static bool bMoveUp = false;
+
 	if (m_tScroll_Info.fy < m_tInfo.fy + 134.f)
 	{
 		bMoveUp = false;
@@ -300,6 +350,12 @@ void CStore::Item_View_Control(void)
 	}
 	else if (m_tScroll_Info.fy > m_tInfo.fy + 134.f && m_tScroll_Info.fy < 559.f)
 	{
+		//스크롤바 상태 Change
+		if (m_bScrollMove == true && m_tScroll_Info.fy > fCurScrollPosY)
+			bMoveUp = false;
+		else if (m_bScrollMove == true && m_tScroll_Info.fy < fCurScrollPosY)
+			bMoveUp = true;
+
 		ITEMITER iter = m_Store_ItemList.begin();
 		ITEMITER iter_End = m_Store_ItemList.end();
 
@@ -324,6 +380,10 @@ void CStore::Item_View_Control(void)
 					else
 						++iter;
 				}
+
+				//밑으로 드래그 할 시에 스크롤 기준값 담기.
+				fCurScrollPosY = m_tScroll_Info.fy;
+				m_bScroll_Item_Check[0] = false;
 			}
 			else if (m_tScroll_Info.fy >= 396 && m_tScroll_Info.fy < 477)
 			{
@@ -339,6 +399,10 @@ void CStore::Item_View_Control(void)
 					else
 						++iter;
 				}
+
+				//밑으로 드래그 할 시에 스크롤 기준값 담기.
+				fCurScrollPosY = m_tScroll_Info.fy;
+				m_bScroll_Item_Check[1] = false;
 			}
 			else if (m_tScroll_Info.fy >= 477 && m_tScroll_Info.fy < 558)
 			{
@@ -354,6 +418,10 @@ void CStore::Item_View_Control(void)
 					else
 						++iter;
 				}
+
+				//밑으로 드래그 할 시에 스크롤 기준값 담기.
+				fCurScrollPosY = m_tScroll_Info.fy;
+				m_bScroll_Item_Check[2] = false;
 			}
 			else if (m_tScroll_Info.fy >= 558 && m_tScroll_Info.fy < 559)
 			{
@@ -369,6 +437,10 @@ void CStore::Item_View_Control(void)
 					else
 						++iter;
 				}
+
+				//밑으로 드래그 할 시에 스크롤 기준값 담기.
+				fCurScrollPosY = m_tScroll_Info.fy;
+				m_bScroll_Item_Check[3] = false;
 			}
 		}		
 
@@ -377,43 +449,147 @@ void CStore::Item_View_Control(void)
 		{
 			if (m_tScroll_Info.fy <= 315 && m_tScroll_Info.fy > 234)
 			{
-				CItem* pArmor = new CArmor(L"Armor");
-				((CArmor*)pArmor)->Initialize();
-				((CArmor*)pArmor)->SetArmor_Data(5, 5, 5, 5, 10, 5, 1000, 0);
-				pArmor->SetItemDescription(L"기본 갑옷");
-				m_Store_ItemList.push_front(pArmor);				
+				for (iter; iter != iter_End; ++iter)
+				{
+					if (!lstrcmp((*iter)->GetItemData()->m_szName, L"Armor"))
+						break;
+					else
+					{
+						if (m_bScroll_Item_Check[0] == false)
+						{
+							CItem* pArmor = new CArmor(L"Armor");
+							((CArmor*)pArmor)->Initialize();
+							((CArmor*)pArmor)->SetArmor_Data(5, 5, 5, 5, 10, 5, 1000, 0);
+							pArmor->SetItemDescription(L"기본 갑옷");
+							m_Store_ItemList.push_front(pArmor);
+
+							m_bScroll_Item_Check[0] = true;
+						}						
+					}
+				}		
+
+				fCurScrollPosY = m_tScroll_Info.fy;
 			}
 			else if (m_tScroll_Info.fy <= 396 && m_tScroll_Info.fy > 315)
 			{
-				CItem* pArmor = new CArmor(L"Armor1");
-				((CArmor*)pArmor)->Initialize();
-				((CArmor*)pArmor)->SetArmor_Data(10, 10, 10, 10, 15, 10, 2000, 1);
-				pArmor->SetItemDescription(L"고급 갑옷");
-				m_Store_ItemList.push_front(pArmor);
+				for (iter; iter != iter_End; ++iter)
+				{
+					if (!lstrcmp((*iter)->GetItemData()->m_szName, L"Armor1"))
+						break;
+					else
+					{
+						if (m_bScroll_Item_Check[1] == false)
+						{
+							CItem* pArmor = new CArmor(L"Armor1");
+							((CArmor*)pArmor)->Initialize();
+							((CArmor*)pArmor)->SetArmor_Data(10, 10, 10, 10, 15, 10, 2000, 1);
+							pArmor->SetItemDescription(L"고급 갑옷");
+							m_Store_ItemList.push_front(pArmor);
+
+							m_bScroll_Item_Check[1] = true;
+						}						
+					}
+				}			
+
+				fCurScrollPosY = m_tScroll_Info.fy;
 			}
 			else if (m_tScroll_Info.fy <= 477 && m_tScroll_Info.fy > 396)
 			{
-				CItem* pWeapon = new CWeapon(L"Weapon");
-				((CWeapon*)pWeapon)->Initialize();
-				((CWeapon*)pWeapon)->SetWeapon_Data(10, 2, 2, 2, 0, 0, 1000, 2);
-				pWeapon->SetItemDescription(L"기본 무기");
-				m_Store_ItemList.push_front(pWeapon);
+				for (iter; iter != iter_End; ++iter)
+				{
+					if (!lstrcmp((*iter)->GetItemData()->m_szName, L"Weapon"))
+						break;
+					else
+					{
+						if (m_bScroll_Item_Check[2] == false)
+						{
+							CItem* pWeapon = new CWeapon(L"Weapon");
+							((CWeapon*)pWeapon)->Initialize();
+							((CWeapon*)pWeapon)->SetWeapon_Data(10, 2, 2, 2, 0, 0, 1000, 2);
+							pWeapon->SetItemDescription(L"기본 무기");
+							m_Store_ItemList.push_front(pWeapon);
+
+							m_bScroll_Item_Check[2] = true;
+						}					
+					}
+				}				
+
+				fCurScrollPosY = m_tScroll_Info.fy;
 			}
 			else if (m_tScroll_Info.fy <= 558 && m_tScroll_Info.fy > 477)
 			{
-				CItem* pWeapon = new CWeapon(L"Weapon1");
-				((CWeapon*)pWeapon)->Initialize();
-				((CWeapon*)pWeapon)->SetWeapon_Data(20, 4, 4, 4, 0, 0, 2000, 3);
-				pWeapon->SetItemDescription(L"고급 무기");
-				m_Store_ItemList.push_front(pWeapon);
-			}
-		}
+				for (iter; iter != iter_End; ++iter)
+				{
+					if (!lstrcmp((*iter)->GetItemData()->m_szName, L"Weapon1"))
+						break;
+					else
+					{
+						if (m_bScroll_Item_Check[3] == false)
+						{
+							CItem* pWeapon = new CWeapon(L"Weapon1");
+							((CWeapon*)pWeapon)->Initialize();
+							((CWeapon*)pWeapon)->SetWeapon_Data(20, 4, 4, 4, 0, 0, 2000, 3);
+							pWeapon->SetItemDescription(L"고급 무기");
+							m_Store_ItemList.push_front(pWeapon);
 
-		/*
-		system("cls");
-		cout << m_tScroll_Info.fy << endl;
-		cout << m_tScroll_Rect.top << endl;
-		cout << m_tScroll_Rect.bottom << endl;
-		*/	
+							m_bScroll_Item_Check[3] = true;
+						}						
+					}
+				}		
+
+				fCurScrollPosY = m_tScroll_Info.fy;
+			}
+		}	
 	}		
+}
+
+void CStore::Select_SotreItem(void)
+{
+	ITEMITER iter_Item = m_Store_ItemList.begin();
+	ITEMITER iter_Item_End = m_Store_ItemList.end();
+
+	POINT pt;
+	pt = CMouse::GetPos();
+	
+	for (iter_Item; iter_Item != iter_Item_End; ++iter_Item)
+	{
+		if (PtInRect((*iter_Item)->GetRect(), pt) && GETS(CKeyMgr)->OnceKeyDown(VK_LBUTTON))
+		{
+			//아이템 렉트 클릭시 동작
+			m_pSelect_Item = (*iter_Item);
+		}
+	}
+}
+
+void CStore::Buy_Button_Click(void)
+{
+	//버튼 클릭시 Buy 기능 수행. (Rect 체크가 제대로 안됨. 렉트 위치 확인해야됨)
+	POINT pt;
+	pt = CMouse::GetPos();
+
+	if (PtInRect(&m_tBuyButton_Rect, pt) && GETS(CKeyMgr)->OnceKeyDown(VK_LBUTTON))
+	{
+		Buy_StoreItem(m_pSelect_Item);
+	}	
+}
+
+void CStore::Buy_StoreItem(CItem * pItem)
+{	
+	//Inven 가져오기.
+	OBJITER iter = GETS(CObjMgr)->GetObjList(OBJ_UI)->begin();
+	OBJITER iter_End = GETS(CObjMgr)->GetObjList(OBJ_UI)->end();
+
+	CUi* pInven = NULL;
+
+	for (iter; iter != iter_End; ++iter)
+	{
+		if (((CUi*)(*iter))->GetUiType() == UI_INVEN)
+		{
+			pInven = ((CUi*)(*iter));
+		}
+	}
+
+	//Inven에 아이템 push
+	((CInven*)pInven)->Set_StoreCheck(true);
+	((CInven*)pInven)->Set_InvenItem(pItem);
 }

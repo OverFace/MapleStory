@@ -41,6 +41,7 @@ void CArmor::Initialize(void)
 
 int CArmor::Update(void)
 {
+	CItem::Setting_ItemRect();	
 	return 0;
 }
 

@@ -41,6 +41,7 @@ void CGlove::Initialize(void)
 
 int CGlove::Update(void)
 {
+	CItem::Setting_ItemRect();
 	return 0;
 }
 

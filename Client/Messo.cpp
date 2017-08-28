@@ -43,6 +43,7 @@ void CMesso::Initialize(void)
 
 int CMesso::Update(void)
 {
+	CItem::Setting_ItemRect();
 	return 0;
 }
 

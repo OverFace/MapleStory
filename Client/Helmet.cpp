@@ -39,6 +39,7 @@ void CHelmet::Initialize(void)
 
 int CHelmet::Update(void)
 {
+	CItem::Setting_ItemRect();
 	return 0;
 }
 

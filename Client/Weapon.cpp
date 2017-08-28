@@ -41,6 +41,7 @@ void CWeapon::Initialize(void)
 
 int CWeapon::Update(void)
 {
+	CItem::Setting_ItemRect();
 	return 0;
 }
 

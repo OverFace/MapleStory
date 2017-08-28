@@ -39,6 +39,7 @@ void CExp::Initialize(void)
 
 int CExp::Update(void)
 {
+	CItem::Setting_ItemRect();
 	return 0;
 }
 

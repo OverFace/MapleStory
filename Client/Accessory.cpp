@@ -39,6 +39,7 @@ void CAccessory::Initialize(void)
 
 int CAccessory::Update(void)
 {
+	CItem::Setting_ItemRect();
 	return 0;
 }
 
