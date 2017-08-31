@@ -12,6 +12,7 @@ CPlayer::CPlayer(void) {
 	m_pName = NULL;
 	memset(&m_tFrame, 0, sizeof(FRAME));
 	m_dwFrameTime = 0;
+	m_iMoney = 0;
 
 	m_ptOffset.y = 200;
 	m_ptOffset.x = 200;

@@ -5,6 +5,7 @@
 #include "ObjMgr.h"
 #include "Mouse.h"
 #include "KeyMgr.h"
+#include "Player.h"
 
 //UI
 #include "UI.h"
@@ -38,12 +39,15 @@ CStore::CStore(void)
 	ZeroMemory(&m_tBuyButton_Rect, sizeof(RECT));
 	ZeroMemory(&m_tStoreInven_Scroll_Info, sizeof(INFO));
 	ZeroMemory(&m_tStoreInven_Scroll_Rect, sizeof(RECT));
+	ZeroMemory(&m_tSaleButton_Info, sizeof(INFO));
+	ZeroMemory(&m_tSaleButton_Rect, sizeof(RECT));
 
 	m_pStore_Npc = NULL;
 	m_pSelect_Item = NULL;
 
 	m_bScrollMove = false;
 	m_bStoreInven_ScrollMove = false;
+	m_bSale_Check = false;
 	for (int i = 0; i < 4; ++i)
 		m_bScroll_Item_Check[i] = false;
 
@@ -91,6 +95,12 @@ void CStore::Initialize(void)
 	m_tBuyButton_Info.fcx = 66.f;
 	m_tBuyButton_Info.fcy = 16.f;
 
+	//Sale Button
+	m_tSaleButton_Info.fx = m_tInfo.fx + 432.f;
+	m_tSaleButton_Info.fy = m_tInfo.fy + 73.f;
+	m_tSaleButton_Info.fcx = 66.f;
+	m_tSaleButton_Info.fcy = 16.f;
+
 #pragma region Item List
 	//Store Item
 	//----------------------------------------------------------------------------------
@@ -98,12 +108,14 @@ void CStore::Initialize(void)
 	CItem* pArmor = new CArmor(L"Armor");
 	((CArmor*)pArmor)->Initialize();
 	((CArmor*)pArmor)->SetArmor_Data(5, 5, 5, 5, 10, 5, 1000, 500, 0);	
+	pArmor->SetStoreTileNumber(0);
 	pArmor->SetItemDescription(L"기본 갑옷");
 	m_Store_ItemList.push_back(pArmor);
 
 	pArmor = new CArmor(L"Armor1");
 	((CArmor*)pArmor)->Initialize();
 	((CArmor*)pArmor)->SetArmor_Data(10, 10, 10, 10, 15, 10, 2000, 1000, 1);
+	pArmor->SetStoreTileNumber(1);
 	pArmor->SetItemDescription(L"고급 갑옷");
 	m_Store_ItemList.push_back(pArmor);
 	//----------------------------------------------------------------------------------
@@ -111,12 +123,14 @@ void CStore::Initialize(void)
 	CItem* pWeapon = new CWeapon(L"Weapon");
 	((CWeapon*)pWeapon)->Initialize();
 	((CWeapon*)pWeapon)->SetWeapon_Data(10, 2, 2, 2, 0, 0, 1000, 500, 2);
+	pWeapon->SetStoreTileNumber(2);
 	pWeapon->SetItemDescription(L"기본 무기");
 	m_Store_ItemList.push_back(pWeapon);
 
 	pWeapon = new CWeapon(L"Weapon1");
 	((CWeapon*)pWeapon)->Initialize();
 	((CWeapon*)pWeapon)->SetWeapon_Data(20, 4, 4, 4, 0, 0, 2000, 1000, 3);
+	pWeapon->SetStoreTileNumber(3);
 	pWeapon->SetItemDescription(L"고급 무기");
 	m_Store_ItemList.push_back(pWeapon);
 	//----------------------------------------------------------------------------------
@@ -124,12 +138,14 @@ void CStore::Initialize(void)
 	CItem* pGlove = new CGlove(L"Glove");
 	((CGlove*)pGlove)->Initialize();
 	((CGlove*)pGlove)->SetGlove_Data(2, 2, 2, 2, 5, 0, 500, 250, 4);
+	pGlove->SetStoreTileNumber(4);
 	pGlove->SetItemDescription(L"기본 장갑");
 	m_Store_ItemList.push_back(pGlove);
 
 	pGlove = new CGlove(L"Glove1");
 	((CGlove*)pGlove)->Initialize();
 	((CGlove*)pGlove)->SetGlove_Data(4, 4, 4, 4, 10, 0, 1000, 500, 5);
+	pGlove->SetStoreTileNumber(5);
 	pGlove->SetItemDescription(L"고급 장갑");
 	m_Store_ItemList.push_back(pGlove);
 	//----------------------------------------------------------------------------------
@@ -137,6 +153,7 @@ void CStore::Initialize(void)
 	CItem* pHelmet = new CHelmet(L"Helmet");
 	((CHelmet*)pHelmet)->Initialize();
 	((CHelmet*)pHelmet)->SetHelmet_Data(4, 4, 4, 4, 5, 5, 500, 250, 6);
+	pHelmet->SetStoreTileNumber(6);
 	pHelmet->SetItemDescription(L"투구");
 	m_Store_ItemList.push_back(pHelmet);
 	//----------------------------------------------------------------------------------
@@ -144,12 +161,14 @@ void CStore::Initialize(void)
 	CItem* pAcs = new CAccessory(L"Accessory", ITEM_RING);
 	((CAccessory*)pAcs)->Initialize();
 	((CAccessory*)pAcs)->SetAccessory_Data(2, 2, 2, 2, 3, 3, 500, 250, 7);
+	pAcs->SetStoreTileNumber(7);
 	pAcs->SetItemDescription(L"메이플 반지");
 	m_Store_ItemList.push_back(pAcs);
 
 	pAcs = new CAccessory(L"Accessory1", ITEM_RING);
 	((CAccessory*)pAcs)->Initialize();
 	((CAccessory*)pAcs)->SetAccessory_Data(4, 4, 4, 4, 6, 6, 1000, 500, 8);
+	pAcs->SetStoreTileNumber(8);
 	pAcs->SetItemDescription(L"고급 반지");
 	m_Store_ItemList.push_back(pAcs);
 	//----------------------------------------------------------------------------------
@@ -157,12 +176,14 @@ void CStore::Initialize(void)
 	CItem* pShoes = new CShoes(L"Shoes");
 	((CShoes*)pShoes)->Initialize();
 	((CShoes*)pShoes)->SetShoes_Data(2, 2, 2, 2, 0, 0, 500, 250, 9);
+	pShoes->SetStoreTileNumber(9);
 	pShoes->SetItemDescription(L"기본 신발");
 	m_Store_ItemList.push_back(pShoes);
 
 	pShoes = new CShoes(L"Shoes1");
 	((CShoes*)pShoes)->Initialize();
 	((CShoes*)pShoes)->SetShoes_Data(4, 4, 4, 4, 2, 2, 1000, 500, 10);
+	pShoes->SetStoreTileNumber(10);
 	pShoes->SetItemDescription(L"고급 신발");
 	m_Store_ItemList.push_back(pShoes);
 	//----------------------------------------------------------------------------------
@@ -170,12 +191,14 @@ void CStore::Initialize(void)
 	CItem* pPotion = new CPotion(L"Hp_Potion", ITEM_HP_POTION);
 	((CPotion*)pPotion)->Initialize();
 	((CPotion*)pPotion)->SetPotion_Data(0, 0, 0, 0, 1000, 0, 100, 50, 11);
+	pPotion->SetStoreTileNumber(11);
 	pPotion->SetItemDescription(L"생명력 포션");
 	m_Store_ItemList.push_back(pPotion);
 
 	pPotion = new CPotion(L"Mp_Potion", ITEM_MP_POTION);
 	((CPotion*)pPotion)->Initialize();
 	((CPotion*)pPotion)->SetPotion_Data(0, 0, 0, 0, 0, 1000, 100, 50, 12);
+	pPotion->SetStoreTileNumber(12);
 	pPotion->SetItemDescription(L"마나 포션");
 	m_Store_ItemList.push_back(pPotion);
 	//----------------------------------------------------------------------------------
@@ -211,6 +234,11 @@ int CStore::Update(void)
 	m_tBuyButton_Rect.top = long(m_tBuyButton_Info.fy + (m_tBuyButton_Info.fcy / 2.f) - m_tBuyButton_Info.fcy / 2);
 	m_tBuyButton_Rect.bottom = long(m_tBuyButton_Info.fy + (m_tBuyButton_Info.fcy / 2.f) + m_tBuyButton_Info.fcy / 2);
 
+	m_tSaleButton_Rect.left = long(m_tSaleButton_Info.fx + (m_tSaleButton_Info.fcx / 2.f) - m_tSaleButton_Info.fcx / 2);
+	m_tSaleButton_Rect.right = long(m_tSaleButton_Info.fx + (m_tSaleButton_Info.fcx / 2.f) + m_tSaleButton_Info.fcx / 2);
+	m_tSaleButton_Rect.top = long(m_tSaleButton_Info.fy + (m_tSaleButton_Info.fcy / 2.f) - m_tSaleButton_Info.fcy / 2);
+	m_tSaleButton_Rect.bottom = long(m_tSaleButton_Info.fy + (m_tSaleButton_Info.fcy / 2.f) + m_tSaleButton_Info.fcy / 2);
+
 	//Scroll Rect
 	m_tScroll_Rect.left = long(m_tScroll_Info.fx + (m_tScroll_Info.fcx / 2.f) - m_tScroll_Info.fcx / 2);
 	m_tScroll_Rect.right = long(m_tScroll_Info.fx + (m_tScroll_Info.fcx / 2.f) + m_tScroll_Info.fcx / 2);
@@ -237,8 +265,10 @@ int CStore::Update(void)
 		Item_View_Control();
 		StoreInven_Scroll_Move();		
 		StoreInven_ItemView_Control();
-		Select_SotreItem();
+		Select_StoreItem();
 		Buy_Button_Click();
+		Select_StoreInvenItem();
+		Sale_Button_Click();
 	}
 
 	return 0;
@@ -294,11 +324,11 @@ void CStore::Render(HDC _dc)
 			m_tEscButton_Rect[1].bottom);		
 
 		Rectangle(_dc,
-			m_tBuyButton_Rect.left,
-			m_tBuyButton_Rect.top,
-			m_tBuyButton_Rect.right,
-			m_tBuyButton_Rect.bottom);
-		*/				
+			m_tSaleButton_Rect.left,
+			m_tSaleButton_Rect.top,
+			m_tSaleButton_Rect.right,
+			m_tSaleButton_Rect.bottom);
+		*/			
 
 		ITEMITER iter = m_Store_ItemList.begin();
 		float fx = 10.f;
@@ -316,6 +346,9 @@ void CStore::Render(HDC _dc)
 		
 		//Store Inven
 		Buy_StoreItem_Render(_dc);
+
+		//Messo Render
+		Messo_Present(_dc);
 	}		
 }
 
@@ -797,7 +830,8 @@ void CStore::StoreInven_ItemView_Control(void)
 	}
 }
 #pragma endregion
-void CStore::Select_SotreItem(void)
+#pragma region Buy Function
+void CStore::Select_StoreItem(void)
 {
 	ITEMITER iter_Item = m_Store_ItemList.begin();
 	ITEMITER iter_Item_End = m_Store_ItemList.end();
@@ -810,8 +844,7 @@ void CStore::Select_SotreItem(void)
 		if (PtInRect((*iter_Item)->GetRect(), pt) && GETS(CKeyMgr)->OnceKeyDown(VK_LBUTTON))
 		{
 			//아이템 렉트 클릭시 동작
-			m_pSelect_Item = (*iter_Item);
-			cout << (*iter_Item)->GetItemData()->m_dwOption << endl;
+			m_pSelect_Item = (*iter_Item);			
 		}
 	}
 }
@@ -889,4 +922,123 @@ void CStore::Buy_StoreItem_Render(HDC _dc)
 			}
 		}
 	}	
+}
+
+#pragma endregion
+#pragma region Sale Function
+void CStore::Select_StoreInvenItem(void)
+{
+	OBJITER iter = GETS(CObjMgr)->GetObjList(OBJ_UI)->begin();
+	OBJITER iter_End = GETS(CObjMgr)->GetObjList(OBJ_UI)->end();
+
+	CUi* pInven = NULL;
+
+	for (iter; iter != iter_End; ++iter)
+	{
+		if (((CUi*)(*iter))->GetUiType() == UI_INVEN)
+		{
+			pInven = ((CUi*)(*iter));
+		}
+	}
+
+	if (((CInven*)pInven)->Get_StoreCheck() == true)
+	{
+		list<CItem*>* InvenList = ((CInven*)pInven)->GetInven_ItemList();
+
+		POINT pt;
+		pt = CMouse::GetPos();
+
+		ITEMITER iter_Inven = InvenList->begin();
+		ITEMITER iter_Inven_End = InvenList->end();
+
+		for (iter_Inven; iter_Inven != iter_Inven_End; ++iter_Inven)
+		{
+			if (PtInRect((*iter_Inven)->GetRect(), pt) && GETS(CKeyMgr)->OnceKeyDown(VK_LBUTTON))
+			{
+				//아이템 렉트 클릭시 동작
+				m_pSelect_Item = (*iter_Inven);				
+			}			
+		}				
+	}
+}
+
+void CStore::Sale_Button_Click(void)
+{
+	//버튼 클릭시 Sale 기능 수행.
+	POINT pt;
+	pt = CMouse::GetPos();
+
+	if (PtInRect(&m_tSaleButton_Rect, pt) && (GETS(CKeyMgr)->OnceKeyDown(VK_LBUTTON)))
+	{
+		if (m_pSelect_Item != NULL)
+		{
+			Sale_StoreInven_Item(m_pSelect_Item);
+			m_bSale_Check = false;
+		}
+	}
+}
+
+void CStore::Sale_StoreInven_Item(CItem * pItem)
+{
+	//Inven 가져오기.
+	OBJITER iter = GETS(CObjMgr)->GetObjList(OBJ_UI)->begin();
+	OBJITER iter_End = GETS(CObjMgr)->GetObjList(OBJ_UI)->end();
+
+	CUi* pInven = NULL;
+	CPlayer* pPlayer = NULL;
+
+	pPlayer = ((CPlayer*)(GETS(CObjMgr)->GetObjList(OBJ_PLAYER)->back()));
+
+	for (iter; iter != iter_End; ++iter)
+	{
+		if (((CUi*)(*iter))->GetUiType() == UI_INVEN)
+		{
+			pInven = ((CUi*)(*iter));
+		}
+	}
+
+	list<CItem*>* InvenItemList = ((CInven*)pInven)->GetInven_ItemList();
+	ITEMITER iter_Inven = InvenItemList->begin();
+	ITEMITER iter_Inven_End = InvenItemList->end();
+
+	//Inven에 아이템 delete
+	for (iter_Inven; iter_Inven != iter_Inven_End;)
+	{
+		if ((*iter_Inven)->GetItemData()->m_dwOption == m_pSelect_Item->GetItemData()->m_dwOption && m_bSale_Check == false)
+		{
+			//Sale Price를 Player Money에 축적 시킨다.
+			pPlayer->SetMoney((*iter_Inven)->GetItemData()->m_iSalePrice);
+
+			//그다음 원래 있던 아이템 삭제
+			InvenItemList->erase(iter_Inven);
+
+			iter_Inven = InvenItemList->begin();
+			iter_Inven_End = InvenItemList->end();
+
+			m_bSale_Check = true;
+		}
+		else
+			++iter_Inven;
+	}	
+
+	//Store Inven Item 갯수 증가.
+	--m_iStoreInven_ItemCount;
+}
+#pragma endregion
+
+void CStore::Messo_Present(HDC _dc)
+{
+	CPlayer* pPlayer = NULL;
+	pPlayer = ((CPlayer*)(GETS(CObjMgr)->GetObjList(OBJ_PLAYER)->back()));
+
+	m_myFont = CreateFont(11, 5, 0, 0, 0, 0, 0, 0, DEFAULT_CHARSET, 0, 0, 0, 0, L"굴림");
+	HFONT oldFont = (HFONT)SelectObject(_dc, m_myFont);
+
+	//Money
+	TCHAR szMesso[128] = { 0 };
+	_stprintf_s(szMesso, _countof(szMesso), L"%d", pPlayer->GetMoney());
+
+	SetBkMode(_dc, TRANSPARENT);
+	TextOut(_dc, int(m_tInfo.fx + 420.f), int(m_tInfo.fy + 57.f), szMesso, lstrlen(szMesso));
+	SelectObject(_dc, oldFont);
 }

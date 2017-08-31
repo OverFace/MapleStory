@@ -90,7 +90,7 @@ bool CCollisitionMgr::RopeCollision(void)
 	}
 
 	RECT rc;
-	if ((IntersectRect(&rc, pPlayer->GetRect(), &((CStage1_Map*)(pMap))->GetRope())) == true) {
+	if ((IntersectRect(&rc, pPlayer->GetRect(), &((CStage1_Map*)(pMap))->GetRope()))) {
 		return true;
 	}
 

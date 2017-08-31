@@ -9,16 +9,20 @@ public:
 	virtual ~CStore(void);
 
 private:
+	HFONT			 	 m_myFont;
 	list<CItem*>		 m_Store_ItemList;		
 	list<ITEM>			 m_Temp_StoreInvenList;
 	CObj*				 m_pStore_Npc;
 	CItem*				 m_pSelect_Item;
+	bool				 m_bSale_Check;
 
 private: //Button
 	INFO				 m_tEscButton_Info[2];
 	RECT				 m_tEscButton_Rect[2];
 	INFO				 m_tBuyButton_Info;
 	RECT				 m_tBuyButton_Rect;
+	INFO				 m_tSaleButton_Info;
+	RECT				 m_tSaleButton_Rect;
 
 private: //Store Scroll Status
 	INFO				 m_tScroll_Info;
@@ -45,10 +49,16 @@ private: //Store Inven Scroll
 	void				 StoreInven_ItemView_Control(void);
 
 private: //Buy & Sale
-	void				 Select_SotreItem(void);		
+	void				 Select_StoreItem(void);		
+	void				 Select_StoreInvenItem(void);
 	void				 Buy_Button_Click(void);		
 	void				 Buy_StoreItem(CItem* pItem);  
 	void				 Buy_StoreItem_Render(HDC _dc);
+	void				 Sale_Button_Click(void);
+	void				 Sale_StoreInven_Item(CItem* pItem);
+
+private: //Messo Present
+	void				 Messo_Present(HDC _dc);
 
 public:
 	virtual void		 Initialize(void);
