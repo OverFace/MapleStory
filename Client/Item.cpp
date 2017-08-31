@@ -37,6 +37,23 @@ void CItem::SetItemDescription_Render(HDC _dc, float fx, float fy)
 	SelectObject(_dc, oldFont);
 }
 
+void CItem::SetSaleItemDescription_Render(HDC _dc, float fx, float fy)
+{
+	HFONT myFont = CreateFont(11, 5, 0, 0, 0, 0, 0, 0, DEFAULT_CHARSET, 0, 0, 0, 0, L"±¼¸²");
+	HFONT oldFont = (HFONT)SelectObject(_dc, myFont);
+
+	//Price
+	TCHAR szSalePrice[128] = { 0 };
+	_stprintf_s(szSalePrice, _countof(szSalePrice), L"%d", m_tItem.m_iSalePrice);
+
+	SetBkMode(_dc, TRANSPARENT);
+
+	TextOut(_dc, int(fx), int(fy), m_tItem.m_szDescription, lstrlen(m_tItem.m_szDescription));
+	TextOut(_dc, int(fx + 15.f), int(fy + 19.f), szSalePrice, lstrlen(szSalePrice));
+
+	SelectObject(_dc, oldFont);
+}
+
 void CItem::Setting_ItemRect(void)
 {
 	m_Rect.left = long(m_tInfo.fx + (m_tInfo.fcx / 2.f) - m_tInfo.fcx / 2);

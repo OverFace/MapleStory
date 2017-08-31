@@ -97,6 +97,7 @@ typedef struct tagItem
 	int			m_iHp;					//HP
 	int			m_iMp;					//MP
 	int			m_iPrice;				//PRICE
+	int			m_iSalePrice;			//SALE PRICE
 	eItemType	m_eType;				//타입
 	DWORD		m_dwOption;				//조건을 주기 위한 옵션값.
 }ITEM;

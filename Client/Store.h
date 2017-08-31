@@ -9,7 +9,8 @@ public:
 	virtual ~CStore(void);
 
 private:
-	list<CItem*>		 m_Store_ItemList;			
+	list<CItem*>		 m_Store_ItemList;		
+	list<ITEM>			 m_Temp_StoreInvenList;
 	CObj*				 m_pStore_Npc;
 	CItem*				 m_pSelect_Item;
 
@@ -19,24 +20,35 @@ private: //Button
 	INFO				 m_tBuyButton_Info;
 	RECT				 m_tBuyButton_Rect;
 
-private: //Scroll Status
+private: //Store Scroll Status
 	INFO				 m_tScroll_Info;
 	RECT				 m_tScroll_Rect;
 	bool				 m_bScrollMove;
 	bool				 m_bScroll_Item_Check[4];
 
+private: //Store Inven Scroll Status
+	INFO				 m_tStoreInven_Scroll_Info;
+	RECT				 m_tStoreInven_Scroll_Rect;
+	bool				 m_bStoreInven_ScrollMove;
+	int					 m_iStoreInven_ItemCount;
+
 public:
 	inline RECT*		 GetEscButton_Rect(int _iIndex) { return &m_tEscButton_Rect[_iIndex]; }
 	inline list<CItem*>* GetStore_ItemList(void) { return &m_Store_ItemList; }
 
-private: //Scroll 
+private: //Store Scroll 
 	void				 Scroll_Move(void);
 	void				 Item_View_Control(void);
 
+private: //Store Inven Scroll
+	void				 StoreInven_Scroll_Move(void);
+	void				 StoreInven_ItemView_Control(void);
+
 private: //Buy & Sale
-	void				 Select_SotreItem(void);
-	void				 Buy_Button_Click(void);
-	void				 Buy_StoreItem(CItem* pItem);
+	void				 Select_SotreItem(void);		
+	void				 Buy_Button_Click(void);		
+	void				 Buy_StoreItem(CItem* pItem);  
+	void				 Buy_StoreItem_Render(HDC _dc);
 
 public:
 	virtual void		 Initialize(void);

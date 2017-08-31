@@ -10,7 +10,7 @@ public:
 
 public:
 	void			SetGlove_Data(int _iStr, int _iDex, int _iInt, int _iLuk,
-							      int _iHp, int _iMp, int _iPrice, DWORD _dwOption);
+							      int _iHp, int _iMp, int _iPrice, int _iSalePrice, DWORD _dwOption);
 	inline void		SetGlove_Pos(float _fx, float _fy) { m_tInfo.fx = _fx; m_tInfo.fy = _fy; }
 
 public:

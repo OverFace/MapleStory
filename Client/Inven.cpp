@@ -4,6 +4,7 @@
 #include "BitMap.h"
 #include "KeyMgr.h"
 #include "Mouse.h"
+#include "ObjMgr.h"
 #include "Item.h"
 
 CInven::CInven(void)
@@ -75,11 +76,11 @@ void CInven::Render(HDC _dc)
 			m_tInvenMove_Rect.right,
 			m_tInvenMove_Rect.bottom);
 		*/
-	}
+	}	
 }
 
 void CInven::Release(void)
-{
+{	
 }
 
 void CInven::Inven_Key(void)

@@ -27,6 +27,7 @@ private: //Button
 
 public: //Getter
 	inline list<CItem*>* GetInven_ItemList(void) { return &m_Inven_ItemList; }
+	inline bool		Get_StoreCheck(void) { return m_bStoreInven_Check; }
 
 public: //Setter
 	inline void		Set_InvenItem(CItem* pItem) { m_Inven_ItemList.push_back(pItem); }

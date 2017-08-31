@@ -19,7 +19,7 @@ CHelmet::~CHelmet(void)
 	Release();
 }
 
-void CHelmet::SetHelmet_Data(int _iStr, int _iDex, int _iInt, int _iLuk, int _iHp, int _iMp, int _iPrice, DWORD _dwOption)
+void CHelmet::SetHelmet_Data(int _iStr, int _iDex, int _iInt, int _iLuk, int _iHp, int _iMp, int _iPrice, int _iSalePrice, DWORD _dwOption)
 {
 	m_tItem.m_iStr = _iStr;
 	m_tItem.m_iDex = _iDex;
@@ -28,6 +28,7 @@ void CHelmet::SetHelmet_Data(int _iStr, int _iDex, int _iInt, int _iLuk, int _iH
 	m_tItem.m_iHp = _iHp;
 	m_tItem.m_iMp = _iMp;
 	m_tItem.m_iPrice = _iPrice;
+	m_tItem.m_iSalePrice = _iSalePrice;
 	m_tItem.m_dwOption = _dwOption;
 }
 
