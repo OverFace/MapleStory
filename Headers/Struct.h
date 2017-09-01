@@ -100,7 +100,6 @@ typedef struct tagItem
 	int			m_iSalePrice;			//SALE PRICE
 	eItemType	m_eType;				//타입
 	DWORD		m_dwOption;				//조건을 주기 위한 옵션값.
-	DWORD		m_dwStoreTileNumber;	//상점에서의 아이템 자리번호.
 }ITEM;
 //---------------------------------------------------------------------------------
 

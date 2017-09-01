@@ -16,7 +16,6 @@ public:
 	
 public:
 	inline void		SetItemData(ITEM _tItem) { memcpy_s(&m_tItem, sizeof(ITEM), &_tItem, sizeof(ITEM)); }
-	inline void		SetStoreTileNumber(DWORD _dwNum) { m_tItem.m_dwStoreTileNumber = _dwNum; }	//필요한지 아직 모른다.
 	void			SetItemDescription(TCHAR* pstr);
 	void			SetItemDescription_Render(HDC _dc, float fx, float fy);
 	void			SetSaleItemDescription_Render(HDC _dc, float fx, float fy);

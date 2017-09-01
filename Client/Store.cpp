@@ -108,14 +108,12 @@ void CStore::Initialize(void)
 	CItem* pArmor = new CArmor(L"Armor");
 	((CArmor*)pArmor)->Initialize();
 	((CArmor*)pArmor)->SetArmor_Data(5, 5, 5, 5, 10, 5, 1000, 500, 0);	
-	pArmor->SetStoreTileNumber(0);
 	pArmor->SetItemDescription(L"기본 갑옷");
 	m_Store_ItemList.push_back(pArmor);
 
 	pArmor = new CArmor(L"Armor1");
 	((CArmor*)pArmor)->Initialize();
 	((CArmor*)pArmor)->SetArmor_Data(10, 10, 10, 10, 15, 10, 2000, 1000, 1);
-	pArmor->SetStoreTileNumber(1);
 	pArmor->SetItemDescription(L"고급 갑옷");
 	m_Store_ItemList.push_back(pArmor);
 	//----------------------------------------------------------------------------------
@@ -123,14 +121,12 @@ void CStore::Initialize(void)
 	CItem* pWeapon = new CWeapon(L"Weapon");
 	((CWeapon*)pWeapon)->Initialize();
 	((CWeapon*)pWeapon)->SetWeapon_Data(10, 2, 2, 2, 0, 0, 1000, 500, 2);
-	pWeapon->SetStoreTileNumber(2);
 	pWeapon->SetItemDescription(L"기본 무기");
 	m_Store_ItemList.push_back(pWeapon);
 
 	pWeapon = new CWeapon(L"Weapon1");
 	((CWeapon*)pWeapon)->Initialize();
 	((CWeapon*)pWeapon)->SetWeapon_Data(20, 4, 4, 4, 0, 0, 2000, 1000, 3);
-	pWeapon->SetStoreTileNumber(3);
 	pWeapon->SetItemDescription(L"고급 무기");
 	m_Store_ItemList.push_back(pWeapon);
 	//----------------------------------------------------------------------------------
@@ -138,14 +134,12 @@ void CStore::Initialize(void)
 	CItem* pGlove = new CGlove(L"Glove");
 	((CGlove*)pGlove)->Initialize();
 	((CGlove*)pGlove)->SetGlove_Data(2, 2, 2, 2, 5, 0, 500, 250, 4);
-	pGlove->SetStoreTileNumber(4);
 	pGlove->SetItemDescription(L"기본 장갑");
 	m_Store_ItemList.push_back(pGlove);
 
 	pGlove = new CGlove(L"Glove1");
 	((CGlove*)pGlove)->Initialize();
 	((CGlove*)pGlove)->SetGlove_Data(4, 4, 4, 4, 10, 0, 1000, 500, 5);
-	pGlove->SetStoreTileNumber(5);
 	pGlove->SetItemDescription(L"고급 장갑");
 	m_Store_ItemList.push_back(pGlove);
 	//----------------------------------------------------------------------------------
@@ -153,7 +147,6 @@ void CStore::Initialize(void)
 	CItem* pHelmet = new CHelmet(L"Helmet");
 	((CHelmet*)pHelmet)->Initialize();
 	((CHelmet*)pHelmet)->SetHelmet_Data(4, 4, 4, 4, 5, 5, 500, 250, 6);
-	pHelmet->SetStoreTileNumber(6);
 	pHelmet->SetItemDescription(L"투구");
 	m_Store_ItemList.push_back(pHelmet);
 	//----------------------------------------------------------------------------------
@@ -161,14 +154,12 @@ void CStore::Initialize(void)
 	CItem* pAcs = new CAccessory(L"Accessory", ITEM_RING);
 	((CAccessory*)pAcs)->Initialize();
 	((CAccessory*)pAcs)->SetAccessory_Data(2, 2, 2, 2, 3, 3, 500, 250, 7);
-	pAcs->SetStoreTileNumber(7);
 	pAcs->SetItemDescription(L"메이플 반지");
 	m_Store_ItemList.push_back(pAcs);
 
 	pAcs = new CAccessory(L"Accessory1", ITEM_RING);
 	((CAccessory*)pAcs)->Initialize();
 	((CAccessory*)pAcs)->SetAccessory_Data(4, 4, 4, 4, 6, 6, 1000, 500, 8);
-	pAcs->SetStoreTileNumber(8);
 	pAcs->SetItemDescription(L"고급 반지");
 	m_Store_ItemList.push_back(pAcs);
 	//----------------------------------------------------------------------------------
@@ -176,14 +167,12 @@ void CStore::Initialize(void)
 	CItem* pShoes = new CShoes(L"Shoes");
 	((CShoes*)pShoes)->Initialize();
 	((CShoes*)pShoes)->SetShoes_Data(2, 2, 2, 2, 0, 0, 500, 250, 9);
-	pShoes->SetStoreTileNumber(9);
 	pShoes->SetItemDescription(L"기본 신발");
 	m_Store_ItemList.push_back(pShoes);
 
 	pShoes = new CShoes(L"Shoes1");
 	((CShoes*)pShoes)->Initialize();
 	((CShoes*)pShoes)->SetShoes_Data(4, 4, 4, 4, 2, 2, 1000, 500, 10);
-	pShoes->SetStoreTileNumber(10);
 	pShoes->SetItemDescription(L"고급 신발");
 	m_Store_ItemList.push_back(pShoes);
 	//----------------------------------------------------------------------------------
@@ -191,14 +180,12 @@ void CStore::Initialize(void)
 	CItem* pPotion = new CPotion(L"Hp_Potion", ITEM_HP_POTION);
 	((CPotion*)pPotion)->Initialize();
 	((CPotion*)pPotion)->SetPotion_Data(0, 0, 0, 0, 1000, 0, 100, 50, 11);
-	pPotion->SetStoreTileNumber(11);
 	pPotion->SetItemDescription(L"생명력 포션");
 	m_Store_ItemList.push_back(pPotion);
 
 	pPotion = new CPotion(L"Mp_Potion", ITEM_MP_POTION);
 	((CPotion*)pPotion)->Initialize();
 	((CPotion*)pPotion)->SetPotion_Data(0, 0, 0, 0, 0, 1000, 100, 50, 12);
-	pPotion->SetStoreTileNumber(12);
 	pPotion->SetItemDescription(L"마나 포션");
 	m_Store_ItemList.push_back(pPotion);
 	//----------------------------------------------------------------------------------
@@ -395,6 +382,7 @@ void CStore::Scroll_Move(void)
 		m_tScroll_Info.fy = pt.y - m_tScroll_Info.fcx / 2.f;
 	}
 }
+
 void CStore::Item_View_Control(void)
 {
 	/*
@@ -881,6 +869,10 @@ void CStore::Buy_StoreItem(CItem * pItem)
 	//Inven에 아이템 push
 	((CInven*)pInven)->Set_StoreCheck(true);
 	((CInven*)pInven)->Set_InvenItem(pItem);
+	((CInven*)pInven)->Inven_ItemClassification();
+	
+	if (((CInven*)pInven)->Get_InvenItem_CreateCheck() == true)
+		((CInven*)pInven)->Set_InvenItem_CreateCheck(false);
 
 	//Store Inven Item 갯수 증가.
 	++m_iStoreInven_ItemCount;
