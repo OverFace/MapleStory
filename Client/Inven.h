@@ -10,6 +10,7 @@ enum eInvenMode
 };
 
 class CItem;
+class CSlot;
 class CInven : public CUi
 {
 public:
@@ -21,12 +22,20 @@ private:
 	list<CItem*>	m_Inven_EquipList;	
 	list<CItem*>	m_Inven_ConsumeList;
 	list<CItem*>	m_Inven_EtcList;
+	CItem*			m_pSelect_Item;
+	CSlot*			m_pSelect_Slot;
 	DWORD			m_dwTime;
+	HFONT			m_myFont;
+
+private: //Slot
+	list<CSlot*>	m_Inven_SlotList;
 
 private: //Invne Stauts Check
 	bool			m_bStoreInven_Check;
 	bool			m_bInvenMode[INVEN_END];
 	bool			m_bInvenItem_CreateCheck;
+	bool			m_bInvenItem_DragCheck;
+	bool			m_bInvenItem_SwapCheck;
 
 private: //Button
 	RECT			m_tInvenMove_Rect;
@@ -55,11 +64,21 @@ private: //Button
 	void			Inven_EscButton_Click(void);
 
 private: //Inven Function
+	int				Inven_ItemUpdate(void);
 	void			Inven_SelectMenu(void);	
+	void			Inven_SelectItem(void);
+	void			Inven_DragItem(void);
+	void			Inven_SwapItem(void);
 	void			Inven_Item_Render(HDC _dc);
+	void			Inven_Messo_Render(HDC _dc);
+
+private: //Slot
+	void			Inven_SlotCreate(void);
+	void			Inven_SlotUpdate(void);
+	void			Inven_SlotRender(HDC _dc);
 
 public:	 //Classification
-	void			Inven_ItemClassification(void);
+	void			Inven_ItemClassification(CItem* pItem);
 
 private: //Save & Load
 	void			Save_InvenData(void);

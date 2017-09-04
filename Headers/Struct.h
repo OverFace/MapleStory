@@ -100,6 +100,7 @@ typedef struct tagItem
 	int			m_iSalePrice;			//SALE PRICE
 	eItemType	m_eType;				//타입
 	DWORD		m_dwOption;				//조건을 주기 위한 옵션값.
+	DWORD		m_dwInven_SlotNumber;	//Inven의 Slot 번호.
 }ITEM;
 //---------------------------------------------------------------------------------
 
@@ -120,6 +121,16 @@ struct CStringCompare
 		return !lstrcmp(data.first, m_pString);
 	}
 };
+//---------------------------------------------------------------------------------
+
+//Slot
+//---------------------------------------------------------------------------------
+typedef struct tagSlot
+{
+	RECT	tRect;
+	INFO	tInfo;
+	ITEM	tItem;
+}SLOT;
 //---------------------------------------------------------------------------------
 
 #endif // !Struct_h__

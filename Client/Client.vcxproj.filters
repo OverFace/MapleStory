@@ -163,6 +163,9 @@
     <ClCompile Include="Monster.cpp">
       <Filter>02.Object\02.Monster</Filter>
     </ClCompile>
+    <ClCompile Include="Slot.cpp">
+      <Filter>02.Object\04.UI\Slot</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainGame.h">
@@ -333,6 +336,9 @@
     <ClInclude Include="Stage2_Map.h">
       <Filter>02.Object\03.Map\Stage2</Filter>
     </ClInclude>
+    <ClInclude Include="Slot.h">
+      <Filter>02.Object\04.UI\Slot</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -498,6 +504,9 @@
     </Filter>
     <Filter Include="02.Object\02.Monster\Slim">
       <UniqueIdentifier>{63e063be-1e68-4e8f-9d5c-6830874766fc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Object\04.UI\Slot">
+      <UniqueIdentifier>{2e66bb45-89fc-4c12-852e-2e66d0048dfd}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

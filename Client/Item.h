@@ -15,6 +15,7 @@ public:
 	inline ITEM*	GetItemData(void) { return &m_tItem; }
 	
 public:
+	inline void		SetItem_SlotNumber(DWORD _dwNumber) { m_tItem.m_dwInven_SlotNumber = _dwNumber; }
 	inline void		SetItemData(ITEM _tItem) { memcpy_s(&m_tItem, sizeof(ITEM), &_tItem, sizeof(ITEM)); }
 	void			SetItemDescription(TCHAR* pstr);
 	void			SetItemDescription_Render(HDC _dc, float fx, float fy);

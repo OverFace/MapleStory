@@ -869,7 +869,7 @@ void CStore::Buy_StoreItem(CItem * pItem)
 	//Inven에 아이템 push
 	((CInven*)pInven)->Set_StoreCheck(true);
 	((CInven*)pInven)->Set_InvenItem(pItem);
-	((CInven*)pInven)->Inven_ItemClassification();
+	((CInven*)pInven)->Inven_ItemClassification(pItem);
 	
 	if (((CInven*)pInven)->Get_InvenItem_CreateCheck() == true)
 		((CInven*)pInven)->Set_InvenItem_CreateCheck(false);
