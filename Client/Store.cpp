@@ -50,6 +50,8 @@ CStore::CStore(void)
 	m_bSale_Check = false;
 	for (int i = 0; i < 4; ++i)
 		m_bScroll_Item_Check[i] = false;
+	for (int i = 0; i < 2; ++i)
+		m_bPotion_Check[i] = false;
 
 	m_iStoreInven_ItemCount = 0;
 }
@@ -832,7 +834,8 @@ void CStore::Select_StoreItem(void)
 		if (PtInRect((*iter_Item)->GetRect(), pt) && GETS(CKeyMgr)->OnceKeyDown(VK_LBUTTON))
 		{
 			//아이템 렉트 클릭시 동작
-			m_pSelect_Item = (*iter_Item);			
+			m_pSelect_Item = (*iter_Item);		
+			break;
 		}
 	}
 }
@@ -853,6 +856,16 @@ void CStore::Buy_Button_Click(void)
 
 void CStore::Buy_StoreItem(CItem * pItem)
 {	
+	static int iCount_Hp = 0;
+	static int iCount_Mp = 0;
+
+	//Consume Item Count
+	if (pItem->GetItemData()->m_dwOption == 11)
+		++iCount_Hp;
+
+	if (pItem->GetItemData()->m_dwOption == 12)
+		++iCount_Mp;
+
 	//Inven 가져오기.
 	OBJITER iter = GETS(CObjMgr)->GetObjList(OBJ_UI)->begin();
 	OBJITER iter_End = GETS(CObjMgr)->GetObjList(OBJ_UI)->end();
@@ -864,12 +877,63 @@ void CStore::Buy_StoreItem(CItem * pItem)
 		if (((CUi*)(*iter))->GetUiType() == UI_INVEN)
 		{
 			pInven = ((CUi*)(*iter));
+			break;
 		}
 	}
 
 	//Inven에 아이템 push
 	((CInven*)pInven)->Set_StoreCheck(true);
-	((CInven*)pInven)->Set_InvenItem(pItem);
+
+	//Store Inven에 Potion 구입시에 중첩 되도록 : 안됨.
+	ITEMITER iter_Item = ((CInven*)pInven)->GetInven_ItemList()->begin();
+	ITEMITER iter_Item_End = ((CInven*)pInven)->GetInven_ItemList()->end();
+	
+	if (pItem->GetItemData()->m_dwOption == 11 || pItem->GetItemData()->m_dwOption == 12)
+	{
+		if (m_bPotion_Check[0] == false)
+		{
+			pItem->SetItem_Count(iCount_Hp);
+			((CInven*)pInven)->Set_InvenItem(pItem);
+
+			m_bPotion_Check[0] = true;
+		}
+		if (m_bPotion_Check[1] == false)
+		{
+			pItem->SetItem_Count(iCount_Mp);
+			((CInven*)pInven)->Set_InvenItem(pItem);
+
+			m_bPotion_Check[1] = true;
+		}
+
+		if (m_bPotion_Check[0] == true)
+		{
+			for (iter_Item; iter_Item != iter_Item_End; ++iter_Item)
+			{
+				if ((*iter_Item)->GetItemData()->m_dwOption == 11 && m_bPotion_Check[0] == true)
+				{
+					(*iter_Item)->SetItem_Count(iCount_Hp);
+					break;
+				}
+			}
+		}
+
+		if(m_bPotion_Check[1] == true)
+		{
+			for (iter_Item; iter_Item != iter_Item_End; ++iter_Item)
+			{
+				if ((*iter_Item)->GetItemData()->m_dwOption == 12 && m_bPotion_Check[1] == true)
+				{
+					(*iter_Item)->SetItem_Count(iCount_Mp);
+					break;
+				}
+			}
+		}			
+	}
+	else
+	{
+		((CInven*)pInven)->Set_InvenItem(pItem);
+	}
+	
 	((CInven*)pInven)->Inven_ItemClassification(pItem);
 	
 	if (((CInven*)pInven)->Get_InvenItem_CreateCheck() == true)
@@ -905,6 +969,13 @@ void CStore::Buy_StoreItem_Render(HDC _dc)
 		float fy = 125.f;
 		int   iIndex = 0;
 
+		//Consume Item Count Render
+		m_myConsumeItem_Font = CreateFont(11, 5, 0, 0, 0, 0, 0, 0, DEFAULT_CHARSET, 0, 0, 0, 0, L"굴림");
+		HFONT oldFont = (HFONT)SelectObject(_dc, m_myFont);
+
+		TCHAR szHpPotion_Count[100] = { 0 };
+		TCHAR szMpPotion_Count[100] = { 0 };
+
 		for (iter_Inven; iter_Inven != iter_Inven_End; ++iter_Inven, ++iIndex)
 		{
 			if (iIndex < 9)
@@ -912,8 +983,25 @@ void CStore::Buy_StoreItem_Render(HDC _dc)
 				(*iter_Inven)->Render(_dc);
 				(*iter_Inven)->SetPos(m_tInfo.fx + fx, m_tInfo.fy + fy + (42.5f * iIndex));
 				(*iter_Inven)->SetSaleItemDescription_Render(_dc, m_tInfo.fx + fx + 40.f, m_tInfo.fy + fy + (42.5f * iIndex));
+			
+				if ((*iter_Inven)->GetItemData()->m_dwOption == 11)
+				{
+					_stprintf_s(szHpPotion_Count, _countof(szHpPotion_Count), L"%d", (*iter_Inven)->GetItemData()->m_iCount);
+					SetBkMode(_dc, TRANSPARENT);
+					TextOut(_dc, int((*iter_Inven)->GetInfo()->fx + 28.f), int((*iter_Inven)->GetInfo()->fy + 23.f), szHpPotion_Count, lstrlen(szHpPotion_Count));
+					SelectObject(_dc, oldFont);
+				}
+
+				if ((*iter_Inven)->GetItemData()->m_dwOption == 12)
+				{
+					_stprintf_s(szMpPotion_Count, _countof(szMpPotion_Count), L"%d", (*iter_Inven)->GetItemData()->m_iCount);
+
+					SetBkMode(_dc, TRANSPARENT);
+					TextOut(_dc, int((*iter_Inven)->GetInfo()->fx + 28.f), int((*iter_Inven)->GetInfo()->fy + 23.f), szMpPotion_Count, lstrlen(szMpPotion_Count));
+					SelectObject(_dc, oldFont);
+				}
 			}
-		}
+		}		
 	}	
 }
 

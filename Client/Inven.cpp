@@ -190,6 +190,7 @@ void CInven::Render(HDC _dc)
 
 		Inven_Item_Render(_dc);
 		Inven_Messo_Render(_dc);
+		Inven_ConsumeItem_CountRender(_dc);
 		//Inven_SlotRender(_dc);		//Slot
 	}	
 }
@@ -631,8 +632,39 @@ void CInven::Inven_SwapItem(void)
 			}
 		}		
 	}
+}
 
-	cout << m_bInvenItem_CreateCheck << endl;
+void CInven::Inven_ConsumeItem_CountRender(HDC _dc)
+{
+	m_myConsumeItemFont = CreateFont(11, 5, 0, 0, 0, 0, 0, 0, DEFAULT_CHARSET, 0, 0, 0, 0, L"굴림");
+	HFONT oldFont = (HFONT)SelectObject(_dc, m_myFont);
+
+	TCHAR szHpPotion_Count[100] = { 0 };
+	TCHAR szMpPotion_Count[100] = { 0 };
+
+	ITEMITER iter = m_Inven_ConsumeList.begin();
+	ITEMITER iter_End = m_Inven_ConsumeList.end();
+
+	for (iter; iter != iter_End; ++iter)
+	{
+		if ((*iter)->GetItemData()->m_dwOption == 11)
+		{
+			_stprintf_s(szHpPotion_Count, _countof(szHpPotion_Count), L"%d", (*iter)->GetItemData()->m_iCount);
+			
+			SetBkMode(_dc, TRANSPARENT);
+			TextOut(_dc, int((*iter)->GetInfo()->fx + 28.f), int((*iter)->GetInfo()->fy + 23.f), szHpPotion_Count, lstrlen(szHpPotion_Count));
+			SelectObject(_dc, oldFont);
+		}
+		
+		if ((*iter)->GetItemData()->m_dwOption == 12)
+		{
+			_stprintf_s(szMpPotion_Count, _countof(szMpPotion_Count), L"%d", (*iter)->GetItemData()->m_iCount);
+
+			SetBkMode(_dc, TRANSPARENT);
+			TextOut(_dc, int((*iter)->GetInfo()->fx + 28.f), int((*iter)->GetInfo()->fy + 23.f), szMpPotion_Count, lstrlen(szMpPotion_Count));
+			SelectObject(_dc, oldFont);
+		}
+	}
 }
 
 void CInven::Inven_Item_Render(HDC _dc)
@@ -809,7 +841,10 @@ void CInven::Inven_Messo_Render(HDC _dc)
 
 void CInven::Inven_ItemClassification(CItem* pItem)
 {
-	//아이템을 종류별로 구별 한다.
+	static int iConsumeItem_Count_Hp = 0;
+	static int iConsumeItem_Count_Mp = 0;
+
+	//아이템 구매시에 종류별로 구별 한다.
 	if (pItem->GetItemData()->m_dwOption == 0 && m_bInvenItem_CreateCheck == false)
 	{
 		CItem* pArmor = new CArmor(L"Armor");
@@ -922,28 +957,75 @@ void CInven::Inven_ItemClassification(CItem* pItem)
 	}
 	else if (pItem->GetItemData()->m_dwOption == 11 && m_bInvenItem_CreateCheck == false)
 	{
-		CItem* pPotion = new CPotion(L"Hp_Potion", ITEM_HP_POTION);
-		((CPotion*)pPotion)->Initialize();
-		((CPotion*)pPotion)->SetPotion_Data(0, 0, 0, 0, 1000, 0, 100, 50, 11);
-		pPotion->SetItemDescription(L"생명력 포션");
-		m_Inven_ConsumeList.push_back(pPotion);
+		//초반 갯수 1개로 설정.
+		++iConsumeItem_Count_Hp;
+		
+		static bool bCheck = false;
+
+		//list 검사시에 관련된 아이템이 있다면 증가된 Count 값만 넣어줌.
+		ITEMITER iter = m_Inven_ConsumeList.begin();
+		ITEMITER iter_End = m_Inven_ConsumeList.end();
+		for (iter; iter != iter_End; ++iter)
+		{
+			if ((*iter)->GetItemData()->m_dwOption == 11)
+			{
+				(*iter)->SetItem_Count(iConsumeItem_Count_Hp);
+				bCheck = true;
+				break;
+			}
+		}
+
+		//아이템이 없으면 동적 할당해서 생성.
+		if (bCheck == false)
+		{
+			CItem* pPotion = new CPotion(L"Hp_Potion", ITEM_HP_POTION);
+			((CPotion*)pPotion)->Initialize();
+			((CPotion*)pPotion)->SetPotion_Data(0, 0, 0, 0, 1000, 0, 100, 50, 11);
+			pPotion->SetItemDescription(L"생명력 포션");
+			pPotion->SetItem_Count(iConsumeItem_Count_Hp);
+			m_Inven_ConsumeList.push_back(pPotion);
+		}		
 
 		m_bInvenItem_CreateCheck = true;
 	}
 	else if (pItem->GetItemData()->m_dwOption == 12 && m_bInvenItem_CreateCheck == false)
 	{
-		CItem* pPotion = new CPotion(L"Mp_Potion", ITEM_MP_POTION);
-		((CPotion*)pPotion)->Initialize();
-		((CPotion*)pPotion)->SetPotion_Data(0, 0, 0, 0, 0, 1000, 100, 50, 12);
-		pPotion->SetItemDescription(L"마나 포션");
-		m_Inven_ConsumeList.push_back(pPotion);
+		++iConsumeItem_Count_Mp;
 
+		static bool bCheck = false;
+
+		//list 검사시에 관련된 아이템이 있다면 증가된 Count 값만 넣어줌.
+		ITEMITER iter = m_Inven_ConsumeList.begin();
+		ITEMITER iter_End = m_Inven_ConsumeList.end();
+		for (iter; iter != iter_End; ++iter)
+		{
+			if ((*iter)->GetItemData()->m_dwOption == 12)
+			{
+				(*iter)->SetItem_Count(iConsumeItem_Count_Mp);
+				bCheck = true;
+				break;
+			}
+		}
+
+		//아이템이 없으면 동적 할당해서 생성.
+		if (bCheck == false)
+		{
+			CItem* pPotion = new CPotion(L"Mp_Potion", ITEM_MP_POTION);
+			((CPotion*)pPotion)->Initialize();
+			((CPotion*)pPotion)->SetPotion_Data(0, 0, 0, 0, 0, 1000, 100, 50, 12);
+			pPotion->SetItemDescription(L"마나 포션");
+			pPotion->SetItem_Count(iConsumeItem_Count_Mp);
+			m_Inven_ConsumeList.push_back(pPotion);
+		}	
+		
 		m_bInvenItem_CreateCheck = true;
 	}
 }
 
 CItem * CInven::Inven_ItemSwapClassification(CItem * pItem)
 {
+	//Inven 안에서 Swap 시에 아이템 분류 하는 기능.
+
 	CItem* pTemp = NULL;
 
 	if (pItem->GetItemData()->m_dwOption == 0 && m_bInvenItem_CreateCheck == false)

@@ -25,7 +25,8 @@ private:
 	CItem*			m_pSelect_Item;
 	CSlot*			m_pSelect_Slot;
 	DWORD			m_dwTime;
-	HFONT			m_myFont;
+	HFONT			m_myFont;					//Messo 표현을 위한 font
+	HFONT			m_myConsumeItemFont;		//Consume Item 갯수 표현 font
 
 private: //Slot
 	list<CSlot*>	m_Inven_SlotList;
@@ -71,6 +72,7 @@ private: //Inven Function
 	void			Inven_SelectItem(void);
 	void			Inven_DragItem(void);
 	void			Inven_SwapItem(void);
+	void			Inven_ConsumeItem_CountRender(HDC _dc);
 	void			Inven_Item_Render(HDC _dc);
 	void			Inven_Messo_Render(HDC _dc);
 

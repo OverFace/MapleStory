@@ -10,11 +10,13 @@ public:
 
 private:
 	HFONT			 	 m_myFont;
+	HFONT				 m_myConsumeItem_Font;
 	list<CItem*>		 m_Store_ItemList;		
 	list<ITEM>			 m_Temp_StoreInvenList;
 	CObj*				 m_pStore_Npc;
 	CItem*				 m_pSelect_Item;
 	bool				 m_bSale_Check;
+	bool				 m_bPotion_Check[2];
 
 private: //Button
 	INFO				 m_tEscButton_Info[2];
