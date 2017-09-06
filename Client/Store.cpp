@@ -840,6 +840,7 @@ void CStore::Select_StoreItem(void)
 void CStore::Buy_Button_Click(void)
 {
 	//버튼 클릭시 Buy 기능 수행.
+	//나중에 돈이 없을시에는 구입 불가능 표시를 해야된다.
 	POINT pt;
 	pt = CMouse::GetPos();
 

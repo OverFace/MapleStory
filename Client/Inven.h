@@ -33,9 +33,11 @@ private: //Slot
 private: //Invne Stauts Check
 	bool			m_bStoreInven_Check;
 	bool			m_bInvenMode[INVEN_END];
+	bool			m_bInvenMoveCheck;
 	bool			m_bInvenItem_CreateCheck;
 	bool			m_bInvenItem_DragCheck;
 	bool			m_bInvenItem_SwapCheck;
+	bool			m_bInvenItem_DropCheck;
 
 private: //Button
 	RECT			m_tInvenMove_Rect;
@@ -79,6 +81,7 @@ private: //Slot
 
 public:	 //Classification
 	void			Inven_ItemClassification(CItem* pItem);
+	CItem*			Inven_ItemSwapClassification(CItem* pItem);
 
 private: //Save & Load
 	void			Save_InvenData(void);

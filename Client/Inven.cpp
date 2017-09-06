@@ -39,8 +39,10 @@ CInven::CInven(void)
 
 	m_bStoreInven_Check = false;
 	m_bInvenItem_CreateCheck = false;
+	m_bInvenMoveCheck = false;
 	m_bInvenItem_DragCheck = false;
 	m_bInvenItem_SwapCheck = false;
+	m_bInvenItem_DropCheck = false;
 	m_bInvenMode[INVEN_EQUIP] = true;
 	for (int i = 1; i < INVEN_END; ++i)
 		m_bInvenMode[i] = false;
@@ -249,17 +251,16 @@ void CInven::Inven_Key(void)
 void CInven::Inven_Move(void)
 {
 	//Inven창을 마우스로 움직이게 만드는 함수.
-	static bool bMove = false;
 	POINT pt;
 	pt = CMouse::GetPos();
 
-	if (PtInRect(&m_tInvenMove_Rect, pt) && GETS(CKeyMgr)->GetKeyState(VK_LBUTTON) && m_bInvenItem_DragCheck == false)
-		bMove = true;
+	if (PtInRect(&m_tInvenMove_Rect, pt) && GETS(CKeyMgr)->GetKeyState(VK_LBUTTON))
+		m_bInvenMoveCheck = true;
 
-	if (!GETS(CKeyMgr)->GetKeyState(VK_LBUTTON) && bMove == true)
-		bMove = false;
+	if (!GETS(CKeyMgr)->GetKeyState(VK_LBUTTON) && m_bInvenMoveCheck == true)
+		m_bInvenMoveCheck = false;
 
-	if (bMove == true)
+	if (m_bInvenMoveCheck == true)
 	{
 		m_tInfo.fx = (pt.x - m_tInfo.fcx / 2.f);
 		m_tInfo.fy = (pt.y - 10.f);    //10.f 는 Rect의 y의 / 2 한 값.
@@ -365,19 +366,19 @@ void CInven::Inven_SelectMenu(void)
 	POINT pt;
 	pt = CMouse::GetPos();
 
-	if (PtInRect(&m_tInvenEquip_Rect, pt) && GETS(CKeyMgr)->OnceKeyDown(VK_LBUTTON))
+	if (PtInRect(&m_tInvenEquip_Rect, pt) && GETS(CKeyMgr)->OnceKeyDown(VK_LBUTTON) && m_bInvenMoveCheck == false)
 	{
 		m_bInvenMode[INVEN_EQUIP] = true;
 		m_bInvenMode[INVEN_CONSUME] = false;
 		m_bInvenMode[INVEN_ETC] = false;
 	}
-	else if (PtInRect(&m_tInvenConsume_Rect, pt) && GETS(CKeyMgr)->OnceKeyDown(VK_LBUTTON))
+	else if (PtInRect(&m_tInvenConsume_Rect, pt) && GETS(CKeyMgr)->OnceKeyDown(VK_LBUTTON) && m_bInvenMoveCheck == false)
 	{
 		m_bInvenMode[INVEN_CONSUME] = true;
 		m_bInvenMode[INVEN_EQUIP] = false;
 		m_bInvenMode[INVEN_ETC] = false;
 	}
-	else if (PtInRect(&m_tInvenEtc_Rect, pt) && GETS(CKeyMgr)->OnceKeyDown(VK_LBUTTON))
+	else if (PtInRect(&m_tInvenEtc_Rect, pt) && GETS(CKeyMgr)->OnceKeyDown(VK_LBUTTON) && m_bInvenMoveCheck == false)
 	{
 		m_bInvenMode[INVEN_ETC] = true;
 		m_bInvenMode[INVEN_CONSUME] = false;
@@ -443,10 +444,14 @@ void CInven::Inven_DragItem(void)
 
 	if (m_pSelect_Item != NULL)
 	{
-		if (m_pSelect_Item->GetRect() && GETS(CKeyMgr)->StayKeyDown(VK_LBUTTON))
+		if (m_pSelect_Item->GetRect() && GETS(CKeyMgr)->StayKeyDown(VK_LBUTTON) && m_bInvenMoveCheck == false)
 			m_bInvenItem_DragCheck = true;
 		else if (m_bInvenItem_DragCheck == true && !GETS(CKeyMgr)->StayKeyDown(VK_LBUTTON))
+		{
+			m_bInvenItem_SwapCheck = false;		//다시 스왑 가능하게 하기 위애서.
 			m_bInvenItem_DragCheck = false;
+			m_bInvenItem_DropCheck = true;			
+		}
 	}
 
 	if (m_bInvenItem_DragCheck == true)
@@ -457,9 +462,8 @@ void CInven::Inven_DragItem(void)
 
 void CInven::Inven_SwapItem(void)
 {
-	//Inven Swap 기능 : 지금 이상하게 잘 체크가 안된다. Rect 체크부터
-
-	if (m_bInvenItem_DragCheck == true && !GETS(CKeyMgr)->StayKeyDown(VK_LBUTTON))
+	//Inven Swap 기능
+	if (m_bInvenItem_DropCheck == true && !GETS(CKeyMgr)->StayKeyDown(VK_LBUTTON))
 	{
 		SLOTITER iter_Slot = m_Inven_SlotList.begin();
 		SLOTITER iter_Slot_End = m_Inven_SlotList.end();
@@ -471,50 +475,164 @@ void CInven::Inven_SwapItem(void)
 		{
 			if (IntersectRect(&rc, m_pSelect_Item->GetRect(), (*iter_Slot)->GetRect()))
 			{
-				//Item Swap 기능
-				//먼저 자리에서 뺄 아이템을 저장해 놓는다.
 				if (m_bInvenMode[INVEN_EQUIP])
 				{
 					ITEMITER iter = m_Inven_EquipList.begin();
-					for (iter; iter != m_Inven_EquipList.end(); ++iter)
+					ITEMITER iter_End = m_Inven_EquipList.end();
+					ITEMITER iter_Select;
+
+					if ((*iter_Slot)->GetSlotNumber() == m_pSelect_Item->GetItemData()->m_dwInven_SlotNumber)
+						break;
+
+					for (iter; iter != iter_End; ++iter)
+					{
+						if ((*iter)->GetItemData()->m_dwInven_SlotNumber == m_pSelect_Item->GetItemData()->m_dwInven_SlotNumber)
+						{
+							iter_Select = iter;
+							break;
+						}
+					}
+
+					iter = m_Inven_EquipList.begin();
+					iter_End = m_Inven_EquipList.end();
+					for (iter; iter != iter_End;)
 					{
 						if ((*iter_Slot)->GetSlotNumber() == (*iter)->GetItemData()->m_dwInven_SlotNumber && m_bInvenItem_SwapCheck == false)
 						{
-							//충돌 되엇을 때의 슬롯에 있던 아이템을 Temp에 담고
-							//Temp 아이템의 슬롯 번호를 Select Item 에 넘겨주고
-							//Temp 아이템이 있던 자리에 Select Item 을 넣어준다.							
-							pTemp = (*iter);							
-							m_pSelect_Item->SetItem_SlotNumber(pTemp->GetItemData()->m_dwInven_SlotNumber);
+							//pTemp Allocate
+							pTemp = Inven_ItemSwapClassification((*iter));
+							pTemp->SetItem_SlotNumber(m_pSelect_Item->GetItemData()->m_dwInven_SlotNumber);
+
+							//Select Item Input
+							m_pSelect_Item->SetItem_SlotNumber((*iter)->GetItemData()->m_dwInven_SlotNumber);
 							m_Inven_EquipList.insert(iter, m_pSelect_Item);
+
+							//Temp Item Input
+							m_Inven_EquipList.insert(iter_Select, pTemp);
+
+							//Replace Item Erase
+							m_Inven_EquipList.erase(iter);
+							iter = m_Inven_EquipList.begin();
+
+							m_Inven_EquipList.erase(iter_Select);
+							iter = m_Inven_EquipList.begin();
+							
 							m_bInvenItem_SwapCheck = true;
 						}
-						
-						if ((*iter_Slot)->GetSlotNumber() == m_pSelect_Item->GetItemData()->m_dwInven_SlotNumber)
-						{
-							if ((*iter)->GetItemData()->m_dwInven_SlotNumber == m_pSelect_Item->GetItemData()->m_dwInven_SlotNumber
-								&& m_bInvenItem_SwapCheck == true)
-							{
-								//위에 작업이 되었을 시에 Temp 아이템은 Select Item의 슬롯 번호를 넘겨 받고
-								//Temp 아이템을 Select_Item 위치에 넣어준다.
-								pTemp->SetItem_SlotNumber((*iter)->GetItemData()->m_dwInven_SlotNumber);
-								m_Inven_EquipList.insert(iter, pTemp);
-
-								m_bInvenItem_SwapCheck = false;
-							}
-						}
+						else
+							++iter;
 					}
+
+					m_bInvenItem_DropCheck = false;
+					m_bInvenItem_CreateCheck = false;	//아이템 분류하여 새로 생성하기 위해 false 값으로 설정.
 				}
 				else if (m_bInvenMode[INVEN_CONSUME])
 				{
+					ITEMITER iter = m_Inven_ConsumeList.begin();
+					ITEMITER iter_End = m_Inven_ConsumeList.end();
+					ITEMITER iter_Select;
 
+					if ((*iter_Slot)->GetSlotNumber() == m_pSelect_Item->GetItemData()->m_dwInven_SlotNumber)
+						break;
+
+					for (iter; iter != iter_End; ++iter)
+					{
+						if ((*iter)->GetItemData()->m_dwInven_SlotNumber == m_pSelect_Item->GetItemData()->m_dwInven_SlotNumber)
+						{
+							iter_Select = iter;
+							break;
+						}
+					}
+
+					iter = m_Inven_ConsumeList.begin();
+					iter_End = m_Inven_ConsumeList.end();
+					for (iter; iter != iter_End;)
+					{
+						if ((*iter_Slot)->GetSlotNumber() == (*iter)->GetItemData()->m_dwInven_SlotNumber && m_bInvenItem_SwapCheck == false)
+						{
+							//pTemp Allocate
+							pTemp = Inven_ItemSwapClassification((*iter));
+							pTemp->SetItem_SlotNumber(m_pSelect_Item->GetItemData()->m_dwInven_SlotNumber);
+
+							//Select Item Input
+							m_pSelect_Item->SetItem_SlotNumber((*iter)->GetItemData()->m_dwInven_SlotNumber);
+							m_Inven_ConsumeList.insert(iter, m_pSelect_Item);
+
+							//Temp Item Input
+							m_Inven_ConsumeList.insert(iter_Select, pTemp);
+
+							//Replace Item Erase
+							m_Inven_ConsumeList.erase(iter);
+							iter = m_Inven_ConsumeList.begin();
+
+							m_Inven_ConsumeList.erase(iter_Select);
+							iter = m_Inven_ConsumeList.begin();
+
+							m_bInvenItem_SwapCheck = true;
+						}
+						else
+							++iter;
+					}
+
+					m_bInvenItem_DropCheck = false;
+					m_bInvenItem_CreateCheck = false;	//아이템 분류하여 새로 생성하기 위해 false 값으로 설정.
 				}
 				else if (m_bInvenMode[INVEN_ETC])
 				{
+					ITEMITER iter = m_Inven_EtcList.begin();
+					ITEMITER iter_End = m_Inven_EtcList.end();
+					ITEMITER iter_Select;
 
+					if ((*iter_Slot)->GetSlotNumber() == m_pSelect_Item->GetItemData()->m_dwInven_SlotNumber)
+						break;
+
+					for (iter; iter != iter_End; ++iter)
+					{
+						if ((*iter)->GetItemData()->m_dwInven_SlotNumber == m_pSelect_Item->GetItemData()->m_dwInven_SlotNumber)
+						{
+							iter_Select = iter;
+							break;
+						}
+					}
+
+					iter = m_Inven_EtcList.begin();
+					iter_End = m_Inven_EtcList.end();
+					for (iter; iter != iter_End;)
+					{
+						if ((*iter_Slot)->GetSlotNumber() == (*iter)->GetItemData()->m_dwInven_SlotNumber && m_bInvenItem_SwapCheck == false)
+						{
+							//pTemp Allocate
+							pTemp = Inven_ItemSwapClassification((*iter));
+							pTemp->SetItem_SlotNumber(m_pSelect_Item->GetItemData()->m_dwInven_SlotNumber);
+
+							//Select Item Input
+							m_pSelect_Item->SetItem_SlotNumber((*iter)->GetItemData()->m_dwInven_SlotNumber);
+							m_Inven_EtcList.insert(iter, m_pSelect_Item);
+
+							//Temp Item Input
+							m_Inven_EtcList.insert(iter_Select, pTemp);
+
+							//Replace Item Erase
+							m_Inven_EtcList.erase(iter);
+							iter = m_Inven_EtcList.begin();
+
+							m_Inven_EtcList.erase(iter_Select);
+							iter = m_Inven_EtcList.begin();
+
+							m_bInvenItem_SwapCheck = true;
+						}
+						else
+							++iter;
+					}
+
+					m_bInvenItem_DropCheck = false;
+					m_bInvenItem_CreateCheck = false;	//아이템 분류하여 새로 생성하기 위해 false 값으로 설정.
 				}
 			}
-		}
+		}		
 	}
+
+	cout << m_bInvenItem_CreateCheck << endl;
 }
 
 void CInven::Inven_Item_Render(HDC _dc)
@@ -822,6 +940,131 @@ void CInven::Inven_ItemClassification(CItem* pItem)
 
 		m_bInvenItem_CreateCheck = true;
 	}
+}
+
+CItem * CInven::Inven_ItemSwapClassification(CItem * pItem)
+{
+	CItem* pTemp = NULL;
+
+	if (pItem->GetItemData()->m_dwOption == 0 && m_bInvenItem_CreateCheck == false)
+	{
+		pTemp = new CArmor(L"Armor");
+		((CArmor*)pTemp)->Initialize();
+		((CArmor*)pTemp)->SetArmor_Data(5, 5, 5, 5, 10, 5, 1000, 500, 0);
+		pTemp->SetItemDescription(L"기본 갑옷");
+
+		m_bInvenItem_CreateCheck = true;
+	}
+	else if (pItem->GetItemData()->m_dwOption == 1 && m_bInvenItem_CreateCheck == false)
+	{
+		pTemp = new CArmor(L"Armor1");
+		((CArmor*)pTemp)->Initialize();
+		((CArmor*)pTemp)->SetArmor_Data(10, 10, 10, 10, 15, 10, 2000, 1000, 1);
+		pTemp->SetItemDescription(L"고급 갑옷");
+
+		m_bInvenItem_CreateCheck = true;
+	}
+	else if (pItem->GetItemData()->m_dwOption == 2 && m_bInvenItem_CreateCheck == false)
+	{
+		pTemp = new CWeapon(L"Weapon");
+		((CWeapon*)pTemp)->Initialize();
+		((CWeapon*)pTemp)->SetWeapon_Data(10, 2, 2, 2, 0, 0, 1000, 500, 2);
+		pTemp->SetItemDescription(L"기본 무기");
+
+		m_bInvenItem_CreateCheck = true;
+	}
+	else if (pItem->GetItemData()->m_dwOption == 3 && m_bInvenItem_CreateCheck == false)
+	{
+		pTemp = new CWeapon(L"Weapon1");
+		((CWeapon*)pTemp)->Initialize();
+		((CWeapon*)pTemp)->SetWeapon_Data(20, 4, 4, 4, 0, 0, 2000, 1000, 3);
+		pTemp->SetItemDescription(L"고급 무기");
+		
+		m_bInvenItem_CreateCheck = true;
+	}
+	else if (pItem->GetItemData()->m_dwOption == 4 && m_bInvenItem_CreateCheck == false)
+	{
+		pTemp = new CGlove(L"Glove");
+		((CGlove*)pTemp)->Initialize();
+		((CGlove*)pTemp)->SetGlove_Data(2, 2, 2, 2, 5, 0, 500, 250, 4);
+		pTemp->SetItemDescription(L"기본 장갑");
+		
+		m_bInvenItem_CreateCheck = true;
+	}
+	else if (pItem->GetItemData()->m_dwOption == 5 && m_bInvenItem_CreateCheck == false)
+	{
+		pTemp = new CGlove(L"Glove1");
+		((CGlove*)pTemp)->Initialize();
+		((CGlove*)pTemp)->SetGlove_Data(4, 4, 4, 4, 10, 0, 1000, 500, 5);
+		pTemp->SetItemDescription(L"고급 장갑");
+		
+		m_bInvenItem_CreateCheck = true;
+	}
+	else if (pItem->GetItemData()->m_dwOption == 6 && m_bInvenItem_CreateCheck == false)
+	{
+		pTemp = new CHelmet(L"Helmet");
+		((CHelmet*)pTemp)->Initialize();
+		((CHelmet*)pTemp)->SetHelmet_Data(4, 4, 4, 4, 5, 5, 500, 250, 6);
+		pTemp->SetItemDescription(L"투구");
+		
+		m_bInvenItem_CreateCheck = true;
+	}
+	else if (pItem->GetItemData()->m_dwOption == 7 && m_bInvenItem_CreateCheck == false)
+	{
+		pTemp = new CAccessory(L"Accessory", ITEM_RING);
+		((CAccessory*)pTemp)->Initialize();
+		((CAccessory*)pTemp)->SetAccessory_Data(2, 2, 2, 2, 3, 3, 500, 250, 7);
+		pTemp->SetItemDescription(L"메이플 반지");
+		
+		m_bInvenItem_CreateCheck = true;
+	}
+	else if (pItem->GetItemData()->m_dwOption == 8 && m_bInvenItem_CreateCheck == false)
+	{
+		pTemp = new CAccessory(L"Accessory1", ITEM_RING);
+		((CAccessory*)pTemp)->Initialize();
+		((CAccessory*)pTemp)->SetAccessory_Data(4, 4, 4, 4, 6, 6, 1000, 500, 8);
+		pTemp->SetItemDescription(L"고급 반지");
+		
+		m_bInvenItem_CreateCheck = true;
+	}
+	else if (pItem->GetItemData()->m_dwOption == 9 && m_bInvenItem_CreateCheck == false)
+	{
+		pTemp = new CShoes(L"Shoes");
+		((CShoes*)pTemp)->Initialize();
+		((CShoes*)pTemp)->SetShoes_Data(2, 2, 2, 2, 0, 0, 500, 250, 9);
+		pTemp->SetItemDescription(L"기본 신발");
+
+		m_bInvenItem_CreateCheck = true;
+	}
+	else if (pItem->GetItemData()->m_dwOption == 10 && m_bInvenItem_CreateCheck == false)
+	{
+		pTemp = new CShoes(L"Shoes1");
+		((CShoes*)pTemp)->Initialize();
+		((CShoes*)pTemp)->SetShoes_Data(4, 4, 4, 4, 2, 2, 1000, 500, 10);
+		pTemp->SetItemDescription(L"고급 신발");
+
+		m_bInvenItem_CreateCheck = true;
+	}
+	else if (pItem->GetItemData()->m_dwOption == 11 && m_bInvenItem_CreateCheck == false)
+	{
+		pTemp = new CPotion(L"Hp_Potion", ITEM_HP_POTION);
+		((CPotion*)pTemp)->Initialize();
+		((CPotion*)pTemp)->SetPotion_Data(0, 0, 0, 0, 1000, 0, 100, 50, 11);
+		pTemp->SetItemDescription(L"생명력 포션");
+
+		m_bInvenItem_CreateCheck = true;
+	}
+	else if (pItem->GetItemData()->m_dwOption == 12 && m_bInvenItem_CreateCheck == false)
+	{
+		pTemp = new CPotion(L"Mp_Potion", ITEM_MP_POTION);
+		((CPotion*)pTemp)->Initialize();
+		((CPotion*)pTemp)->SetPotion_Data(0, 0, 0, 0, 0, 1000, 100, 50, 12);
+		pTemp->SetItemDescription(L"마나 포션");
+
+		m_bInvenItem_CreateCheck = true;
+	}
+
+	return pTemp;
 }
 
 #pragma region Save & Load
