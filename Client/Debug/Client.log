@@ -1,5 +1,5 @@
-﻿  Store.cpp
-  Inven.cpp
-  코드를 생성하고 있습니다...
+﻿  Equip.cpp
+c:\users\june\desktop\maple\maple_story\maplestory\client\equip.cpp(109): warning C4150: 불완전한 형식 'CItem'에 대한 포인터를 삭제했습니다. 소멸자가 호출되지 않습니다.
+  c:\users\june\desktop\maple\maple_story\maplestory\client\equip.h(4): note: 'CItem' 선언을 참조하십시오.
   Client.vcxproj -> C:\Users\june\Desktop\Maple\Maple_Story\MapleStory\Debug\Client.exe
   Client.vcxproj -> C:\Users\june\Desktop\Maple\Maple_Story\MapleStory\Debug\Client.pdb (Partial PDB)

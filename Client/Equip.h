@@ -21,6 +21,8 @@ private: //Equip Status Check
 
 private: //Button
 	RECT				m_tEquipMove_Rect;
+	INFO				m_tEquipEscButton_Info;
+	RECT				m_tEquipEscButton_Rect;
 
 public: //Getter
 	inline list<CItem*>* GetEquip_ItemList(void) { return &m_Equip_ItemList; }
