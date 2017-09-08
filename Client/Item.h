@@ -13,7 +13,7 @@ protected:
 
 public:
 	inline ITEM*	GetItemData(void) { return &m_tItem; }
-	
+
 public:
 	inline void		SetItem_Count(int _iCount) { m_tItem.m_iCount = _iCount; }
 	inline void		SetItem_SlotNumber(DWORD _dwNumber) { m_tItem.m_dwInven_SlotNumber = _dwNumber; }

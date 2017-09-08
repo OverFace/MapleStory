@@ -554,9 +554,11 @@ void CInven::Inven_SwapItem(void)
 							//pTemp Allocate
 							pTemp = Inven_ItemSwapClassification((*iter));
 							pTemp->SetItem_SlotNumber(m_pSelect_Item->GetItemData()->m_dwInven_SlotNumber);
+							pTemp->SetItem_Count((*iter)->GetItemData()->m_iCount);
 
 							//Select Item Input
 							m_pSelect_Item->SetItem_SlotNumber((*iter)->GetItemData()->m_dwInven_SlotNumber);
+							m_pSelect_Item->SetItem_Count(m_pSelect_Item->GetItemData()->m_iCount);
 							m_Inven_ConsumeList.insert(iter, m_pSelect_Item);
 
 							//Temp Item Input
@@ -636,33 +638,36 @@ void CInven::Inven_SwapItem(void)
 
 void CInven::Inven_ConsumeItem_CountRender(HDC _dc)
 {
-	m_myConsumeItemFont = CreateFont(11, 5, 0, 0, 0, 0, 0, 0, DEFAULT_CHARSET, 0, 0, 0, 0, L"±¼¸²");
-	HFONT oldFont = (HFONT)SelectObject(_dc, m_myFont);
-
-	TCHAR szHpPotion_Count[100] = { 0 };
-	TCHAR szMpPotion_Count[100] = { 0 };
-
-	ITEMITER iter = m_Inven_ConsumeList.begin();
-	ITEMITER iter_End = m_Inven_ConsumeList.end();
-
-	for (iter; iter != iter_End; ++iter)
+	if (m_bInvenMode[INVEN_CONSUME])
 	{
-		if ((*iter)->GetItemData()->m_dwOption == 11)
-		{
-			_stprintf_s(szHpPotion_Count, _countof(szHpPotion_Count), L"%d", (*iter)->GetItemData()->m_iCount);
-			
-			SetBkMode(_dc, TRANSPARENT);
-			TextOut(_dc, int((*iter)->GetInfo()->fx + 28.f), int((*iter)->GetInfo()->fy + 23.f), szHpPotion_Count, lstrlen(szHpPotion_Count));
-			SelectObject(_dc, oldFont);
-		}
-		
-		if ((*iter)->GetItemData()->m_dwOption == 12)
-		{
-			_stprintf_s(szMpPotion_Count, _countof(szMpPotion_Count), L"%d", (*iter)->GetItemData()->m_iCount);
+		m_myConsumeItemFont = CreateFont(11, 5, 0, 0, 0, 0, 0, 0, DEFAULT_CHARSET, 0, 0, 0, 0, L"±¼¸²");
+		HFONT oldFont = (HFONT)SelectObject(_dc, m_myFont);
 
-			SetBkMode(_dc, TRANSPARENT);
-			TextOut(_dc, int((*iter)->GetInfo()->fx + 28.f), int((*iter)->GetInfo()->fy + 23.f), szMpPotion_Count, lstrlen(szMpPotion_Count));
-			SelectObject(_dc, oldFont);
+		TCHAR szHpPotion_Count[100] = { 0 };
+		TCHAR szMpPotion_Count[100] = { 0 };
+
+		ITEMITER iter = m_Inven_ConsumeList.begin();
+		ITEMITER iter_End = m_Inven_ConsumeList.end();
+
+		for (iter; iter != iter_End; ++iter)
+		{
+			if ((*iter)->GetItemData()->m_dwOption == 11)
+			{
+				_stprintf_s(szHpPotion_Count, _countof(szHpPotion_Count), L"%d", (*iter)->GetItemData()->m_iCount);
+
+				SetBkMode(_dc, TRANSPARENT);
+				TextOut(_dc, int((*iter)->GetInfo()->fx + 28.f), int((*iter)->GetInfo()->fy + 23.f), szHpPotion_Count, lstrlen(szHpPotion_Count));
+				SelectObject(_dc, oldFont);
+			}
+
+			if ((*iter)->GetItemData()->m_dwOption == 12)
+			{
+				_stprintf_s(szMpPotion_Count, _countof(szMpPotion_Count), L"%d", (*iter)->GetItemData()->m_iCount);
+
+				SetBkMode(_dc, TRANSPARENT);
+				TextOut(_dc, int((*iter)->GetInfo()->fx + 28.f), int((*iter)->GetInfo()->fy + 23.f), szMpPotion_Count, lstrlen(szMpPotion_Count));
+				SelectObject(_dc, oldFont);
+			}
 		}
 	}
 }

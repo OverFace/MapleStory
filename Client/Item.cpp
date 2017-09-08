@@ -62,3 +62,4 @@ void CItem::Setting_ItemRect(void)
 	m_Rect.bottom = long(m_tInfo.fy + (m_tInfo.fcy / 2.f) + m_tInfo.fcy / 2);
 }
 
+

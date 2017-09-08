@@ -10,6 +10,7 @@
 //UI
 #include "UI.h"
 #include "Inven.h"
+#include "Slot.h"
 
 //Item----------------------------
 #include "Npc.h"
@@ -24,6 +25,7 @@
 //--------------------------------
 
 typedef list<CItem*>::iterator ITEMITER;
+typedef list<CSlot*>::iterator SLOTITER;
 
 CStore::CStore(void)
 {
@@ -41,7 +43,7 @@ CStore::CStore(void)
 	ZeroMemory(&m_tStoreInven_Scroll_Rect, sizeof(RECT));
 	ZeroMemory(&m_tSaleButton_Info, sizeof(INFO));
 	ZeroMemory(&m_tSaleButton_Rect, sizeof(RECT));
-
+	
 	m_pStore_Npc = NULL;
 	m_pSelect_Item = NULL;
 
@@ -199,7 +201,14 @@ void CStore::Initialize(void)
 	for (iter; iter != m_Store_ItemList.end(); ++iter, ++iIndex)
 	{
 		(*iter)->SetPos(m_tInfo.fx + fx, m_tInfo.fy + fy + (42.5f * iIndex));
-	}
+
+		CSlot* pSlot = new CSlot();
+		pSlot->Initialize();
+		pSlot->SetPos(m_tInfo.fx + fx, m_tInfo.fy + fy + (42.5f * iIndex));
+		pSlot->SetSize(32.f, 32.f);
+		pSlot->SetSlotNumber(iIndex);
+		m_Store_SlotList.push_back(pSlot);
+	}	
 #pragma endregion
 
 	m_eRenderType = RENDER_UI;
@@ -242,10 +251,17 @@ int CStore::Update(void)
 	//Item Update(Store)
 	ITEMITER iter_Item = m_Store_ItemList.begin();
 	ITEMITER iter_Item_End = m_Store_ItemList.end();
-
 	for (iter_Item; iter_Item != iter_Item_End; ++iter_Item)
-	{
 		(*iter_Item)->Update();
+
+	//Store Slot
+	float fx = 10.f; float fy = 125.f; int iIndex = 0;
+	SLOTITER iter_Slot = m_Store_SlotList.begin();
+	SLOTITER iter_Slot_End = m_Store_SlotList.end();
+	for (iter_Slot; iter_Slot != iter_Slot_End; ++iter_Slot, ++iIndex)
+	{
+		(*iter_Slot)->SetPos(m_tInfo.fx + fx, m_tInfo.fy + fy + (42.5f * iIndex));
+		(*iter_Slot)->Update();
 	}
 
 	if (m_bVisible == true)
@@ -299,26 +315,6 @@ void CStore::Render(HDC _dc)
 			int(m_tStoreInven_Scroll_Info.fcx), int(m_tStoreInven_Scroll_Info.fcy),
 			RGB(0, 0, 0));
 
-		/*
-		Rectangle(_dc,
-			m_tScroll_Rect.left,
-			m_tScroll_Rect.top,
-			m_tScroll_Rect.right,
-			m_tScroll_Rect.bottom);		
-
-		Rectangle(_dc,
-			m_tEscButton_Rect[1].left,
-			m_tEscButton_Rect[1].top,
-			m_tEscButton_Rect[1].right,
-			m_tEscButton_Rect[1].bottom);		
-
-		Rectangle(_dc,
-			m_tSaleButton_Rect.left,
-			m_tSaleButton_Rect.top,
-			m_tSaleButton_Rect.right,
-			m_tSaleButton_Rect.bottom);
-		*/			
-
 		ITEMITER iter = m_Store_ItemList.begin();
 		float fx = 10.f;
 		float fy = 125.f;
@@ -331,6 +327,19 @@ void CStore::Render(HDC _dc)
 				(*iter)->SetPos(m_tInfo.fx + fx, m_tInfo.fy + fy + (42.5f * iIndex));
 				(*iter)->SetItemDescription_Render(_dc, m_tInfo.fx + 50.f, m_tInfo.fy + 125.f + (42.5f * iIndex));
 			}			
+		}
+
+		//Slot Render
+		iIndex = 0;
+		SLOTITER iter_Slot = m_Store_SlotList.begin();
+		SLOTITER iter_Slot_End = m_Store_SlotList.end();
+		for (iter_Slot; iter_Slot != iter_Slot_End; ++iter_Slot, ++iIndex)
+		{
+			if (iIndex < 9)
+			{
+				//(*iter_Slot)->Render(_dc);
+				(*iter_Slot)->SetPos(m_tInfo.fx + fx, m_tInfo.fy + fy + (42.5f * iIndex));
+			}
 		}
 		
 		//Store Inven
@@ -345,12 +354,19 @@ void CStore::Release(void)
 {
 	ITEMITER iter_Item = m_Store_ItemList.begin();
 	ITEMITER iter_Item_End = m_Store_ItemList.end();
-
 	for (iter_Item; iter_Item != iter_Item_End; ++iter_Item)
 	{
 		delete *iter_Item;
 	}
 	m_Store_ItemList.clear();
+
+	SLOTITER iter_Slot = m_Store_SlotList.begin();
+	SLOTITER iter_Slot_End = m_Store_SlotList.end();
+	for (iter_Slot; iter_Slot != iter_Slot_End; ++iter_Slot)
+	{
+		SAFE_DELETE(*iter_Slot);
+	}
+	m_Store_SlotList.clear();
 }
 
 #pragma region Store Scroll
@@ -410,6 +426,9 @@ void CStore::Item_View_Control(void)
 		ITEMITER iter = m_Store_ItemList.begin();
 		ITEMITER iter_End = m_Store_ItemList.end();
 
+		SLOTITER iter_Slot = m_Store_SlotList.begin();
+		SLOTITER iter_Slot_End = m_Store_SlotList.end();
+
 		float fx = 10.f;
 		float fy = 125.f;		
 		int	iIndex = 0;		
@@ -431,6 +450,19 @@ void CStore::Item_View_Control(void)
 					else
 						++iter;
 				}
+				
+				for (iter_Slot; iter_Slot != iter_Slot_End;)
+				{
+					if ((*iter_Slot)->GetSlotNumber() == 0)
+					{
+						m_Store_SlotList.erase(iter_Slot);
+
+						iter_Slot = m_Store_SlotList.begin();
+						iter_Slot_End = m_Store_SlotList.end();
+					}
+					else
+						++iter_Slot;
+				}
 
 				//밑으로 드래그 할 시에 스크롤 기준값 담기.
 				fCurScrollPosY = m_tScroll_Info.fy;
@@ -449,6 +481,19 @@ void CStore::Item_View_Control(void)
 					}
 					else
 						++iter;
+				}
+
+				for (iter_Slot; iter_Slot != iter_Slot_End;)
+				{
+					if ((*iter_Slot)->GetSlotNumber() == 1)
+					{
+						m_Store_SlotList.erase(iter_Slot);
+
+						iter_Slot = m_Store_SlotList.begin();
+						iter_Slot_End = m_Store_SlotList.end();
+					}
+					else
+						++iter_Slot;
 				}
 
 				//밑으로 드래그 할 시에 스크롤 기준값 담기.
@@ -470,6 +515,19 @@ void CStore::Item_View_Control(void)
 						++iter;
 				}
 
+				for (iter_Slot; iter_Slot != iter_Slot_End;)
+				{
+					if ((*iter_Slot)->GetSlotNumber() == 2)
+					{
+						m_Store_SlotList.erase(iter_Slot);
+
+						iter_Slot = m_Store_SlotList.begin();
+						iter_Slot_End = m_Store_SlotList.end();
+					}
+					else
+						++iter_Slot;
+				}
+
 				//밑으로 드래그 할 시에 스크롤 기준값 담기.
 				fCurScrollPosY = m_tScroll_Info.fy;
 				m_bScroll_Item_Check[2] = false;
@@ -487,6 +545,19 @@ void CStore::Item_View_Control(void)
 					}
 					else
 						++iter;
+				}
+
+				for (iter_Slot; iter_Slot != iter_Slot_End;)
+				{
+					if ((*iter_Slot)->GetSlotNumber() == 3)
+					{
+						m_Store_SlotList.erase(iter_Slot);
+
+						iter_Slot = m_Store_SlotList.begin();
+						iter_Slot_End = m_Store_SlotList.end();
+					}
+					else
+						++iter_Slot;
 				}
 
 				//밑으로 드래그 할 시에 스크롤 기준값 담기.
@@ -514,6 +585,12 @@ void CStore::Item_View_Control(void)
 							pArmor->SetItemDescription(L"기본 갑옷");
 							m_Store_ItemList.push_front(pArmor);
 
+							CSlot* pSlot = new CSlot();
+							pSlot->Initialize();
+							pSlot->SetSlotNumber(0);
+							pSlot->SetSize(32.f, 32.f);
+							m_Store_SlotList.push_front(pSlot);
+
 							m_bScroll_Item_Check[0] = true;
 						}						
 					}
@@ -536,6 +613,12 @@ void CStore::Item_View_Control(void)
 							((CArmor*)pArmor)->SetArmor_Data(10, 10, 10, 10, 15, 10, 2000, 1000, 1);
 							pArmor->SetItemDescription(L"고급 갑옷");
 							m_Store_ItemList.push_front(pArmor);
+
+							CSlot* pSlot = new CSlot();
+							pSlot->Initialize();
+							pSlot->SetSlotNumber(1);
+							pSlot->SetSize(32.f, 32.f);
+							m_Store_SlotList.push_front(pSlot);
 
 							m_bScroll_Item_Check[1] = true;
 						}						
@@ -560,6 +643,12 @@ void CStore::Item_View_Control(void)
 							pWeapon->SetItemDescription(L"기본 무기");
 							m_Store_ItemList.push_front(pWeapon);
 
+							CSlot* pSlot = new CSlot();
+							pSlot->Initialize();
+							pSlot->SetSlotNumber(2);
+							pSlot->SetSize(32.f, 32.f);
+							m_Store_SlotList.push_front(pSlot);
+
 							m_bScroll_Item_Check[2] = true;
 						}					
 					}
@@ -582,6 +671,12 @@ void CStore::Item_View_Control(void)
 							((CWeapon*)pWeapon)->SetWeapon_Data(20, 4, 4, 4, 0, 0, 2000, 1000, 3);
 							pWeapon->SetItemDescription(L"고급 무기");
 							m_Store_ItemList.push_front(pWeapon);
+
+							CSlot* pSlot = new CSlot();
+							pSlot->Initialize();
+							pSlot->SetSlotNumber(3);
+							pSlot->SetSize(32.f, 32.f);
+							m_Store_SlotList.push_front(pSlot);
 
 							m_bScroll_Item_Check[3] = true;
 						}						
@@ -776,7 +871,6 @@ void CStore::StoreInven_ItemView_Control(void)
 					pItem = new CAccessory(L"Accessory", ITEM_RING);
 					((CAccessory*)pItem)->Initialize();
 					pItem->SetItemData(tItem);
-
 				}
 				else if (!lstrcmp(tItem.m_szDescription, L"고급 반지"))
 				{
@@ -823,19 +917,28 @@ void CStore::StoreInven_ItemView_Control(void)
 #pragma region Buy Function
 void CStore::Select_StoreItem(void)
 {
+	POINT pt;
+	pt = CMouse::GetPos();
+
+	SLOTITER iter_Slot = m_Store_SlotList.begin();
+	SLOTITER iter_Slot_End = m_Store_SlotList.end();
+
 	ITEMITER iter_Item = m_Store_ItemList.begin();
 	ITEMITER iter_Item_End = m_Store_ItemList.end();
 
-	POINT pt;
-	pt = CMouse::GetPos();
-	
-	for (iter_Item; iter_Item != iter_Item_End; ++iter_Item)
+	for (iter_Slot; iter_Slot != iter_Slot_End; ++iter_Slot)
 	{
-		if (PtInRect((*iter_Item)->GetRect(), pt) && GETS(CKeyMgr)->OnceKeyDown(VK_LBUTTON))
+		if (PtInRect((*iter_Slot)->GetRect(), pt) && GETS(CKeyMgr)->OnceKeyDown(VK_LBUTTON))
 		{
-			//아이템 렉트 클릭시 동작
-			m_pSelect_Item = (*iter_Item);		
-			break;
+			//슬롯 렉트 클릭시 아이템 선택해서 고르기.
+			for (iter_Item; iter_Item != iter_Item_End; ++iter_Item)
+			{
+				if ((*iter_Slot)->GetSlotNumber() == (*iter_Item)->GetItemData()->m_dwOption)
+				{
+					m_pSelect_Item = (*iter_Item);
+					break;
+				}
+			}
 		}
 	}
 }
@@ -884,56 +987,49 @@ void CStore::Buy_StoreItem(CItem * pItem)
 	//Inven에 아이템 push
 	((CInven*)pInven)->Set_StoreCheck(true);
 
-	//Store Inven에 Potion 구입시에 중첩 되도록 : 안됨.
+	//Store Inven에 Potion 구입시에 중첩 되도록
 	ITEMITER iter_Item = ((CInven*)pInven)->GetInven_ItemList()->begin();
 	ITEMITER iter_Item_End = ((CInven*)pInven)->GetInven_ItemList()->end();
-	
-	if (pItem->GetItemData()->m_dwOption == 11 || pItem->GetItemData()->m_dwOption == 12)
+		
+	if (m_bPotion_Check[0] == false && pItem->GetItemData()->m_dwOption == 11)
 	{
-		if (m_bPotion_Check[0] == false)
-		{
-			pItem->SetItem_Count(iCount_Hp);
-			((CInven*)pInven)->Set_InvenItem(pItem);
-
-			m_bPotion_Check[0] = true;
-		}
-		if (m_bPotion_Check[1] == false)
-		{
-			pItem->SetItem_Count(iCount_Mp);
-			((CInven*)pInven)->Set_InvenItem(pItem);
-
-			m_bPotion_Check[1] = true;
-		}
-
-		if (m_bPotion_Check[0] == true)
-		{
-			for (iter_Item; iter_Item != iter_Item_End; ++iter_Item)
-			{
-				if ((*iter_Item)->GetItemData()->m_dwOption == 11 && m_bPotion_Check[0] == true)
-				{
-					(*iter_Item)->SetItem_Count(iCount_Hp);
-					break;
-				}
-			}
-		}
-
-		if(m_bPotion_Check[1] == true)
-		{
-			for (iter_Item; iter_Item != iter_Item_End; ++iter_Item)
-			{
-				if ((*iter_Item)->GetItemData()->m_dwOption == 12 && m_bPotion_Check[1] == true)
-				{
-					(*iter_Item)->SetItem_Count(iCount_Mp);
-					break;
-				}
-			}
-		}			
-	}
-	else
-	{
+		pItem->SetItem_Count(iCount_Hp);
 		((CInven*)pInven)->Set_InvenItem(pItem);
+		m_bPotion_Check[0] = true;
 	}
 	
+	if (m_bPotion_Check[1] == false && pItem->GetItemData()->m_dwOption == 12)
+	{
+		pItem->SetItem_Count(iCount_Mp);
+		((CInven*)pInven)->Set_InvenItem(pItem);
+		m_bPotion_Check[1] = true;
+	}
+
+	for (iter_Item; iter_Item != iter_Item_End; ++iter_Item)
+	{
+		if (pItem->GetItemData()->m_dwOption == 11)
+		{
+			if ((*iter_Item)->GetItemData()->m_dwOption == 11 && m_bPotion_Check[0] == true)
+			{
+				(*iter_Item)->SetItem_Count(iCount_Hp);
+				break;
+			}
+		}
+
+		if (pItem->GetItemData()->m_dwOption == 12)
+		{
+			if ((*iter_Item)->GetItemData()->m_dwOption == 12 && m_bPotion_Check[1] == true)
+			{
+				(*iter_Item)->SetItem_Count(iCount_Mp);
+				break;
+			}
+		}
+	}
+
+	if(pItem->GetItemData()->m_dwOption != 11 && pItem->GetItemData()->m_dwOption != 12)
+		((CInven*)pInven)->Set_InvenItem(pItem);
+	
+	//Inven Item Classification
 	((CInven*)pInven)->Inven_ItemClassification(pItem);
 	
 	if (((CInven*)pInven)->Get_InvenItem_CreateCheck() == true)
@@ -1004,7 +1100,6 @@ void CStore::Buy_StoreItem_Render(HDC _dc)
 		}		
 	}	
 }
-
 #pragma endregion
 #pragma region Sale Function
 void CStore::Select_StoreInvenItem(void)
@@ -1102,7 +1197,7 @@ void CStore::Sale_StoreInven_Item(CItem * pItem)
 			++iter_Inven;
 	}	
 
-	//Store Inven Item 갯수 증가.
+	//Store Inven Item 갯수 감소.
 	--m_iStoreInven_ItemCount;
 }
 #pragma endregion

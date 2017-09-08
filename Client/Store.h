@@ -2,21 +2,29 @@
 #include "UI.h"
 
 class CItem;
+class CSlot;
 class CStore : public CUi
 {
 public:
 	CStore(void);
 	virtual ~CStore(void);
 
-private:
+private: //Font
 	HFONT			 	 m_myFont;
 	HFONT				 m_myConsumeItem_Font;
+	
+private: //Container
 	list<CItem*>		 m_Store_ItemList;		
 	list<ITEM>			 m_Temp_StoreInvenList;
+
+private:
 	CObj*				 m_pStore_Npc;
 	CItem*				 m_pSelect_Item;
 	bool				 m_bSale_Check;
 	bool				 m_bPotion_Check[2];
+
+private:
+	list<CSlot*>		 m_Store_SlotList;
 
 private: //Button
 	INFO				 m_tEscButton_Info[2];
