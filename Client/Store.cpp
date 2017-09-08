@@ -1054,6 +1054,10 @@ void CStore::Buy_StoreItem_Render(HDC _dc)
 		}
 	}
 
+	//상점 켜지면 상점 Inven Render On
+	if (m_bVisible == true)
+		((CInven*)pInven)->Set_StoreCheck(true);
+
 	//Inven Item List 가져오기
 	if (((CInven*)pInven)->Get_StoreCheck() == true)
 	{

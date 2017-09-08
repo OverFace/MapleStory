@@ -8,6 +8,13 @@ CEquip::CEquip(void)
 {
 	m_eUiType = UI_EQUIP;
 	m_dwTime = 0;
+
+	m_pSelect_Item = NULL;
+	m_pSelect_Slot = NULL;
+
+	m_bEquipMoveCheck = false;
+
+	ZeroMemory(&m_tEquipMove_Rect, sizeof(RECT));
 }
 
 CEquip::~CEquip(void)
@@ -76,4 +83,24 @@ void CEquip::Equip_Key(void)
 		if (bIsPress_Equip == true)
 			bIsPress_Equip = false;
 	}
+}
+
+void CEquip::Equip_Move(void)
+{
+}
+
+void CEquip::Equip_EscButton_Click(void)
+{
+}
+
+void CEquip::Equip_SlotCreate(void)
+{
+}
+
+void CEquip::Equip_SlotUpdqte(void)
+{
+}
+
+void CEquip::Equip_SlotRender(HDC _dc)
+{
 }

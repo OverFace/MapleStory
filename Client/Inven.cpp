@@ -53,6 +53,7 @@ CInven::CInven(void)
 
 CInven::~CInven(void)
 {
+	Save_InvenData();
 	Release();
 }
 
@@ -63,6 +64,9 @@ void CInven::Initialize(void)
 	m_tInfo.fcx = 172.f;
 	m_tInfo.fcy = 335.f;
 	m_eRenderType = RENDER_UI;
+
+	//Load Inven Item Data
+	Load_InvenData();
 
 	//Inven Equip
 	m_tInvenSelect_Info[0].fx = m_tInfo.fx + 9.f;
@@ -361,6 +365,7 @@ int CInven::Inven_ItemUpdate(void)
 
 	return 0;
 }
+
 void CInven::Inven_SelectMenu(void)
 {
 	//인벤토리의 모드 선텍
@@ -1157,9 +1162,200 @@ CItem * CInven::Inven_ItemSwapClassification(CItem * pItem)
 #pragma region Save & Load
 void CInven::Save_InvenData(void)
 {
+	//Inven Item Data Save
+	//Eequip
+	DWORD dwByte;
+	HANDLE hFile_Equip = CreateFile(L"../Data/Player_Inven_Item_Equip.dat", GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+
+	ITEMITER iter = m_Inven_EquipList.begin();
+	ITEMITER iter_End = m_Inven_EquipList.end();
+	for (iter; iter != iter_End; ++iter)
+	{
+		ITEM tItem;
+		ZeroMemory(&tItem, sizeof(ITEM));
+		memcpy_s(&tItem, sizeof(ITEM), (*iter)->GetItemData(), sizeof(ITEM));
+		WriteFile(hFile_Equip, &tItem, sizeof(ITEM), &dwByte, NULL);
+	}
+	CloseHandle(hFile_Equip);
+
+	//Consume
+	DWORD dwConsume_Byte;
+	HANDLE hFile_Consume = CreateFile(L"../Data/Player_Inven_Item_Consume.dat", GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+	
+	ITEMITER iter_Consume = m_Inven_ConsumeList.begin();
+	ITEMITER iter_Consume_End = m_Inven_ConsumeList.end();
+	for (iter_Consume; iter_Consume != iter_Consume_End; ++iter_Consume)
+	{
+		ITEM tItem;
+		ZeroMemory(&tItem, sizeof(ITEM));
+		memcpy_s(&tItem, sizeof(ITEM), (*iter_Consume)->GetItemData(), sizeof(ITEM));
+		WriteFile(hFile_Consume, &tItem, sizeof(ITEM), &dwConsume_Byte, NULL);
+	}
+	CloseHandle(hFile_Consume);
+
+	//Etc
+	DWORD dwEtc_Byte;
+	HANDLE hFile_Etc = CreateFile(L"../Data/Player_Inven_Item_Etc.dat", GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+
+	ITEMITER iter_Etc = m_Inven_EtcList.begin();
+	ITEMITER iter_Etc_End = m_Inven_EtcList.end();
+	for (iter_Etc; iter_Etc != iter_Etc_End; ++iter_Etc)
+	{
+		ITEM tItem;
+		ZeroMemory(&tItem, sizeof(ITEM));
+		memcpy_s(&tItem, sizeof(ITEM), (*iter_Etc)->GetItemData(), sizeof(ITEM));
+		WriteFile(hFile_Etc, &tItem, sizeof(ITEM), &dwEtc_Byte, NULL);
+	}
+	CloseHandle(hFile_Etc);
 }
 
 void CInven::Load_InvenData(void)
 {
+	CItem* pItem = NULL;
+	ITEM tItem;
+	ZeroMemory(&tItem, sizeof(ITEM));
+	
+	DWORD dwByte;
+	HANDLE hFile = CreateFile(L"../Data/Player_Inven_Item_Equip.dat", GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+	while (true)
+	{
+		ReadFile(hFile, &tItem, sizeof(ITEM), &dwByte, NULL);
+
+		if (dwByte == 0)
+			break;
+
+		if (tItem.m_dwOption == 0)
+		{
+			pItem = new CArmor(L"Armor");
+			((CArmor*)pItem)->Initialize();
+			((CArmor*)pItem)->SetArmor_Data(5, 5, 5, 5, 10, 5, 1000, 500, 0);
+			pItem->SetItemDescription(L"기본 갑옷");
+			m_Inven_EquipList.push_back(pItem);
+			m_Inven_ItemList.push_back(pItem);
+		}
+		else if (tItem.m_dwOption == 1)
+		{
+			pItem = new CArmor(L"Armor1");
+			((CArmor*)pItem)->Initialize();
+			((CArmor*)pItem)->SetArmor_Data(10, 10, 10, 10, 15, 10, 2000, 1000, 1);
+			pItem->SetItemDescription(L"고급 갑옷");
+			m_Inven_EquipList.push_back(pItem);
+			m_Inven_ItemList.push_back(pItem);
+		}
+		else if (tItem.m_dwOption == 2)
+		{
+			pItem = new CWeapon(L"Weapon");
+			((CWeapon*)pItem)->Initialize();
+			((CWeapon*)pItem)->SetWeapon_Data(10, 2, 2, 2, 0, 0, 1000, 500, 2);
+			pItem->SetItemDescription(L"기본 무기");
+			m_Inven_EquipList.push_back(pItem);
+			m_Inven_ItemList.push_back(pItem);
+		}
+		else if (tItem.m_dwOption == 3)
+		{
+			pItem = new CWeapon(L"Weapon1");
+			((CWeapon*)pItem)->Initialize();
+			((CWeapon*)pItem)->SetWeapon_Data(20, 4, 4, 4, 0, 0, 2000, 1000, 3);
+			pItem->SetItemDescription(L"고급 무기");
+			m_Inven_EquipList.push_back(pItem);
+			m_Inven_ItemList.push_back(pItem);
+		}
+		else if (tItem.m_dwOption == 4)
+		{
+			pItem = new CGlove(L"Glove");
+			((CGlove*)pItem)->Initialize();
+			((CGlove*)pItem)->SetGlove_Data(2, 2, 2, 2, 5, 0, 500, 250, 4);
+			pItem->SetItemDescription(L"기본 장갑");
+			m_Inven_EquipList.push_back(pItem);
+			m_Inven_ItemList.push_back(pItem);
+		}
+		else if (tItem.m_dwOption == 5)
+		{
+			pItem = new CGlove(L"Glove1");
+			((CGlove*)pItem)->Initialize();
+			((CGlove*)pItem)->SetGlove_Data(4, 4, 4, 4, 10, 0, 1000, 500, 5);
+			pItem->SetItemDescription(L"고급 장갑");
+			m_Inven_EquipList.push_back(pItem);
+			m_Inven_ItemList.push_back(pItem);
+		}
+		else if (tItem.m_dwOption == 6)
+		{
+			pItem = new CHelmet(L"Helmet");
+			((CHelmet*)pItem)->Initialize();
+			((CHelmet*)pItem)->SetHelmet_Data(4, 4, 4, 4, 5, 5, 500, 250, 6);
+			pItem->SetItemDescription(L"투구");
+			m_Inven_EquipList.push_back(pItem);
+			m_Inven_ItemList.push_back(pItem);
+		}
+		else if (tItem.m_dwOption == 7)
+		{
+			pItem = new CAccessory(L"Accessory", ITEM_RING);
+			((CAccessory*)pItem)->Initialize();
+			((CAccessory*)pItem)->SetAccessory_Data(2, 2, 2, 2, 3, 3, 500, 250, 7);
+			pItem->SetItemDescription(L"메이플 반지");
+			m_Inven_EquipList.push_back(pItem);
+			m_Inven_ItemList.push_back(pItem);
+		}
+		else if (tItem.m_dwOption == 8)
+		{
+			pItem = new CAccessory(L"Accessory1", ITEM_RING);
+			((CAccessory*)pItem)->Initialize();
+			((CAccessory*)pItem)->SetAccessory_Data(4, 4, 4, 4, 6, 6, 1000, 500, 8);
+			pItem->SetItemDescription(L"고급 반지");
+			m_Inven_EquipList.push_back(pItem);
+			m_Inven_ItemList.push_back(pItem);
+		}
+		else if (tItem.m_dwOption == 9)
+		{
+			pItem = new CShoes(L"Shoes");
+			((CShoes*)pItem)->Initialize();
+			((CShoes*)pItem)->SetShoes_Data(2, 2, 2, 2, 0, 0, 500, 250, 9);
+			pItem->SetItemDescription(L"기본 신발");
+			m_Inven_EquipList.push_back(pItem);
+			m_Inven_ItemList.push_back(pItem);
+		}
+		else if (tItem.m_dwOption == 10)
+		{
+			pItem = new CShoes(L"Shoes1");
+			((CShoes*)pItem)->Initialize();
+			((CShoes*)pItem)->SetShoes_Data(4, 4, 4, 4, 2, 2, 1000, 500, 10);
+			pItem->SetItemDescription(L"고급 신발");
+			m_Inven_EquipList.push_back(pItem);
+			m_Inven_ItemList.push_back(pItem);
+		}				
+	}
+	CloseHandle(hFile);
+
+	DWORD dwConsume_Byte;
+	HANDLE hFile_Consume = CreateFile(L"../Data/Player_Inven_Item_Consume.dat", GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+	while (true)
+	{
+		ReadFile(hFile_Consume, &tItem, sizeof(ITEM), &dwConsume_Byte, NULL);
+	
+		if (dwConsume_Byte == 0)
+			break;
+
+		if (tItem.m_dwOption == 11)
+		{
+			pItem = new CPotion(L"Hp_Potion", ITEM_HP_POTION);
+			((CPotion*)pItem)->Initialize();
+			((CPotion*)pItem)->SetPotion_Data(0, 0, 0, 0, 1000, 0, 100, 50, 11);
+			pItem->SetItemDescription(L"생명력 포션");
+			pItem->SetItem_Count(tItem.m_iCount);
+			m_Inven_ConsumeList.push_back(pItem);
+			m_Inven_ItemList.push_back(pItem);
+		}
+		else if (tItem.m_dwOption == 12)
+		{
+			pItem = new CPotion(L"Mp_Potion", ITEM_MP_POTION);
+			((CPotion*)pItem)->Initialize();
+			((CPotion*)pItem)->SetPotion_Data(0, 0, 0, 0, 0, 1000, 100, 50, 12);
+			pItem->SetItemDescription(L"마나 포션");
+			pItem->SetItem_Count(tItem.m_iCount);
+			m_Inven_ConsumeList.push_back(pItem);
+			m_Inven_ItemList.push_back(pItem);
+		}				
+	}	
+	CloseHandle(hFile_Consume);
 }
 #pragma endregion
