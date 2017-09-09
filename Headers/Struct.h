@@ -100,6 +100,7 @@ typedef struct tagItem
 	int			m_iSalePrice;			//SALE PRICE
 	int			m_iCount;				//소비 아이템 COUNT 값
 	eItemType	m_eType;				//타입
+	eEquipType  m_eEquip_Type;			//장착을 위한 아이템 타입
 	DWORD		m_dwOption;				//조건을 주기 위한 옵션값.
 	DWORD		m_dwInven_SlotNumber;	//Inven의 Slot 번호.
 }ITEM;

@@ -82,12 +82,12 @@ void CStage1::Initialize(void)
 	pObj = new CStatus;
 	pObj->Initialize();
 	GETS(CObjMgr)->AddObject(OBJ_UI, pObj);
-	//Inven
-	pObj = new CInven;
-	pObj->Initialize();
-	GETS(CObjMgr)->AddObject(OBJ_UI, pObj);
 	//Equip
 	pObj = new CEquip;
+	pObj->Initialize();
+	GETS(CObjMgr)->AddObject(OBJ_UI, pObj);
+	//Inven
+	pObj = new CInven;
 	pObj->Initialize();
 	GETS(CObjMgr)->AddObject(OBJ_UI, pObj);
 	//Skill

@@ -1,18 +1,6 @@
 #pragma once
 #include "UI.h"
 
-enum eEquipType
-{
-	EQUIP_RING,
-	EQUIP_HELMET,
-	EQUIP_ARMOR,
-	EQUIP_PANTS,
-	EQUIP_GLOVES,
-	EQUIP_SHOES,
-	EQUIP_WEAPON,
-	EQUIP_END
-};
-
 class CSlot : public CUi
 {
 public:

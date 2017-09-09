@@ -85,6 +85,19 @@ enum eUiType
 	UI_END
 };
 
+//Equip Type
+enum eEquipType
+{
+	EQUIP_RING,
+	EQUIP_HELMET,
+	EQUIP_ARMOR,
+	EQUIP_PANTS,
+	EQUIP_GLOVES,
+	EQUIP_SHOES,
+	EQUIP_WEAPON,
+	EQUIP_END
+};
+
 //Item 
 enum eItemType
 {

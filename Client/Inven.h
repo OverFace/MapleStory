@@ -39,6 +39,7 @@ private: //Invne Stauts Check
 	bool			m_bInvenItem_DragCheck;
 	bool			m_bInvenItem_SwapCheck;
 	bool			m_bInvenItem_DropCheck;
+	bool			m_bInvenItem_EquipCheck;
 
 private: //Button
 	RECT			m_tInvenMove_Rect;
@@ -72,6 +73,9 @@ private: //Inven Function
 	void			Inven_SelectItem(void);
 	void			Inven_DragItem(void);
 	void			Inven_SwapItem(void);
+	void			Inven_ItemEquip(void);
+	
+private: //Inven Render
 	void			Inven_ConsumeItem_CountRender(HDC _dc);
 	void			Inven_Item_Render(HDC _dc);
 	void			Inven_Messo_Render(HDC _dc);

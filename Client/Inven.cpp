@@ -8,6 +8,9 @@
 #include "Slot.h"
 #include "Player.h"
 
+//UI
+#include "Equip.h"
+
 //Item----------------------------
 #include "Npc.h"
 #include "Item.h"
@@ -43,6 +46,7 @@ CInven::CInven(void)
 	m_bInvenItem_DragCheck = false;
 	m_bInvenItem_SwapCheck = false;
 	m_bInvenItem_DropCheck = false;
+	m_bInvenItem_EquipCheck = false;
 	m_bInvenMode[INVEN_EQUIP] = true;
 	for (int i = 1; i < INVEN_END; ++i)
 		m_bInvenMode[i] = false;
@@ -146,6 +150,7 @@ int CInven::Update(void)
 		Inven_SelectItem();
 		Inven_DragItem();
 		Inven_SwapItem();
+		Inven_ItemEquip();
 		Inven_EscButton_Click();
 
 		Inven_ItemUpdate();		//Inven Update
@@ -448,14 +453,31 @@ void CInven::Inven_DragItem(void)
 	POINT pt;
 	pt = CMouse::GetPos();
 
+	//다른 UI Move Check 가 true 이면 ITem Drag가 안되게 하기
+	CEquip* pEquip = NULL;
+
+	OBJITER iter = GETS(CObjMgr)->GetObjList(OBJ_UI)->begin();
+	OBJITER iter_End = GETS(CObjMgr)->GetObjList(OBJ_UI)->end();
+	for (iter; iter != iter_End; ++iter)
+	{
+		if (((CUi*)(*iter))->GetUiType() == UI_EQUIP)
+			pEquip = ((CEquip*)(*iter));
+	}
+
+	//Item Drag Function
 	if (m_pSelect_Item != NULL)
 	{
-		if (m_pSelect_Item->GetRect() && GETS(CKeyMgr)->StayKeyDown(VK_LBUTTON) && m_bInvenMoveCheck == false)
+		if (m_pSelect_Item->GetRect() && GETS(CKeyMgr)->StayKeyDown(VK_LBUTTON)
+			&& m_bInvenMoveCheck == false
+			&& pEquip->GetEquip_MoveCheck() == false)
+		{
 			m_bInvenItem_DragCheck = true;
+		}
 		else if (m_bInvenItem_DragCheck == true && !GETS(CKeyMgr)->StayKeyDown(VK_LBUTTON))
 		{
 			m_bInvenItem_SwapCheck = false;		//다시 스왑 가능하게 하기 위애서.
 			m_bInvenItem_DragCheck = false;
+			m_bInvenItem_EquipCheck = false;	//장비창에 한번만 장착되게 하기 위해서.
 			m_bInvenItem_DropCheck = true;			
 		}
 	}
@@ -464,6 +486,9 @@ void CInven::Inven_DragItem(void)
 	{
 		m_pSelect_Item->SetPos(pt.x - (m_pSelect_Item->GetInfo()->fcx / 2.f), pt.y - (m_pSelect_Item->GetInfo()->fcy / 2.f));
 	}
+
+	system("cls");
+	cout << m_bInvenItem_DragCheck << endl;
 }
 
 void CInven::Inven_SwapItem(void)
@@ -638,6 +663,33 @@ void CInven::Inven_SwapItem(void)
 				}
 			}
 		}		
+	}
+}
+
+void CInven::Inven_ItemEquip(void)
+{
+	//Equip UI 에 아이템 장착 기능 함수.
+	OBJITER iter = GETS(CObjMgr)->GetObjList(OBJ_UI)->begin();
+	OBJITER iter_End = GETS(CObjMgr)->GetObjList(OBJ_UI)->end();
+
+	CUi* pUi = NULL;
+
+	for (iter; iter != iter_End; ++iter)
+	{
+		if (((CUi*)(*iter))->GetUiType() == UI_EQUIP)
+		{
+			pUi = (CUi*)(*iter);
+			break;
+		}
+	}
+
+	if (m_bInvenItem_DropCheck == true && !GETS(CKeyMgr)->StayKeyDown(VK_LBUTTON) && m_bInvenItem_EquipCheck == false)
+	{
+		if (((CEquip*)pUi)->GetEquipItem_CreateCheck() == true)
+			((CEquip*)pUi)->SetEquipItem_CreateCheck(false);
+
+		((CEquip*)pUi)->Equip_Item(m_pSelect_Item);
+		m_bInvenItem_EquipCheck = true;
 	}
 }
 
