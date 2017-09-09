@@ -20,6 +20,12 @@ private: //Button
 	int					m_iButtonOption[4];
 	RECT				m_tStatMove_rect;
 
+public: //Getter
+	inline STAT*		Get_PlayerStat(void) { return &m_tStat; }
+
+public: //Setter
+	inline void			Set_PlayerStat(STAT _tStat) { memcpy_s(&m_tStat, sizeof(STAT), &_tStat, sizeof(STAT)); }
+
 private:
 	void				Stat_Key(void);
 	void				Stat_Poisiton(STAT& _rStat, HDC _dc);

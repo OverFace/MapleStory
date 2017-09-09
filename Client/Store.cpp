@@ -1181,7 +1181,7 @@ void CStore::Sale_StoreInven_Item(CItem * pItem)
 	ITEMITER iter_Inven = InvenItemList->begin();
 	ITEMITER iter_Inven_End = InvenItemList->end();
 
-	//Inven에 아이템 delete
+	//Store Inven에 아이템 delete
 	for (iter_Inven; iter_Inven != iter_Inven_End;)
 	{
 		if ((*iter_Inven)->GetItemData()->m_dwOption == m_pSelect_Item->GetItemData()->m_dwOption && m_bSale_Check == false)
@@ -1199,7 +1199,31 @@ void CStore::Sale_StoreInven_Item(CItem * pItem)
 		}
 		else
 			++iter_Inven;
-	}	
+	}
+
+	//Inven에 있는 아이템 삭제
+	if (m_pSelect_Item->GetItemData()->m_dwOption == 0 || m_pSelect_Item->GetItemData()->m_dwOption == 1
+		|| m_pSelect_Item->GetItemData()->m_dwOption == 2 || m_pSelect_Item->GetItemData()->m_dwOption == 3
+		|| m_pSelect_Item->GetItemData()->m_dwOption == 4 || m_pSelect_Item->GetItemData()->m_dwOption == 5
+		|| m_pSelect_Item->GetItemData()->m_dwOption == 6 || m_pSelect_Item->GetItemData()->m_dwOption == 7
+		|| m_pSelect_Item->GetItemData()->m_dwOption == 8 || m_pSelect_Item->GetItemData()->m_dwOption == 9
+		|| m_pSelect_Item->GetItemData()->m_dwOption == 10)
+	{
+		ITEMITER iter_InvenEquip = ((CInven*)pInven)->GetInevn_EquipItemList()->begin();
+		ITEMITER iter_InvenEquip_End = ((CInven*)pInven)->GetInevn_EquipItemList()->end();
+		
+		for (iter_InvenEquip; iter_InvenEquip != iter_InvenEquip_End; ++iter_InvenEquip)
+		{
+			//Store Inven에 포함된 Item 순서와 Inven 창에 있는 순서를 비교해서
+			//같은 것만 Inven창에서 지우게 만들어야 한다.
+			//사전 작업을 해야되는데 아직 안해놓음.
+		}
+	}
+	else if (m_pSelect_Item->GetItemData()->m_dwOption == 11 || m_pSelect_Item->GetItemData()->m_dwOption == 12)
+	{
+		//Consume 창에 있는 아이템들은 갯수만 줄이고. 갯수가 1개일때 사라지게 만들어야 된다.
+		//이것도 위에 사항을 다 만족한 다음 해야된다.
+	}
 
 	//Store Inven Item 갯수 감소.
 	--m_iStoreInven_ItemCount;

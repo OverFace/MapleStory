@@ -486,9 +486,6 @@ void CInven::Inven_DragItem(void)
 	{
 		m_pSelect_Item->SetPos(pt.x - (m_pSelect_Item->GetInfo()->fcx / 2.f), pt.y - (m_pSelect_Item->GetInfo()->fcy / 2.f));
 	}
-
-	system("cls");
-	cout << m_bInvenItem_DragCheck << endl;
 }
 
 void CInven::Inven_SwapItem(void)

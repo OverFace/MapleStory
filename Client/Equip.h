@@ -19,6 +19,7 @@ private:
 private: //Equip Status Check
 	bool				m_bEquipMoveCheck;
 	bool				m_bEquipItem_CreateCheck;
+	bool				m_bEquipItem_ApplyCheck;
 
 private: //Button
 	RECT				m_tEquipMove_Rect;
@@ -46,6 +47,7 @@ private:
 	void				Equip_Slot_ItemCheck(CItem* pItem);
 	CItem*				Equip_Item_Classification(CItem* pItem);
 	void				Equip_Item_SetPosition(void);
+	void				Equip_Apply_To_ItemArrtibute(CItem* pItem);
 
 private: //Slot
 	void				Equip_SlotCreate(void);

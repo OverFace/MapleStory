@@ -12,6 +12,7 @@
 CSlot::CSlot(void)
 {
 	m_eEquip_Type = EQUIP_END;
+	m_bEquip_SlotCheck = false;
 	ZeroMemory(&m_tSlot_ItemData, sizeof(ITEM));
 	m_iSlotNumber = 0;
 }

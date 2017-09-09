@@ -52,6 +52,9 @@ private: //Button
 
 public: //Getter
 	inline list<CItem*>* GetInven_ItemList(void) { return &m_Inven_ItemList; }
+	inline list<CItem*>* GetInevn_EquipItemList(void) { return &m_Inven_EquipList; }
+	inline list<CItem*>* GetInevn_ConsumeItemList(void) { return &m_Inven_ConsumeList; }
+	inline list<CItem*>* GetInevn_EtcItemList(void) { return &m_Inven_EtcList; }
 	inline bool		Get_StoreCheck(void) { return m_bStoreInven_Check; }
 	inline bool		Get_InvenItem_CreateCheck(void) { return m_bInvenItem_CreateCheck; }
 
