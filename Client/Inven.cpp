@@ -200,7 +200,6 @@ void CInven::Render(HDC _dc)
 		Inven_Item_Render(_dc);
 		Inven_Messo_Render(_dc);
 		Inven_ConsumeItem_CountRender(_dc);
-		//Inven_SlotRender(_dc);		//Slot
 	}	
 }
 
@@ -478,7 +477,10 @@ void CInven::Inven_DragItem(void)
 			m_bInvenItem_SwapCheck = false;		//다시 스왑 가능하게 하기 위애서.
 			m_bInvenItem_DragCheck = false;
 			m_bInvenItem_EquipCheck = false;	//장비창에 한번만 장착되게 하기 위해서.
-			m_bInvenItem_DropCheck = true;			
+			m_bInvenItem_DropCheck = true;	
+
+			//Equip Ui
+			pEquip->SetEquip_SwapCheck(false);
 		}
 	}
 

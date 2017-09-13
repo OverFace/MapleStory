@@ -57,11 +57,14 @@ public: //Getter
 	inline list<CItem*>* GetInevn_EtcItemList(void) { return &m_Inven_EtcList; }
 	inline bool		Get_StoreCheck(void) { return m_bStoreInven_Check; }
 	inline bool		Get_InvenItem_CreateCheck(void) { return m_bInvenItem_CreateCheck; }
+	inline bool		Get_InvenItem_DropCheck(void) { return m_bInvenItem_DropCheck; }
+	inline CItem*	Get_InvenSelect_Item(void) { return m_pSelect_Item; }
 
 public: //Setter
 	inline void		Set_InvenItem(CItem* pItem) { m_Inven_ItemList.push_back(pItem); }
 	inline void		Set_StoreCheck(bool _bCheck) { m_bStoreInven_Check = _bCheck; }
 	inline void		Set_InvenItem_CreateCheck(bool _bCheck) { m_bInvenItem_CreateCheck = _bCheck; }
+	inline void		Set_InvenItem_DropCheck(bool _bCheck) { m_bInvenItem_DropCheck = _bCheck; }
 
 private:
 	void			Inven_Key(void);

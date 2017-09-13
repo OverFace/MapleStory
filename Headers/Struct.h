@@ -103,6 +103,7 @@ typedef struct tagItem
 	eEquipType  m_eEquip_Type;			//장착을 위한 아이템 타입
 	DWORD		m_dwOption;				//조건을 주기 위한 옵션값.
 	DWORD		m_dwInven_SlotNumber;	//Inven의 Slot 번호.
+	DWORD		m_dwEquip_Status;		//Equip창의 착용 상태 체크.
 }ITEM;
 //---------------------------------------------------------------------------------
 

@@ -36,6 +36,8 @@ CEquip::CEquip(void)
 	m_bEquipMoveCheck = false;
 	m_bEquipItem_CreateCheck = false;
 	m_bEquipItem_ApplyCheck = false;
+	m_bEquipItem_SwapCheck = false;
+	m_bUnEquipItem_Check = false;
 
 	ZeroMemory(&m_tEquipMove_Rect, sizeof(RECT));
 	ZeroMemory(&m_tEquipEscButton_Info, sizeof(INFO));
@@ -90,6 +92,12 @@ int CEquip::Update(void)
 		Equip_Move();
 		Equip_SlotUpdqte();
 		Equip_Item_SetPosition();
+		UnEquip_Item();
+
+		//Equip Item Update
+		ITEMITER iter_Equip = m_Equip_ItemList.begin();
+		for (iter_Equip; iter_Equip != m_Equip_ItemList.end(); ++iter_Equip)
+			(*iter_Equip)->Update();
 	}
 
 	return 0;
@@ -164,6 +172,10 @@ void CEquip::Equip_Key(void)
 		if (bIsPress_Equip == true)
 			bIsPress_Equip = false;
 	}
+
+	//마우스 오른쪽 버튼이 Up 되면 UnEquipItem_Check = false
+	if (m_bUnEquipItem_Check == true && GETS(CKeyMgr)->OnceKeyUp(VK_RBUTTON))
+		m_bUnEquipItem_Check = false;
 }
 
 void CEquip::Equip_Move(void)
@@ -262,6 +274,9 @@ void CEquip::Equip_Slot_ItemCheck(CItem * pItem)
 	RECT rc;
 	if (IntersectRect(&rc, pItem->GetRect(), pSlot->GetRect()))
 	{
+		//Slot에 있는 Equip Item 과 pItem의 dwOption 값이 같게 되면 
+		//아이템 속성값 적용 X (이미 장착된 상태이면)
+
 		SLOTITER iter_Slot = m_Equip_SlotList.begin();
 		SLOTITER iter_Slot_End = m_Equip_SlotList.end();
 
@@ -269,22 +284,41 @@ void CEquip::Equip_Slot_ItemCheck(CItem * pItem)
 		{
 			if ((*iter_Slot)->GetEquipType() == pItem->GetItemData()->m_eEquip_Type)
 			{
-				if((*iter_Slot)->GetEquipSlot_Check() == true)
-					m_bEquipItem_ApplyCheck = true;
+				ITEMITER iter = m_Equip_ItemList.begin();
+				for (iter; iter != m_Equip_ItemList.end(); ++iter)
+				{
+					//Swap 상태를 조절하는 곳이 아니므로 같은 아이템인지만 판단해서 장착된 상태면
+					//더이상 속성 추가 안되도록 한다.
+					if ((*iter)->GetItemData()->m_dwOption == pItem->GetItemData()->m_dwOption
+						&& pSlot->GetEquip_Status() == 1)
+					{
+						m_bEquipItem_ApplyCheck = true;
+						break;
+					}
+				}			
 			}
 		}
 
-		if (m_bEquipItem_ApplyCheck == true)
-			return;
-
-		CItem* pEquipItem = Equip_Item_Classification(pItem);
-		pEquipItem->SetPos(pSlot->GetInfo()->fx, pSlot->GetInfo()->fy);
-		m_Equip_ItemList.push_back(pEquipItem);
-	}
+		//Equip Item과 Inven Item Swap 기능.
+		if (pItem->GetItemData()->m_dwEquip_Status == 0 && pSlot->GetEquip_Status() == 1)
+			Equip_Swap_Item(pItem);
+		
+		//pItem이 장착된 상태가 아니면 아이템이 새로 생성되서 장착되게 하자.
+		if (pItem->GetItemData()->m_dwEquip_Status != 1 && pSlot->GetEquip_Status() == 0)
+		{
+			CItem* pEquipItem = Equip_Item_Classification(pItem, pSlot);
+			pEquipItem->SetPos(pSlot->GetInfo()->fx, pSlot->GetInfo()->fy);
+			m_Equip_ItemList.push_back(pEquipItem);
+		}
+	}	
 }
 
-CItem* CEquip::Equip_Item_Classification(CItem * pItem)
+CItem* CEquip::Equip_Item_Classification(CItem * pItem, CSlot* pSlot)
 {
+	//pItem 도 EquipStatus를 적용 시켜준다음
+	//pItem의 EquipSTatus가 0일때만 새로 생성되게 하고
+	//아닐때는 Swap 되게 하자.
+
 	CItem* pEquip_Item = NULL;
 
 	if (pItem->GetItemData()->m_dwOption == 0 && m_bEquipItem_CreateCheck == false)
@@ -294,7 +328,10 @@ CItem* CEquip::Equip_Item_Classification(CItem * pItem)
 		((CArmor*)pEquip_Item)->SetArmor_Data(5, 5, 5, 5, 10, 5, 1000, 500, 0);
 		pEquip_Item->SetItemDescription(L"기본 갑옷");
 		pEquip_Item->SetItem_EquipType(pItem->GetItemData()->m_eEquip_Type);
-		
+		pEquip_Item->SetITem_EquipStatus(1);
+		pItem->SetITem_EquipStatus(1);
+		pSlot->SetEquip_Status(1);
+
 		//Equip Item Attribute Apply To Player Stat
 		Equip_Apply_To_ItemArrtibute(pEquip_Item);
 
@@ -307,6 +344,9 @@ CItem* CEquip::Equip_Item_Classification(CItem * pItem)
 		((CArmor*)pEquip_Item)->SetArmor_Data(10, 10, 10, 10, 15, 10, 2000, 1000, 1);
 		pEquip_Item->SetItemDescription(L"고급 갑옷");
 		pEquip_Item->SetItem_EquipType(pItem->GetItemData()->m_eEquip_Type);
+		pEquip_Item->SetITem_EquipStatus(1);
+		pItem->SetITem_EquipStatus(1);
+		pSlot->SetEquip_Status(1);
 
 		//Equip Item Attribute Apply To Player Stat
 		Equip_Apply_To_ItemArrtibute(pEquip_Item);
@@ -320,6 +360,9 @@ CItem* CEquip::Equip_Item_Classification(CItem * pItem)
 		((CWeapon*)pEquip_Item)->SetWeapon_Data(10, 2, 2, 2, 0, 0, 1000, 500, 2);
 		pEquip_Item->SetItemDescription(L"기본 무기");
 		pEquip_Item->SetItem_EquipType(pItem->GetItemData()->m_eEquip_Type);
+		pEquip_Item->SetITem_EquipStatus(1);
+		pItem->SetITem_EquipStatus(1);
+		pSlot->SetEquip_Status(1);
 
 		//Equip Item Attribute Apply To Player Stat
 		Equip_Apply_To_ItemArrtibute(pEquip_Item);
@@ -333,6 +376,9 @@ CItem* CEquip::Equip_Item_Classification(CItem * pItem)
 		((CWeapon*)pEquip_Item)->SetWeapon_Data(20, 4, 4, 4, 0, 0, 2000, 1000, 3);
 		pEquip_Item->SetItemDescription(L"고급 무기");
 		pEquip_Item->SetItem_EquipType(pItem->GetItemData()->m_eEquip_Type);
+		pEquip_Item->SetITem_EquipStatus(1);
+		pItem->SetITem_EquipStatus(1);
+		pSlot->SetEquip_Status(1);
 
 		//Equip Item Attribute Apply To Player Stat
 		Equip_Apply_To_ItemArrtibute(pEquip_Item);
@@ -346,6 +392,9 @@ CItem* CEquip::Equip_Item_Classification(CItem * pItem)
 		((CGlove*)pEquip_Item)->SetGlove_Data(2, 2, 2, 2, 5, 0, 500, 250, 4);
 		pEquip_Item->SetItemDescription(L"기본 장갑");
 		pEquip_Item->SetItem_EquipType(pItem->GetItemData()->m_eEquip_Type);
+		pEquip_Item->SetITem_EquipStatus(1);
+		pItem->SetITem_EquipStatus(1);
+		pSlot->SetEquip_Status(1);
 
 		m_bEquipItem_CreateCheck = true;
 	}
@@ -356,6 +405,9 @@ CItem* CEquip::Equip_Item_Classification(CItem * pItem)
 		((CGlove*)pEquip_Item)->SetGlove_Data(4, 4, 4, 4, 10, 0, 1000, 500, 5);
 		pEquip_Item->SetItemDescription(L"고급 장갑");
 		pEquip_Item->SetItem_EquipType(pItem->GetItemData()->m_eEquip_Type);
+		pEquip_Item->SetITem_EquipStatus(1);
+		pItem->SetITem_EquipStatus(1);
+		pSlot->SetEquip_Status(1);
 
 		//Equip Item Attribute Apply To Player Stat
 		Equip_Apply_To_ItemArrtibute(pEquip_Item);
@@ -369,6 +421,9 @@ CItem* CEquip::Equip_Item_Classification(CItem * pItem)
 		((CHelmet*)pEquip_Item)->SetHelmet_Data(4, 4, 4, 4, 5, 5, 500, 250, 6);
 		pEquip_Item->SetItemDescription(L"투구");
 		pEquip_Item->SetItem_EquipType(pItem->GetItemData()->m_eEquip_Type);
+		pEquip_Item->SetITem_EquipStatus(1);
+		pItem->SetITem_EquipStatus(1);
+		pSlot->SetEquip_Status(1);
 
 		m_bEquipItem_CreateCheck = true;
 	}
@@ -379,6 +434,9 @@ CItem* CEquip::Equip_Item_Classification(CItem * pItem)
 		((CAccessory*)pEquip_Item)->SetAccessory_Data(2, 2, 2, 2, 3, 3, 500, 250, 7);
 		pEquip_Item->SetItemDescription(L"메이플 반지");
 		pEquip_Item->SetItem_EquipType(pItem->GetItemData()->m_eEquip_Type);
+		pEquip_Item->SetITem_EquipStatus(1);
+		pItem->SetITem_EquipStatus(1);
+		pSlot->SetEquip_Status(1);
 
 		//Equip Item Attribute Apply To Player Stat
 		Equip_Apply_To_ItemArrtibute(pEquip_Item);
@@ -392,6 +450,9 @@ CItem* CEquip::Equip_Item_Classification(CItem * pItem)
 		((CAccessory*)pEquip_Item)->SetAccessory_Data(4, 4, 4, 4, 6, 6, 1000, 500, 8);
 		pEquip_Item->SetItemDescription(L"고급 반지");
 		pEquip_Item->SetItem_EquipType(pItem->GetItemData()->m_eEquip_Type);
+		pEquip_Item->SetITem_EquipStatus(1);
+		pItem->SetITem_EquipStatus(1);
+		pSlot->SetEquip_Status(1);
 
 		//Equip Item Attribute Apply To Player Stat
 		Equip_Apply_To_ItemArrtibute(pEquip_Item);
@@ -405,6 +466,9 @@ CItem* CEquip::Equip_Item_Classification(CItem * pItem)
 		((CShoes*)pEquip_Item)->SetShoes_Data(2, 2, 2, 2, 0, 0, 500, 250, 9);
 		pEquip_Item->SetItemDescription(L"기본 신발");
 		pEquip_Item->SetItem_EquipType(pItem->GetItemData()->m_eEquip_Type);
+		pEquip_Item->SetITem_EquipStatus(1);
+		pItem->SetITem_EquipStatus(1);
+		pSlot->SetEquip_Status(1);
 
 		//Equip Item Attribute Apply To Player Stat
 		Equip_Apply_To_ItemArrtibute(pEquip_Item);
@@ -418,6 +482,9 @@ CItem* CEquip::Equip_Item_Classification(CItem * pItem)
 		((CShoes*)pEquip_Item)->SetShoes_Data(4, 4, 4, 4, 2, 2, 1000, 500, 10);
 		pEquip_Item->SetItemDescription(L"고급 신발");
 		pEquip_Item->SetItem_EquipType(pItem->GetItemData()->m_eEquip_Type);
+		pEquip_Item->SetITem_EquipStatus(1);
+		pItem->SetITem_EquipStatus(1);
+		pSlot->SetEquip_Status(1);
 
 		//Equip Item Attribute Apply To Player Stat
 		Equip_Apply_To_ItemArrtibute(pEquip_Item);
@@ -539,6 +606,33 @@ void CEquip::Equip_Item_SetPosition(void)
 void CEquip::Equip_Apply_To_ItemArrtibute(CItem* pItem)
 {
 	//Stat 에서 Player Stat 구하기.
+	if (m_bEquipItem_ApplyCheck == false)
+	{
+		OBJITER iter_Obj = GETS(CObjMgr)->GetObjList(OBJ_UI)->begin();
+		OBJITER iter_Obj_End = GETS(CObjMgr)->GetObjList(OBJ_UI)->end();
+
+		CStat* pStat = NULL;
+		for (iter_Obj; iter_Obj != iter_Obj_End; ++iter_Obj)
+		{
+			if (((CUi*)(*iter_Obj))->GetUiType() == UI_STAT)
+			{
+				pStat = ((CStat*)(*iter_Obj));
+				break;
+			}
+		}
+
+		STAT tStat;
+		tStat.m_iSTR = pStat->Get_PlayerStat()->m_iSTR + pItem->GetItemData()->m_iStr;
+		tStat.m_iDEX = pStat->Get_PlayerStat()->m_iDEX + pItem->GetItemData()->m_iDex;
+		tStat.m_iINT = pStat->Get_PlayerStat()->m_iINT + pItem->GetItemData()->m_iInt;
+		tStat.m_iLUK = pStat->Get_PlayerStat()->m_iLUK + pItem->GetItemData()->m_iLuk;
+		pStat->Set_PlayerStat(tStat);
+	}	
+}
+
+void CEquip::Equip_Swap_Apply_To_ItemAttribute(CItem * pItem, CItem * pSwapItem)
+{
+	//Stat 에서 Player Stat 구하기.
 	OBJITER iter_Obj = GETS(CObjMgr)->GetObjList(OBJ_UI)->begin();
 	OBJITER iter_Obj_End = GETS(CObjMgr)->GetObjList(OBJ_UI)->end();
 
@@ -553,17 +647,320 @@ void CEquip::Equip_Apply_To_ItemArrtibute(CItem* pItem)
 	}
 
 	STAT tStat;
-	tStat.m_iSTR = pStat->Get_PlayerStat()->m_iSTR + pItem->GetItemData()->m_iStr;
-	tStat.m_iDEX = pStat->Get_PlayerStat()->m_iDEX + pItem->GetItemData()->m_iDex;
-	tStat.m_iINT = pStat->Get_PlayerStat()->m_iINT + pItem->GetItemData()->m_iInt;
-	tStat.m_iLUK = pStat->Get_PlayerStat()->m_iLUK + pItem->GetItemData()->m_iLuk;
+	tStat.m_iSTR = pStat->Get_PlayerStat()->m_iSTR + pSwapItem->GetItemData()->m_iStr - pItem->GetItemData()->m_iStr;
+	tStat.m_iDEX = pStat->Get_PlayerStat()->m_iDEX + pSwapItem->GetItemData()->m_iDex - pItem->GetItemData()->m_iDex;
+	tStat.m_iINT = pStat->Get_PlayerStat()->m_iINT + pSwapItem->GetItemData()->m_iInt - pItem->GetItemData()->m_iInt;
+	tStat.m_iLUK = pStat->Get_PlayerStat()->m_iLUK + pSwapItem->GetItemData()->m_iLuk - pItem->GetItemData()->m_iLuk;
 	pStat->Set_PlayerStat(tStat);
-	
-	system("cls");
-	cout << pStat->Get_PlayerStat()->m_iSTR << endl;
-	cout << pStat->Get_PlayerStat()->m_iDEX << endl;
-	cout << pStat->Get_PlayerStat()->m_iINT << endl;
-	cout << pStat->Get_PlayerStat()->m_iLUK << endl;
+}
+
+void CEquip::Equip_Swap_Item(CItem* pItem)
+{
+	//Swap Item 기능
+	ITEMITER iter_Inven_SelectItem;
+
+	//Inven 가져오기
+	CInven* pInven = NULL;
+	OBJITER iter_Inven = GETS(CObjMgr)->GetObjList(OBJ_UI)->begin();
+	OBJITER iter_Inven_End = GETS(CObjMgr)->GetObjList(OBJ_UI)->end();
+	for (iter_Inven; iter_Inven != iter_Inven_End; ++iter_Inven)
+	{
+		if (((CUi*)(*iter_Inven))->GetUiType() == UI_INVEN)
+		{
+			pInven = ((CInven*)(*iter_Inven));
+			break;
+		}
+	}
+
+	//선택된 Inven Item iter 찾기
+	ITEMITER iter_Inven_Item = pInven->GetInevn_EquipItemList()->begin();
+	ITEMITER iter_Inven_Item_End = pInven->GetInevn_EquipItemList()->end();
+	for (iter_Inven_Item; iter_Inven_Item != iter_Inven_Item_End; ++iter_Inven_Item)
+	{
+		if ((*iter_Inven_Item)->GetItemData()->m_dwInven_SlotNumber == pItem->GetItemData()->m_dwInven_SlotNumber)
+		{
+			iter_Inven_SelectItem = iter_Inven_Item;
+			break;
+		}
+	}
+
+	//Swap 기능
+	/*
+	Swap은 Inven Item이 장착시에 없어지지 않으므로 Inven에 있는 아이템을 건들 
+	필요가 없다. 그러므로 Equip 창에 원래 있던 것만 빼고 새로 넣는 것을 넣어주면 끝이다.
+	*/
+
+	ITEMITER iter = m_Equip_ItemList.begin();
+	ITEMITER iter_End = m_Equip_ItemList.end();
+	for (iter; iter != iter_End;)
+	{
+		if ((*iter)->GetItemData()->m_eEquip_Type == pItem->GetItemData()->m_eEquip_Type
+			&& m_bEquipItem_SwapCheck == false)
+		{
+			CItem* pTemp = Equip_Swap_Item_Classification((*iter), pItem);
+
+			//Select Item Input
+			m_Equip_ItemList.insert(iter, pTemp);
+
+			//인벤창에서 빠져나갈 아이템과 같은 아이템을 찾아서 EquipStatus을 0으로 만들어 준다.
+			iter_Inven_Item = pInven->GetInevn_EquipItemList()->begin();
+			iter_Inven_Item_End = pInven->GetInevn_EquipItemList()->end();
+			for (iter_Inven_Item; iter_Inven_Item != iter_Inven_Item_End; ++iter_Inven_Item)
+			{
+				if ((*iter_Inven_Item)->GetItemData()->m_dwOption == (*iter)->GetItemData()->m_dwOption)
+				{
+					(*iter_Inven_Item)->SetITem_EquipStatus(0);
+					break;
+				}
+			}
+
+			//Item Erase
+			m_Equip_ItemList.erase(iter);
+			iter = m_Equip_ItemList.begin();
+
+			m_bEquipItem_SwapCheck = true;
+		}
+		else
+			++iter;
+	}
+}
+
+CItem * CEquip::Equip_Swap_Item_Classification(CItem* pSwapItem, CItem * pItem)
+{
+	//pSwapItem : 장비창에서 스왑될 아이템
+	//pItem     : 인벤창에서 온 아이템
+
+	CItem* pEquip_Item = NULL;
+
+	if (pItem->GetItemData()->m_dwOption == 0 && m_bEquipItem_CreateCheck == false)
+	{
+		pEquip_Item = new CArmor(L"Armor");
+		((CArmor*)pEquip_Item)->Initialize();
+		((CArmor*)pEquip_Item)->SetArmor_Data(5, 5, 5, 5, 10, 5, 1000, 500, 0);
+		pEquip_Item->SetItemDescription(L"기본 갑옷");
+		pEquip_Item->SetItem_EquipType(pItem->GetItemData()->m_eEquip_Type);
+		pEquip_Item->SetITem_EquipStatus(1);
+		pItem->SetITem_EquipStatus(1);
+
+		//Equip Item Attribute Apply To Player Stat
+		Equip_Swap_Apply_To_ItemAttribute(pSwapItem, pEquip_Item);
+
+		m_bEquipItem_CreateCheck = true;
+	}
+	else if (pItem->GetItemData()->m_dwOption == 1 && m_bEquipItem_CreateCheck == false)
+	{
+		pEquip_Item = new CArmor(L"Armor1");
+		((CArmor*)pEquip_Item)->Initialize();
+		((CArmor*)pEquip_Item)->SetArmor_Data(10, 10, 10, 10, 15, 10, 2000, 1000, 1);
+		pEquip_Item->SetItemDescription(L"고급 갑옷");
+		pEquip_Item->SetItem_EquipType(pItem->GetItemData()->m_eEquip_Type);
+		pEquip_Item->SetITem_EquipStatus(1);
+		pItem->SetITem_EquipStatus(1);
+
+		//Equip Item Attribute Apply To Player Stat
+		Equip_Swap_Apply_To_ItemAttribute(pSwapItem, pEquip_Item);
+
+		m_bEquipItem_CreateCheck = true;
+	}
+	else if (pItem->GetItemData()->m_dwOption == 2 && m_bEquipItem_CreateCheck == false)
+	{
+		pEquip_Item = new CWeapon(L"Weapon");
+		((CWeapon*)pEquip_Item)->Initialize();
+		((CWeapon*)pEquip_Item)->SetWeapon_Data(10, 2, 2, 2, 0, 0, 1000, 500, 2);
+		pEquip_Item->SetItemDescription(L"기본 무기");
+		pEquip_Item->SetItem_EquipType(pItem->GetItemData()->m_eEquip_Type);
+		pEquip_Item->SetITem_EquipStatus(1);
+		pItem->SetITem_EquipStatus(1);
+
+		//Equip Item Attribute Apply To Player Stat
+		Equip_Swap_Apply_To_ItemAttribute(pSwapItem, pEquip_Item);
+
+		m_bEquipItem_CreateCheck = true;
+	}
+	else if (pItem->GetItemData()->m_dwOption == 3 && m_bEquipItem_CreateCheck == false)
+	{
+		pEquip_Item = new CWeapon(L"Weapon1");
+		((CWeapon*)pEquip_Item)->Initialize();
+		((CWeapon*)pEquip_Item)->SetWeapon_Data(20, 4, 4, 4, 0, 0, 2000, 1000, 3);
+		pEquip_Item->SetItemDescription(L"고급 무기");
+		pEquip_Item->SetItem_EquipType(pItem->GetItemData()->m_eEquip_Type);
+		pEquip_Item->SetITem_EquipStatus(1);
+		pItem->SetITem_EquipStatus(1);
+
+		//Equip Item Attribute Apply To Player Stat
+		Equip_Swap_Apply_To_ItemAttribute(pSwapItem, pEquip_Item);
+
+		m_bEquipItem_CreateCheck = true;
+	}
+	else if (pItem->GetItemData()->m_dwOption == 4 && m_bEquipItem_CreateCheck == false)
+	{
+		pEquip_Item = new CGlove(L"Glove");
+		((CGlove*)pEquip_Item)->Initialize();
+		((CGlove*)pEquip_Item)->SetGlove_Data(2, 2, 2, 2, 5, 0, 500, 250, 4);
+		pEquip_Item->SetItemDescription(L"기본 장갑");
+		pEquip_Item->SetItem_EquipType(pItem->GetItemData()->m_eEquip_Type);
+		pEquip_Item->SetITem_EquipStatus(1);
+		pItem->SetITem_EquipStatus(1);
+
+		//Equip Item Attribute Apply To Player Stat
+		Equip_Swap_Apply_To_ItemAttribute(pSwapItem, pEquip_Item);
+
+		m_bEquipItem_CreateCheck = true;
+	}
+	else if (pItem->GetItemData()->m_dwOption == 5 && m_bEquipItem_CreateCheck == false)
+	{
+		pEquip_Item = new CGlove(L"Glove1");
+		((CGlove*)pEquip_Item)->Initialize();
+		((CGlove*)pEquip_Item)->SetGlove_Data(4, 4, 4, 4, 10, 0, 1000, 500, 5);
+		pEquip_Item->SetItemDescription(L"고급 장갑");
+		pEquip_Item->SetItem_EquipType(pItem->GetItemData()->m_eEquip_Type);
+		pEquip_Item->SetITem_EquipStatus(1);
+		pItem->SetITem_EquipStatus(1);
+
+		//Equip Item Attribute Apply To Player Stat
+		Equip_Swap_Apply_To_ItemAttribute(pSwapItem, pEquip_Item);
+
+		m_bEquipItem_CreateCheck = true;
+	}
+	else if (pItem->GetItemData()->m_dwOption == 6 && m_bEquipItem_CreateCheck == false)
+	{
+		pEquip_Item = new CHelmet(L"Helmet");
+		((CHelmet*)pEquip_Item)->Initialize();
+		((CHelmet*)pEquip_Item)->SetHelmet_Data(4, 4, 4, 4, 5, 5, 500, 250, 6);
+		pEquip_Item->SetItemDescription(L"투구");
+		pEquip_Item->SetItem_EquipType(pItem->GetItemData()->m_eEquip_Type);
+		pEquip_Item->SetITem_EquipStatus(1);
+		pItem->SetITem_EquipStatus(1);
+
+		//Equip Item Attribute Apply To Player Stat
+		Equip_Swap_Apply_To_ItemAttribute(pSwapItem, pEquip_Item);
+
+		m_bEquipItem_CreateCheck = true;
+	}
+	else if (pItem->GetItemData()->m_dwOption == 7 && m_bEquipItem_CreateCheck == false)
+	{
+		pEquip_Item = new CAccessory(L"Accessory", ITEM_RING);
+		((CAccessory*)pEquip_Item)->Initialize();
+		((CAccessory*)pEquip_Item)->SetAccessory_Data(2, 2, 2, 2, 3, 3, 500, 250, 7);
+		pEquip_Item->SetItemDescription(L"메이플 반지");
+		pEquip_Item->SetItem_EquipType(pItem->GetItemData()->m_eEquip_Type);
+		pEquip_Item->SetITem_EquipStatus(1);
+		pItem->SetITem_EquipStatus(1);
+
+		//Equip Item Attribute Apply To Player Stat
+		Equip_Swap_Apply_To_ItemAttribute(pSwapItem, pEquip_Item);
+
+		m_bEquipItem_CreateCheck = true;
+	}
+	else if (pItem->GetItemData()->m_dwOption == 8 && m_bEquipItem_CreateCheck == false)
+	{
+		pEquip_Item = new CAccessory(L"Accessory1", ITEM_RING);
+		((CAccessory*)pEquip_Item)->Initialize();
+		((CAccessory*)pEquip_Item)->SetAccessory_Data(4, 4, 4, 4, 6, 6, 1000, 500, 8);
+		pEquip_Item->SetItemDescription(L"고급 반지");
+		pEquip_Item->SetItem_EquipType(pItem->GetItemData()->m_eEquip_Type);
+		pEquip_Item->SetITem_EquipStatus(1);
+		pItem->SetITem_EquipStatus(1);
+
+		//Equip Item Attribute Apply To Player Stat
+		Equip_Swap_Apply_To_ItemAttribute(pSwapItem, pEquip_Item);
+
+		m_bEquipItem_CreateCheck = true;
+	}
+	else if (pItem->GetItemData()->m_dwOption == 9 && m_bEquipItem_CreateCheck == false)
+	{
+		pEquip_Item = new CShoes(L"Shoes");
+		((CShoes*)pEquip_Item)->Initialize();
+		((CShoes*)pEquip_Item)->SetShoes_Data(2, 2, 2, 2, 0, 0, 500, 250, 9);
+		pEquip_Item->SetItemDescription(L"기본 신발");
+		pEquip_Item->SetItem_EquipType(pItem->GetItemData()->m_eEquip_Type);
+		pEquip_Item->SetITem_EquipStatus(1);
+		pItem->SetITem_EquipStatus(1);
+
+		//Equip Item Attribute Apply To Player Stat
+		Equip_Swap_Apply_To_ItemAttribute(pSwapItem, pEquip_Item);
+
+		m_bEquipItem_CreateCheck = true;
+	}
+	else if (pItem->GetItemData()->m_dwOption == 10 && m_bEquipItem_CreateCheck == false)
+	{
+		pEquip_Item = new CShoes(L"Shoes1");
+		((CShoes*)pEquip_Item)->Initialize();
+		((CShoes*)pEquip_Item)->SetShoes_Data(4, 4, 4, 4, 2, 2, 1000, 500, 10);
+		pEquip_Item->SetItemDescription(L"고급 신발");
+		pEquip_Item->SetItem_EquipType(pItem->GetItemData()->m_eEquip_Type);
+		pEquip_Item->SetITem_EquipStatus(1);
+		pItem->SetITem_EquipStatus(1);
+
+		//Equip Item Attribute Apply To Player Stat
+		Equip_Swap_Apply_To_ItemAttribute(pSwapItem, pEquip_Item);
+
+		m_bEquipItem_CreateCheck = true;
+	}
+
+	return pEquip_Item;
+}
+
+void CEquip::UnEquip_Item(void)
+{
+	POINT pt;
+	pt = CMouse::GetPos();
+
+	SLOTITER iter_Slot = m_Equip_SlotList.begin();
+	SLOTITER iter_Slot_End = m_Equip_SlotList.end();
+
+	ITEMITER iter_Item = m_Equip_ItemList.begin();
+	ITEMITER iter_Item_End = m_Equip_ItemList.end();
+
+	for (iter_Slot; iter_Slot != iter_Slot_End; ++iter_Slot)
+	{
+		if (PtInRect((*iter_Slot)->GetRect(), pt) && GETS(CKeyMgr)->OnceKeyDown(VK_RBUTTON) && m_bUnEquipItem_Check == false)
+		{
+			for (iter_Item; iter_Item != iter_Item_End;)
+			{
+				//오른쪽 클릭한 Slot 창의 EquipType과 EquipItemList에 있는 Item의 EquipType
+				//같을 시에는 그 아이템 삭제 하면서 Slot의 EquipStauts를 0으로 만들어준다.
+				if ((*iter_Slot)->GetEquipType() == (*iter_Item)->GetItemData()->m_eEquip_Type)
+				{
+					//Item Attribute ReSetting
+					UnEquip_Apply_To_ItemAttribute((*iter_Item));
+
+					//Item Erase
+					m_Equip_ItemList.erase(iter_Item);
+					iter_Item = m_Equip_ItemList.begin();
+
+					//Slot Equip_Status = 0
+					(*iter_Slot)->SetEquip_Status(0);
+				}
+				else
+					++iter_Item;
+			}
+
+			m_bUnEquipItem_Check = true;
+		}
+	}
+}
+void CEquip::UnEquip_Apply_To_ItemAttribute(CItem * pItem)
+{
+	OBJITER iter_Obj = GETS(CObjMgr)->GetObjList(OBJ_UI)->begin();
+	OBJITER iter_Obj_End = GETS(CObjMgr)->GetObjList(OBJ_UI)->end();
+
+	CStat* pStat = NULL;
+	for (iter_Obj; iter_Obj != iter_Obj_End; ++iter_Obj)
+	{
+		if (((CUi*)(*iter_Obj))->GetUiType() == UI_STAT)
+		{
+			pStat = ((CStat*)(*iter_Obj));
+			break;
+		}
+	}
+
+	STAT tStat;
+	tStat.m_iSTR = pStat->Get_PlayerStat()->m_iSTR - pItem->GetItemData()->m_iStr;
+	tStat.m_iDEX = pStat->Get_PlayerStat()->m_iDEX - pItem->GetItemData()->m_iDex;
+	tStat.m_iINT = pStat->Get_PlayerStat()->m_iINT - pItem->GetItemData()->m_iInt;
+	tStat.m_iLUK = pStat->Get_PlayerStat()->m_iLUK - pItem->GetItemData()->m_iLuk;
+	pStat->Set_PlayerStat(tStat);
 }
 #pragma endregion
 

@@ -15,6 +15,7 @@ CSlot::CSlot(void)
 	m_bEquip_SlotCheck = false;
 	ZeroMemory(&m_tSlot_ItemData, sizeof(ITEM));
 	m_iSlotNumber = 0;
+	m_dwEquip_Status = 0;
 }
 
 CSlot::~CSlot(void)
