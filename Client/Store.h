@@ -25,6 +25,7 @@ private:
 
 private:
 	list<CSlot*>		 m_Store_SlotList;
+	list<CSlot*>		 m_Store_InvenSlot_List;
 
 private: //Button
 	INFO				 m_tEscButton_Info[2];
@@ -49,6 +50,7 @@ private: //Store Inven Scroll Status
 public:
 	inline RECT*		 GetEscButton_Rect(int _iIndex) { return &m_tEscButton_Rect[_iIndex]; }
 	inline list<CItem*>* GetStore_ItemList(void) { return &m_Store_ItemList; }
+	inline list<CSlot*>* GetStore_InvenSlot_List(void) { return &m_Store_InvenSlot_List; }
 
 private: //Store Scroll 
 	void				 Scroll_Move(void);

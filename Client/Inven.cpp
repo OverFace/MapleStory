@@ -10,6 +10,7 @@
 
 //UI
 #include "Equip.h"
+#include "Store.h"
 
 //Item----------------------------
 #include "Npc.h"
@@ -350,6 +351,7 @@ int CInven::Inven_ItemUpdate(void)
 	ITEMITER iter_Equip = m_Inven_EquipList.begin();
 	ITEMITER iter_Consume = m_Inven_ConsumeList.begin();
 	ITEMITER iter_Etc = m_Inven_EtcList.begin();
+	ITEMITER iter_Inven = m_Inven_ItemList.begin();
 
 	if (m_bInvenMode[INVEN_EQUIP])
 	{
@@ -366,6 +368,9 @@ int CInven::Inven_ItemUpdate(void)
 		for (iter_Etc; iter_Etc != m_Inven_EtcList.end(); ++iter_Etc)
 			(*iter_Etc)->Update();
 	}
+
+	for (iter_Inven; iter_Inven != m_Inven_ItemList.begin(); ++iter_Inven)
+		(*iter_Inven)->Update();
 
 	return 0;
 }
@@ -1262,10 +1267,24 @@ void CInven::Save_InvenData(void)
 
 void CInven::Load_InvenData(void)
 {
+	//Load 시에는 Store Inven Slot을 만들어서 넣어줘야 된다.
 	CItem* pItem = NULL;
 	ITEM tItem;
 	ZeroMemory(&tItem, sizeof(ITEM));
+
+	//Store Inven Slot Count
+	static int iStore_Inven_Count = 0;
 	
+	//Sotre Info
+	CStore* pStore = NULL;
+	OBJITER iter = GETS(CObjMgr)->GetObjList(OBJ_UI)->begin();
+	OBJITER iter_End = GETS(CObjMgr)->GetObjList(OBJ_UI)->end();
+	for (iter; iter != iter_End; ++iter)
+	{
+		if (((CUi*)(*iter))->GetUiType() == UI_STORE)
+			pStore = ((CStore*)(*iter));
+	}
+
 	DWORD dwByte;
 	HANDLE hFile = CreateFile(L"../Data/Player_Inven_Item_Equip.dat", GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 	while (true)
@@ -1274,6 +1293,17 @@ void CInven::Load_InvenData(void)
 
 		if (dwByte == 0)
 			break;
+
+		//Slot
+		float fx = 285.f;
+		float fy = 125.f;
+		CSlot* pSlot = new CSlot();
+		pSlot->Initialize();
+		pSlot->SetSize(32.f, 32.f);
+		pSlot->SetPos(pStore->GetInfo()->fx + fx, pStore->GetInfo()->fy + fy + (42.5f * iStore_Inven_Count));
+		pSlot->SetSlotNumber(tItem.m_dwOption);
+		pStore->GetStore_InvenSlot_List()->push_back(pSlot);
+		++iStore_Inven_Count;
 
 		if (tItem.m_dwOption == 0)
 		{
@@ -1395,6 +1425,18 @@ void CInven::Load_InvenData(void)
 			pItem->SetItem_Count(tItem.m_iCount);
 			m_Inven_ConsumeList.push_back(pItem);
 			m_Inven_ItemList.push_back(pItem);
+
+			//Slot
+			float fx = 285.f;
+			float fy = 125.f;
+			CSlot* pSlot = new CSlot();
+			pSlot->Initialize();
+			pSlot->SetSize(32.f, 32.f);
+			pSlot->SetPos(pStore->GetInfo()->fx + fx, pStore->GetInfo()->fy + fy + (42.5f * iStore_Inven_Count));
+			pSlot->SetSlotNumber(tItem.m_dwOption);
+			pStore->GetStore_InvenSlot_List()->push_back(pSlot);
+
+			++iStore_Inven_Count;
 		}
 		else if (tItem.m_dwOption == 12)
 		{
@@ -1405,6 +1447,18 @@ void CInven::Load_InvenData(void)
 			pItem->SetItem_Count(tItem.m_iCount);
 			m_Inven_ConsumeList.push_back(pItem);
 			m_Inven_ItemList.push_back(pItem);
+
+			//Slot
+			float fx = 285.f;
+			float fy = 125.f;
+			CSlot* pSlot = new CSlot();
+			pSlot->Initialize();
+			pSlot->SetSize(32.f, 32.f);
+			pSlot->SetPos(pStore->GetInfo()->fx + fx, pStore->GetInfo()->fy + fy + (42.5f * iStore_Inven_Count));
+			pSlot->SetSlotNumber(tItem.m_dwOption);
+			pStore->GetStore_InvenSlot_List()->push_back(pSlot);
+
+			++iStore_Inven_Count;
 		}				
 	}	
 	CloseHandle(hFile_Consume);

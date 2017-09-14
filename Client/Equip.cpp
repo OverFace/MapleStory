@@ -940,6 +940,7 @@ void CEquip::UnEquip_Item(void)
 		}
 	}
 }
+
 void CEquip::UnEquip_Apply_To_ItemAttribute(CItem * pItem)
 {
 	OBJITER iter_Obj = GETS(CObjMgr)->GetObjList(OBJ_UI)->begin();

@@ -264,6 +264,11 @@ int CStore::Update(void)
 		(*iter_Slot)->Update();
 	}
 
+	SLOTITER iter_StoreInven_Slot = m_Store_InvenSlot_List.begin();
+	SLOTITER iter_StoreInven_Slot_End = m_Store_InvenSlot_List.end();
+	for (iter_StoreInven_Slot; iter_StoreInven_Slot != iter_StoreInven_Slot_End; ++iter_StoreInven_Slot)
+		(*iter_StoreInven_Slot)->Update();
+
 	if (m_bVisible == true)
 	{
 		Scroll_Move();
@@ -341,6 +346,21 @@ void CStore::Render(HDC _dc)
 				(*iter_Slot)->SetPos(m_tInfo.fx + fx, m_tInfo.fy + fy + (42.5f * iIndex));
 			}
 		}
+
+		//Store Inven Slot Render
+		float fInven_x = 285.f;
+		float fInven_y = 125.f;
+		int   Inven_iIndex = 0;
+		SLOTITER iter_StoreInven_Slot = m_Store_InvenSlot_List.begin();
+		SLOTITER iter_StoreInven_Slot_End = m_Store_InvenSlot_List.end();
+		for (iter_StoreInven_Slot; iter_StoreInven_Slot != iter_StoreInven_Slot_End; ++iter_StoreInven_Slot, ++Inven_iIndex)
+		{
+			if (Inven_iIndex < 9)
+			{
+				(*iter_StoreInven_Slot)->Render(_dc);
+				(*iter_StoreInven_Slot)->SetPos(m_tInfo.fx + fInven_x, m_tInfo.fy + fInven_y + (42.5f * Inven_iIndex));
+			}
+		}
 		
 		//Store Inven
 		Buy_StoreItem_Render(_dc);
@@ -367,6 +387,14 @@ void CStore::Release(void)
 		SAFE_DELETE(*iter_Slot);
 	}
 	m_Store_SlotList.clear();
+
+	SLOTITER iter_Inven_Slot = m_Store_InvenSlot_List.begin();
+	SLOTITER iteR_Inven_Slot_End = m_Store_InvenSlot_List.end();
+	for (iter_Inven_Slot; iter_Inven_Slot != iteR_Inven_Slot_End; ++iter_Inven_Slot)
+	{
+		SAFE_DELETE(*iter_Inven_Slot);
+	}
+	m_Store_InvenSlot_List.clear();
 }
 
 #pragma region Store Scroll
@@ -995,6 +1023,17 @@ void CStore::Buy_StoreItem(CItem * pItem)
 	{
 		pItem->SetItem_Count(iCount_Hp);
 		((CInven*)pInven)->Set_InvenItem(pItem);
+		
+		//Slot
+		float fx = 285.f;
+		float fy = 125.f;
+		CSlot* pSlot = new CSlot();
+		pSlot->Initialize();
+		pSlot->SetPos(m_tInfo.fx + fx, m_tInfo.fy + fy + (42.5f * ((CInven*)pInven)->GetInven_ItemList()->size()));
+		pSlot->SetSize(32.f, 32.f);
+		pSlot->SetSlotNumber(pItem->GetItemData()->m_dwOption);
+		m_Store_InvenSlot_List.push_back(pSlot);
+		
 		m_bPotion_Check[0] = true;
 	}
 	
@@ -1002,6 +1041,17 @@ void CStore::Buy_StoreItem(CItem * pItem)
 	{
 		pItem->SetItem_Count(iCount_Mp);
 		((CInven*)pInven)->Set_InvenItem(pItem);
+
+		//Slot
+		float fx = 285.f;
+		float fy = 125.f;
+		CSlot* pSlot = new CSlot();
+		pSlot->Initialize();
+		pSlot->SetPos(m_tInfo.fx + fx, m_tInfo.fy + fy + (42.5f * ((CInven*)pInven)->GetInven_ItemList()->size()));
+		pSlot->SetSize(32.f, 32.f);
+		pSlot->SetSlotNumber(pItem->GetItemData()->m_dwOption);
+		m_Store_InvenSlot_List.push_back(pSlot);
+
 		m_bPotion_Check[1] = true;
 	}
 
@@ -1034,6 +1084,19 @@ void CStore::Buy_StoreItem(CItem * pItem)
 	
 	if (((CInven*)pInven)->Get_InvenItem_CreateCheck() == true)
 		((CInven*)pInven)->Set_InvenItem_CreateCheck(false);
+
+	//Store Inven Slot 
+	if (pItem->GetItemData()->m_dwOption != 11 && pItem->GetItemData()->m_dwOption != 12)
+	{
+		float fx = 285.f;
+		float fy = 125.f;
+		CSlot* pSlot = new CSlot();
+		pSlot->Initialize();
+		pSlot->SetPos(m_tInfo.fx + fx, m_tInfo.fy + fy + (42.5f * ((CInven*)pInven)->GetInven_ItemList()->size()));
+		pSlot->SetSize(32.f, 32.f);
+		pSlot->SetSlotNumber(pItem->GetItemData()->m_dwOption);
+		m_Store_InvenSlot_List.push_back(pSlot);
+	}	
 
 	//Store Inven Item 갯수 증가.
 	++m_iStoreInven_ItemCount;
@@ -1118,6 +1181,7 @@ void CStore::Select_StoreInvenItem(void)
 		if (((CUi*)(*iter))->GetUiType() == UI_INVEN)
 		{
 			pInven = ((CUi*)(*iter));
+			break;
 		}
 	}
 
@@ -1128,17 +1192,26 @@ void CStore::Select_StoreInvenItem(void)
 		POINT pt;
 		pt = CMouse::GetPos();
 
+		SLOTITER iter_Slot = m_Store_InvenSlot_List.begin();
+		SLOTITER iter_Slot_End = m_Store_InvenSlot_List.end();
+
 		ITEMITER iter_Inven = InvenList->begin();
 		ITEMITER iter_Inven_End = InvenList->end();
 
-		for (iter_Inven; iter_Inven != iter_Inven_End; ++iter_Inven)
+		for (iter_Slot; iter_Slot != iter_Slot_End; ++iter_Slot)
 		{
-			if (PtInRect((*iter_Inven)->GetRect(), pt) && GETS(CKeyMgr)->OnceKeyDown(VK_LBUTTON))
+			if (PtInRect((*iter_Slot)->GetRect(), pt) && GETS(CKeyMgr)->OnceKeyDown(VK_LBUTTON))
 			{
-				//아이템 렉트 클릭시 동작
-				m_pSelect_Item = (*iter_Inven);				
-			}			
-		}				
+				for (iter_Inven; iter_Inven != iter_Inven_End; ++iter_Inven)
+				{
+					if ((*iter_Slot)->GetSlotNumber() == (*iter_Inven)->GetItemData()->m_dwOption)
+					{
+						m_pSelect_Item = (*iter_Inven);
+						break;
+					}
+				}
+			}
+		}
 	}
 }
 
@@ -1181,6 +1254,9 @@ void CStore::Sale_StoreInven_Item(CItem * pItem)
 	ITEMITER iter_Inven = InvenItemList->begin();
 	ITEMITER iter_Inven_End = InvenItemList->end();
 
+	SLOTITER iter_Slot = m_Store_InvenSlot_List.begin();
+	SLOTITER iter_Slot_End = m_Store_InvenSlot_List.end();
+
 	//Store Inven에 아이템 delete
 	for (iter_Inven; iter_Inven != iter_Inven_End;)
 	{
@@ -1189,11 +1265,57 @@ void CStore::Sale_StoreInven_Item(CItem * pItem)
 			//Sale Price를 Player Money에 축적 시킨다.
 			pPlayer->SetMoney((*iter_Inven)->GetItemData()->m_iSalePrice);
 
-			//그다음 원래 있던 아이템 삭제
-			InvenItemList->erase(iter_Inven);
+			//Hp Potion 일때
+			if (m_pSelect_Item->GetItemData()->m_dwOption == 11)
+			{
+				if (m_pSelect_Item->GetItemData()->m_iCount > 1)
+				{
+					int iHp_Potion_Count = m_pSelect_Item->GetItemData()->m_iCount;
+					--iHp_Potion_Count;
+					m_pSelect_Item->SetItem_Count(iHp_Potion_Count);
+				}
+				else if (m_pSelect_Item->GetItemData()->m_iCount <= 1)
+				{
+					InvenItemList->erase(iter_Inven);
+					iter_Inven = InvenItemList->begin();
+				}
+			}
 
-			iter_Inven = InvenItemList->begin();
-			iter_Inven_End = InvenItemList->end();
+			//Mp Potion 일때
+			if (m_pSelect_Item->GetItemData()->m_dwOption == 12)
+			{
+				if (m_pSelect_Item->GetItemData()->m_iCount > 1)
+				{
+					int iMp_Potion_Count = m_pSelect_Item->GetItemData()->m_iCount;
+					--iMp_Potion_Count;
+					m_pSelect_Item->SetItem_Count(iMp_Potion_Count);
+				}
+				else if (m_pSelect_Item->GetItemData()->m_iCount <= 1)
+				{
+					InvenItemList->erase(iter_Inven);
+					iter_Inven = InvenItemList->begin();
+				}
+			}
+
+			//m_pSelect_Item 이 Potion이 아닐때
+			if (m_pSelect_Item->GetItemData()->m_dwOption != 11 && m_pSelect_Item->GetItemData()->m_dwOption != 12)
+			{
+				InvenItemList->erase(iter_Inven);
+				iter_Inven = InvenItemList->begin();
+			}
+
+			//Slot 삭제.
+			for (iter_Slot; iter_Slot != iter_Slot_End;)
+			{
+				if ((*iter_Slot)->GetSlotNumber() == m_pSelect_Item->GetItemData()->m_dwOption)
+				{
+					m_Store_InvenSlot_List.erase(iter_Slot);
+					iter_Slot = m_Store_InvenSlot_List.begin();
+					break;
+				}
+				else
+					++iter_Slot;
+			}
 
 			m_bSale_Check = true;
 		}
