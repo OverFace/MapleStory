@@ -135,4 +135,18 @@ enum eBGType
 	BG_END
 };
 
+//Skill CutDonw Key
+enum eCutDown_Key
+{
+	CK_A,
+	CK_D,		
+	CK_F,
+	CK_G,
+	CK_1,
+	CK_2,
+	CK_3,
+	CK_4,
+	CK_END
+};
+
 #endif // !Enum_h__

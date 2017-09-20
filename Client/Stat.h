@@ -22,6 +22,7 @@ private: //Button
 
 public: //Getter
 	inline STAT*		Get_PlayerStat(void) { return &m_tStat; }
+	inline bool			Get_LevelUp_Check(void) { return m_bLevelUp_Check; }
 
 public: //Setter
 	inline void			Set_PlayerStat(STAT _tStat) { memcpy_s(&m_tStat, sizeof(STAT), &_tStat, sizeof(STAT)); }

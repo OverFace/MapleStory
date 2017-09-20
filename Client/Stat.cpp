@@ -112,6 +112,10 @@ int CStat::Update(void)
 	//Stat Move
 	Stat_Move();
 
+	//Level Up Check Initialize
+	if (m_tStat.m_iSkillPoint == 0 && m_iStat_Limit <= 0 && m_bLevelUp_Check == true)
+		m_bLevelUp_Check = false;
+
 	return 0;
 }
 
@@ -200,12 +204,11 @@ void CStat::Stat_Key(void)
 		++iLevel;
 
 		m_tStat.m_iLevel += iLevel;
+		m_tStat.m_iSkillPoint = 20;
 		m_iStat_Limit = iLevel * 4;
 
 		bIsPress_Level = true;
 	}
-	if (bIsPress_Level == true)
-		bIsPress_Level = false;
 }
 
 void CStat::Stat_Poisiton(STAT& _rStat, HDC _dc)
@@ -269,8 +272,6 @@ void CStat::Stat_Button(void)
 	}
 	else if (m_iStat_Limit <= 0)
 	{
-		m_bLevelUp_Check = false;
-
 		for (int i = 0; i < 4; ++i)
 		{
 			//Button Off

@@ -30,6 +30,7 @@ typedef struct tagStatInfo
 	int		m_iDEX;				//민첩
 	int	    m_iINT;				//지능
 	int		m_iLUK;				//운
+	int		m_iSkillPoint;		//Skill Point
 }STAT;
 //---------------------------------------------------------------------------------
 
@@ -140,10 +141,11 @@ typedef struct tagSlot
 //---------------------------------------------------------------------------------
 typedef struct tagSkill
 {
-	TCHAR   m_szName[128];			//스킬 이름
-	TCHAR   m_szDescription[128];	//스킬 설명
-	float	m_fSkill_Att;			//스킬 공격력
-	int		m_iSkill_Level;			//스킬 레벨
+	TCHAR			m_szName[128];			//스킬 이름
+	TCHAR			m_szDescription[128];	//스킬 설명
+	float			m_fSkill_Att;			//스킬 공격력
+	int				m_iSkill_Level;			//스킬 레벨
+	eCutDown_Key	m_eSkill_CutDownKey;	//스킬 단축기 저장값.
 }SKILL;
 //---------------------------------------------------------------------------------
 #endif // !Struct_h__
