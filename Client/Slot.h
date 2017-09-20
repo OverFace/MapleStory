@@ -13,7 +13,7 @@ private:
 	DWORD			m_dwEquip_Status;		//Equip Slot에 아이템이 장착되있는지 판단.
 
 private:
-	ITEM			m_tSlot_ItemData;
+	ITEM			m_tSlot_ItemData;		//Slot에서 특별히 사용할 ItemData
 	int				m_iSlotNumber;
 
 public: //Getter

@@ -20,7 +20,6 @@
 #include "Inven.h"
 #include "Equip.h"
 #include "Skill.h"
-#include "Skill_Input.h"
 #include "Stat.h"
 #include "HpBar.h"
 #include "MpBar.h"
@@ -94,9 +93,6 @@ void CStage1::Initialize(void)
 	CObj* pSkill = new CSkill_UI;
 	pSkill->Initialize();
 	GETS(CObjMgr)->AddObject(OBJ_UI, pSkill);
-	pObj = new CSkill_Input(*(pSkill->GetInfo()));
-	pObj->Initialize();
-	GETS(CObjMgr)->AddObject(OBJ_UI, pObj);
 	//Stat
 	pObj = new CStat;
 	pObj->Initialize();

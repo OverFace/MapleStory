@@ -155,6 +155,7 @@ int CInven::Update(void)
 		Inven_EscButton_Click();
 
 		Inven_ItemUpdate();		//Inven Update
+
 	}
 
 	//Slot
@@ -1303,6 +1304,7 @@ void CInven::Load_InvenData(void)
 		pSlot->SetPos(pStore->GetInfo()->fx + fx, pStore->GetInfo()->fy + fy + (42.5f * iStore_Inven_Count));
 		pSlot->SetSlotNumber(tItem.m_dwOption);
 		pStore->GetStore_InvenSlot_List()->push_back(pSlot);
+		
 		++iStore_Inven_Count;
 
 		if (tItem.m_dwOption == 0)
@@ -1435,7 +1437,7 @@ void CInven::Load_InvenData(void)
 			pSlot->SetPos(pStore->GetInfo()->fx + fx, pStore->GetInfo()->fy + fy + (42.5f * iStore_Inven_Count));
 			pSlot->SetSlotNumber(tItem.m_dwOption);
 			pStore->GetStore_InvenSlot_List()->push_back(pSlot);
-
+			
 			++iStore_Inven_Count;
 		}
 		else if (tItem.m_dwOption == 12)
@@ -1457,10 +1459,13 @@ void CInven::Load_InvenData(void)
 			pSlot->SetPos(pStore->GetInfo()->fx + fx, pStore->GetInfo()->fy + fy + (42.5f * iStore_Inven_Count));
 			pSlot->SetSlotNumber(tItem.m_dwOption);
 			pStore->GetStore_InvenSlot_List()->push_back(pSlot);
-
+			
 			++iStore_Inven_Count;
 		}				
 	}	
 	CloseHandle(hFile_Consume);
+
+	//Load 할때에 Store Inven에 대한 Count 값을 증가 시켜 준다.
+	pStore->SetStore_InvenItemCount(iStore_Inven_Count);
 }
 #pragma endregion

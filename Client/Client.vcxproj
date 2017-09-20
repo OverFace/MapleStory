@@ -193,7 +193,6 @@
     <ClInclude Include="SceneMgr.h" />
     <ClInclude Include="Shoes.h" />
     <ClInclude Include="Skill.h" />
-    <ClInclude Include="Skill_Input.h" />
     <ClInclude Include="Slot.h" />
     <ClInclude Include="SoundMgr.h" />
     <ClInclude Include="Stage1.h" />
@@ -251,7 +250,6 @@
     <ClCompile Include="SceneMgr.cpp" />
     <ClCompile Include="Shoes.cpp" />
     <ClCompile Include="Skill.cpp" />
-    <ClCompile Include="Skill_Input.cpp" />
     <ClCompile Include="Slot.cpp" />
     <ClCompile Include="SoundMgr.cpp" />
     <ClCompile Include="Stage1.cpp" />

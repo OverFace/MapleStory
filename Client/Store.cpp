@@ -263,11 +263,11 @@ int CStore::Update(void)
 		(*iter_Slot)->SetPos(m_tInfo.fx + fx, m_tInfo.fy + fy + (42.5f * iIndex));
 		(*iter_Slot)->Update();
 	}
+	Store_InvenSlotUpdate();
 
-	SLOTITER iter_StoreInven_Slot = m_Store_InvenSlot_List.begin();
-	SLOTITER iter_StoreInven_Slot_End = m_Store_InvenSlot_List.end();
-	for (iter_StoreInven_Slot; iter_StoreInven_Slot != iter_StoreInven_Slot_End; ++iter_StoreInven_Slot)
-		(*iter_StoreInven_Slot)->Update();
+	//Slot이 아예 없을때 Item Count를 0으로 초기화
+	//if (m_Store_InvenSlot_List.size() == 0)
+		//m_iStoreInven_ItemCount = -1;
 
 	if (m_bVisible == true)
 	{
@@ -345,22 +345,8 @@ void CStore::Render(HDC _dc)
 				//(*iter_Slot)->Render(_dc);
 				(*iter_Slot)->SetPos(m_tInfo.fx + fx, m_tInfo.fy + fy + (42.5f * iIndex));
 			}
-		}
-
-		//Store Inven Slot Render
-		float fInven_x = 285.f;
-		float fInven_y = 125.f;
-		int   Inven_iIndex = 0;
-		SLOTITER iter_StoreInven_Slot = m_Store_InvenSlot_List.begin();
-		SLOTITER iter_StoreInven_Slot_End = m_Store_InvenSlot_List.end();
-		for (iter_StoreInven_Slot; iter_StoreInven_Slot != iter_StoreInven_Slot_End; ++iter_StoreInven_Slot, ++Inven_iIndex)
-		{
-			if (Inven_iIndex < 9)
-			{
-				(*iter_StoreInven_Slot)->Render(_dc);
-				(*iter_StoreInven_Slot)->SetPos(m_tInfo.fx + fInven_x, m_tInfo.fy + fInven_y + (42.5f * Inven_iIndex));
-			}
-		}
+		}		
+		Store_InvenSlotRender(_dc);
 		
 		//Store Inven
 		Buy_StoreItem_Render(_dc);
@@ -1032,6 +1018,11 @@ void CStore::Buy_StoreItem(CItem * pItem)
 		pSlot->SetPos(m_tInfo.fx + fx, m_tInfo.fy + fy + (42.5f * ((CInven*)pInven)->GetInven_ItemList()->size()));
 		pSlot->SetSize(32.f, 32.f);
 		pSlot->SetSlotNumber(pItem->GetItemData()->m_dwOption);
+
+		//Slot Item Data(Store의 슬롯 번호와 Inven의 슬롯 번호를 비교하기 위해 넣어준다.)
+		SLOT tSlot;
+		tSlot.tItem.m_dwInven_SlotNumber = m_iStoreInven_ItemCount;
+		pSlot->SetSlotData(tSlot.tItem);
 		m_Store_InvenSlot_List.push_back(pSlot);
 		
 		m_bPotion_Check[0] = true;
@@ -1050,8 +1041,13 @@ void CStore::Buy_StoreItem(CItem * pItem)
 		pSlot->SetPos(m_tInfo.fx + fx, m_tInfo.fy + fy + (42.5f * ((CInven*)pInven)->GetInven_ItemList()->size()));
 		pSlot->SetSize(32.f, 32.f);
 		pSlot->SetSlotNumber(pItem->GetItemData()->m_dwOption);
-		m_Store_InvenSlot_List.push_back(pSlot);
 
+		//Slot Item Data(Store의 슬롯 번호와 Inven의 슬롯 번호를 비교하기 위해 넣어준다.)
+		SLOT tSlot;
+		tSlot.tItem.m_dwInven_SlotNumber = m_iStoreInven_ItemCount;
+		pSlot->SetSlotData(tSlot.tItem);
+		m_Store_InvenSlot_List.push_back(pSlot);
+		
 		m_bPotion_Check[1] = true;
 	}
 
@@ -1095,6 +1091,11 @@ void CStore::Buy_StoreItem(CItem * pItem)
 		pSlot->SetPos(m_tInfo.fx + fx, m_tInfo.fy + fy + (42.5f * ((CInven*)pInven)->GetInven_ItemList()->size()));
 		pSlot->SetSize(32.f, 32.f);
 		pSlot->SetSlotNumber(pItem->GetItemData()->m_dwOption);
+
+		//Slot Item Data(Store의 슬롯 번호와 Inven의 슬롯 번호를 비교하기 위해 넣어준다.)
+		SLOT tSlot;
+		tSlot.tItem.m_dwInven_SlotNumber = m_iStoreInven_ItemCount;
+		pSlot->SetSlotData(tSlot.tItem);
 		m_Store_InvenSlot_List.push_back(pSlot);
 	}	
 
@@ -1233,6 +1234,8 @@ void CStore::Sale_Button_Click(void)
 
 void CStore::Sale_StoreInven_Item(CItem * pItem)
 {
+	/* 상점 인벤에서 물건을 팔때 인벤창에 있는 아이템 사라지게 하는 기능 미완성(잘안됨) */
+
 	//Inven 가져오기.
 	OBJITER iter = GETS(CObjMgr)->GetObjList(OBJ_UI)->begin();
 	OBJITER iter_End = GETS(CObjMgr)->GetObjList(OBJ_UI)->end();
@@ -1248,6 +1251,91 @@ void CStore::Sale_StoreInven_Item(CItem * pItem)
 		{
 			pInven = ((CUi*)(*iter));
 		}
+	}
+
+	//Inven에 있는 아이템 삭제
+	if (m_pSelect_Item->GetItemData()->m_dwOption == 0 || m_pSelect_Item->GetItemData()->m_dwOption == 1
+		|| m_pSelect_Item->GetItemData()->m_dwOption == 2 || m_pSelect_Item->GetItemData()->m_dwOption == 3
+		|| m_pSelect_Item->GetItemData()->m_dwOption == 4 || m_pSelect_Item->GetItemData()->m_dwOption == 5
+		|| m_pSelect_Item->GetItemData()->m_dwOption == 6 || m_pSelect_Item->GetItemData()->m_dwOption == 7
+		|| m_pSelect_Item->GetItemData()->m_dwOption == 8 || m_pSelect_Item->GetItemData()->m_dwOption == 9
+		|| m_pSelect_Item->GetItemData()->m_dwOption == 10)
+	{
+		ITEMITER iter_InvenEquip = ((CInven*)pInven)->GetInevn_EquipItemList()->begin();
+		ITEMITER iter_InvenEquip_End = ((CInven*)pInven)->GetInevn_EquipItemList()->end();
+
+		SLOTITER iter_InvenSlot = ((CInven*)pInven)->GetInven_SlotList()->begin();
+		SLOTITER iter_InvenSlot_End = ((CInven*)pInven)->GetInven_SlotList()->end();
+		SLOTITER iter_StoreSlot = m_Store_InvenSlot_List.begin();
+		SLOTITER iter_StoreSlot_End = m_Store_InvenSlot_List.end();
+
+		//Inven에 물건이 1개 일때.
+		if (((CInven*)pInven)->GetInevn_EquipItemList()->size() == 1)
+		{
+			for (iter_StoreSlot; iter_StoreSlot != iter_StoreSlot_End; ++iter_StoreSlot)
+			{
+				for (iter_InvenSlot; iter_InvenSlot != iter_InvenSlot_End; ++iter_InvenSlot)
+				{
+					//Inven에 있는 Slot이랑 Store에 있는 Slot 넘버가 같으면
+					if ((*iter_StoreSlot)->GetSlotData()->m_dwInven_SlotNumber == (*iter_InvenSlot)->GetSlotNumber())
+					{
+						for (iter_InvenEquip; iter_InvenEquip != iter_InvenEquip_End;)
+						{
+							//Inven Equip에 아이템 중 InvenSlotNumber랑 같은 아이템은 지운다.
+							if ((*iter_InvenEquip)->GetItemData()->m_dwInven_SlotNumber == (*iter_InvenSlot)->GetSlotNumber())
+							{
+								((CInven*)pInven)->GetInevn_EquipItemList()->erase(iter_InvenEquip);
+								iter_InvenEquip = ((CInven*)pInven)->GetInevn_EquipItemList()->begin();
+								break;
+							}
+							else
+								++iter_InvenEquip;
+						}
+					}
+				}
+			}
+		}
+
+		//다시 Iter 초기화
+		iter_StoreSlot = m_Store_InvenSlot_List.begin();
+		iter_StoreSlot_End = m_Store_InvenSlot_List.end();
+		iter_InvenEquip = ((CInven*)pInven)->GetInevn_EquipItemList()->begin();
+		iter_InvenEquip_End = ((CInven*)pInven)->GetInevn_EquipItemList()->end();
+		iter_InvenSlot = ((CInven*)pInven)->GetInven_SlotList()->begin();
+		iter_InvenSlot_End = ((CInven*)pInven)->GetInven_SlotList()->end();
+
+		//Store Inven에 포함된 Item 순서와 Inven 창에 있는 순서를 비교해서 같은 것만 Inven창에서 지우는 기능.
+		if (m_Store_InvenSlot_List.size() > 1)
+		{
+			for (iter_InvenSlot; iter_InvenSlot != iter_InvenSlot_End; ++iter_InvenSlot)
+			{
+				//Inven에 있는 Slot이랑 Store에 있는 Slot 넘버가 같으면
+				if ((*iter_StoreSlot)->GetSlotData()->m_dwInven_SlotNumber == (*iter_InvenSlot)->GetSlotNumber())
+				{
+					for (iter_InvenEquip; iter_InvenEquip != iter_InvenEquip_End;)
+					{
+						//Inven Equip에 아이템 중 InvenSlotNumber랑 같은 아이템은 지운다.
+						if ((*iter_InvenEquip)->GetItemData()->m_dwInven_SlotNumber == (*iter_InvenSlot)->GetSlotNumber())
+						{
+							//지워질 아이템의 SlotNumber를 미리 저장.
+							//DWORD dwTemp_SlotNum = (*iter_InvenEquip)->GetItemData()->m_dwInven_SlotNumber;
+							
+							((CInven*)pInven)->GetInevn_EquipItemList()->erase(iter_InvenEquip);
+							iter_InvenEquip = ((CInven*)pInven)->GetInevn_EquipItemList()->begin();
+							//(*iter_InvenEquip)->SetItem_SlotNumber(dwTemp_SlotNum);
+							break;
+						}
+						else
+							++iter_InvenEquip;
+					}
+				}
+			}			
+		}
+	}
+	else if (m_pSelect_Item->GetItemData()->m_dwOption == 11 || m_pSelect_Item->GetItemData()->m_dwOption == 12)
+	{
+		//Consume 창에 있는 아이템들은 갯수만 줄이고. 갯수가 1개일때 사라지게 만들어야 된다.
+		//이것도 위에 사항을 다 만족한 다음 해야된다.
 	}
 
 	list<CItem*>* InvenItemList = ((CInven*)pInven)->GetInven_ItemList();
@@ -1323,32 +1411,36 @@ void CStore::Sale_StoreInven_Item(CItem * pItem)
 			++iter_Inven;
 	}
 
-	//Inven에 있는 아이템 삭제
-	if (m_pSelect_Item->GetItemData()->m_dwOption == 0 || m_pSelect_Item->GetItemData()->m_dwOption == 1
-		|| m_pSelect_Item->GetItemData()->m_dwOption == 2 || m_pSelect_Item->GetItemData()->m_dwOption == 3
-		|| m_pSelect_Item->GetItemData()->m_dwOption == 4 || m_pSelect_Item->GetItemData()->m_dwOption == 5
-		|| m_pSelect_Item->GetItemData()->m_dwOption == 6 || m_pSelect_Item->GetItemData()->m_dwOption == 7
-		|| m_pSelect_Item->GetItemData()->m_dwOption == 8 || m_pSelect_Item->GetItemData()->m_dwOption == 9
-		|| m_pSelect_Item->GetItemData()->m_dwOption == 10)
-	{
-		ITEMITER iter_InvenEquip = ((CInven*)pInven)->GetInevn_EquipItemList()->begin();
-		ITEMITER iter_InvenEquip_End = ((CInven*)pInven)->GetInevn_EquipItemList()->end();
-		
-		for (iter_InvenEquip; iter_InvenEquip != iter_InvenEquip_End; ++iter_InvenEquip)
-		{
-			//Store Inven에 포함된 Item 순서와 Inven 창에 있는 순서를 비교해서
-			//같은 것만 Inven창에서 지우게 만들어야 한다.
-			//사전 작업을 해야되는데 아직 안해놓음.
-		}
-	}
-	else if (m_pSelect_Item->GetItemData()->m_dwOption == 11 || m_pSelect_Item->GetItemData()->m_dwOption == 12)
-	{
-		//Consume 창에 있는 아이템들은 갯수만 줄이고. 갯수가 1개일때 사라지게 만들어야 된다.
-		//이것도 위에 사항을 다 만족한 다음 해야된다.
-	}
-
 	//Store Inven Item 갯수 감소.
 	--m_iStoreInven_ItemCount;
+}
+#pragma endregion
+
+#pragma region Store Slot 
+void CStore::Store_InvenSlotUpdate(void)
+{
+	SLOTITER iter_StoreInven_Slot = m_Store_InvenSlot_List.begin();
+	SLOTITER iter_StoreInven_Slot_End = m_Store_InvenSlot_List.end();
+	for (iter_StoreInven_Slot; iter_StoreInven_Slot != iter_StoreInven_Slot_End; ++iter_StoreInven_Slot)
+		(*iter_StoreInven_Slot)->Update();
+}
+
+void CStore::Store_InvenSlotRender(HDC _dc)
+{
+	//Store Inven Slot Render
+	float fInven_x = 285.f;
+	float fInven_y = 125.f;
+	int   Inven_iIndex = 0;
+	SLOTITER iter_StoreInven_Slot = m_Store_InvenSlot_List.begin();
+	SLOTITER iter_StoreInven_Slot_End = m_Store_InvenSlot_List.end();
+	for (iter_StoreInven_Slot; iter_StoreInven_Slot != iter_StoreInven_Slot_End; ++iter_StoreInven_Slot, ++Inven_iIndex)
+	{
+		if (Inven_iIndex < 9)
+		{
+			(*iter_StoreInven_Slot)->Render(_dc);
+			(*iter_StoreInven_Slot)->SetPos(m_tInfo.fx + fInven_x, m_tInfo.fy + fInven_y + (42.5f * Inven_iIndex));
+		}
+	}
 }
 #pragma endregion
 

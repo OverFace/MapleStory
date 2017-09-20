@@ -55,6 +55,7 @@ public: //Getter
 	inline list<CItem*>* GetInevn_EquipItemList(void) { return &m_Inven_EquipList; }
 	inline list<CItem*>* GetInevn_ConsumeItemList(void) { return &m_Inven_ConsumeList; }
 	inline list<CItem*>* GetInevn_EtcItemList(void) { return &m_Inven_EtcList; }
+	inline list<CSlot*>* GetInven_SlotList(void) { return &m_Inven_SlotList; }
 	inline bool		Get_StoreCheck(void) { return m_bStoreInven_Check; }
 	inline bool		Get_InvenItem_CreateCheck(void) { return m_bInvenItem_CreateCheck; }
 	inline bool		Get_InvenItem_DropCheck(void) { return m_bInvenItem_DropCheck; }

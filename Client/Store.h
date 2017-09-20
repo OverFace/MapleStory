@@ -47,10 +47,13 @@ private: //Store Inven Scroll Status
 	bool				 m_bStoreInven_ScrollMove;
 	int					 m_iStoreInven_ItemCount;
 
-public:
+public: //Getter
 	inline RECT*		 GetEscButton_Rect(int _iIndex) { return &m_tEscButton_Rect[_iIndex]; }
 	inline list<CItem*>* GetStore_ItemList(void) { return &m_Store_ItemList; }
 	inline list<CSlot*>* GetStore_InvenSlot_List(void) { return &m_Store_InvenSlot_List; }
+
+public: //Setter
+	inline void			 SetStore_InvenItemCount(int _iCount) { m_iStoreInven_ItemCount = _iCount; }
 
 private: //Store Scroll 
 	void				 Scroll_Move(void);
@@ -68,6 +71,10 @@ private: //Buy & Sale
 	void				 Buy_StoreItem_Render(HDC _dc);
 	void				 Sale_Button_Click(void);
 	void				 Sale_StoreInven_Item(CItem* pItem);
+
+private: //Slot
+	void				 Store_InvenSlotUpdate(void);
+	void				 Store_InvenSlotRender(HDC _dc);
 
 private: //Messo Present
 	void				 Messo_Present(HDC _dc);

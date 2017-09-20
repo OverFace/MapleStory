@@ -88,9 +88,6 @@
     <ClCompile Include="Skill.cpp">
       <Filter>02.Object\04.UI\Skill</Filter>
     </ClCompile>
-    <ClCompile Include="Skill_Input.cpp">
-      <Filter>02.Object\04.UI\Skill</Filter>
-    </ClCompile>
     <ClCompile Include="Store.cpp">
       <Filter>02.Object\04.UI\Store</Filter>
     </ClCompile>
@@ -253,9 +250,6 @@
       <Filter>02.Object\04.UI\Equipment</Filter>
     </ClInclude>
     <ClInclude Include="Skill.h">
-      <Filter>02.Object\04.UI\Skill</Filter>
-    </ClInclude>
-    <ClInclude Include="Skill_Input.h">
       <Filter>02.Object\04.UI\Skill</Filter>
     </ClInclude>
     <ClInclude Include="Store.h">
