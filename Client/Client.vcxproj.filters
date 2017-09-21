@@ -160,8 +160,14 @@
     <ClCompile Include="Monster.cpp">
       <Filter>02.Object\02.Monster</Filter>
     </ClCompile>
+    <ClCompile Include="Skill_Slot.cpp">
+      <Filter>02.Object\04.UI\Slot\Skill_Slot</Filter>
+    </ClCompile>
     <ClCompile Include="Slot.cpp">
-      <Filter>02.Object\04.UI\Slot</Filter>
+      <Filter>02.Object\04.UI\Slot\Slot</Filter>
+    </ClCompile>
+    <ClCompile Include="Skill_Icon.cpp">
+      <Filter>02.Object\04.UI\Skill\Icon</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -330,8 +336,14 @@
     <ClInclude Include="Stage2_Map.h">
       <Filter>02.Object\03.Map\Stage2</Filter>
     </ClInclude>
+    <ClInclude Include="Skill_Slot.h">
+      <Filter>02.Object\04.UI\Slot\Skill_Slot</Filter>
+    </ClInclude>
     <ClInclude Include="Slot.h">
-      <Filter>02.Object\04.UI\Slot</Filter>
+      <Filter>02.Object\04.UI\Slot\Slot</Filter>
+    </ClInclude>
+    <ClInclude Include="Skill_Icon.h">
+      <Filter>02.Object\04.UI\Skill\Icon</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -501,6 +513,15 @@
     </Filter>
     <Filter Include="02.Object\04.UI\Slot">
       <UniqueIdentifier>{2e66bb45-89fc-4c12-852e-2e66d0048dfd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Object\04.UI\Slot\Skill_Slot">
+      <UniqueIdentifier>{77ebd06b-5e9f-48a4-960b-c7db8bbc6df3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Object\04.UI\Slot\Slot">
+      <UniqueIdentifier>{df104a5b-2fa1-4b43-a30e-a13369dbbf28}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Object\04.UI\Skill\Icon">
+      <UniqueIdentifier>{ea2bfa10-7a69-4b85-8b2e-79ef1b627462}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

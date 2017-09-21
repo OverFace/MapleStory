@@ -9,6 +9,8 @@
 //UI
 #include "UI.h"
 #include "Stat.h"
+#include "Skill_Icon.h"
+#include "Skill_Slot.h"
 
 CSkill_UI::CSkill_UI(void)
 {
@@ -66,6 +68,10 @@ void CSkill_UI::Initialize(void)
 		m_tSkill_PlusButton_Info[i].fcy = 12.f;
 	}
 
+	//Skill Icon
+	Skill_Icon_Create();
+	Skill_Icon_Position();
+
 	m_dwTime = GetTickCount();
 }
 
@@ -81,6 +87,7 @@ int CSkill_UI::Update(void)
 		Skill_Move();
 		Skill_EscButton_Click();
 		Skill_PlusButton_Click();
+		Skill_Icon_Update();
 	}
 
 	return 0;
@@ -113,11 +120,19 @@ void CSkill_UI::Render(HDC _dc)
 					RGB(255, 255, 255));
 			}
 		}
+
+		//Skill Icon
+		Skill_Icon_Render(_dc);
 	}
 }
 
 void CSkill_UI::Release(void)
 {
+	for (size_t i = 0; i < m_vecSkill.size(); ++i)
+	{
+		SAFE_DELETE(m_vecSkill[i]);
+	}
+	m_vecSkill.clear();
 }
 
 void CSkill_UI::Skill_Key(void)
@@ -278,4 +293,114 @@ void CSkill_UI::Skill_PlusButton_Click(void)
 	}
 }
 #pragma endregion
+
+#pragma region Skill Function
+void CSkill_UI::Skill_Icon_Create(void)
+{
+	/*
+	MeanStrike_Icon_On & MeanStrike_Icon_Off       - skill 1
+	Blot_Icon_On & Blot_Icon_Off			       - skill 2
+	Ascension_Icon_On & Ascension_Icon_Off		   - skill 3
+	Annihilation_Icon_On & Annihilation_Icon_Off   = skill 4
+	*/
+
+	//MeanStrike
+	SKILL tSkill;
+	CSkill_Icon* pIcon = new CSkill_Icon();
+	pIcon->Initialize();
+	
+	//Skill Info
+	//MeanStrike
+	ZeroMemory(&tSkill, sizeof(SKILL));
+	lstrcpy(tSkill.m_szName, L"MeanStrike");
+	lstrcpy(tSkill.m_szDescription, L"±âº» °ø°Ý");
+	tSkill.m_iSkill_Level = 1;
+	tSkill.m_fSkill_Att = 10;
+	tSkill.m_eSkill_CutDownKey = CK_END;	
+	pIcon->Set_Skill_Icon_Info(tSkill);
+
+	m_vecSkill.push_back(pIcon);
+	
+	//Blot
+	pIcon = new CSkill_Icon();
+	ZeroMemory(&tSkill, sizeof(SKILL));
+	lstrcpy(tSkill.m_szName, L"Blot");
+	lstrcpy(tSkill.m_szDescription, L"ÃµÃµ º®·Â");
+	tSkill.m_iSkill_Level = 0;
+	tSkill.m_fSkill_Att = 30;
+	tSkill.m_eSkill_CutDownKey = CK_END;
+	pIcon->Set_Skill_Icon_Info(tSkill);
+
+	m_vecSkill.push_back(pIcon);
+
+	//Ascension(½ÂÃµ)
+	pIcon = new CSkill_Icon();
+	ZeroMemory(&tSkill, sizeof(SKILL));
+	lstrcpy(tSkill.m_szName, L"Ascension");
+	lstrcpy(tSkill.m_szDescription, L"½ÂÃµ");
+	tSkill.m_iSkill_Level = 0;
+	tSkill.m_fSkill_Att = 50;
+	tSkill.m_eSkill_CutDownKey = CK_END;
+	pIcon->Set_Skill_Icon_Info(tSkill);
+
+	m_vecSkill.push_back(pIcon);
+
+	//Annihilation(¼¶¸ê)
+	pIcon = new CSkill_Icon();
+	ZeroMemory(&tSkill, sizeof(SKILL));
+	lstrcpy(tSkill.m_szName, L"Ascension");
+	lstrcpy(tSkill.m_szDescription, L"¼¶¸ê");
+	tSkill.m_iSkill_Level = 0;
+	tSkill.m_fSkill_Att = 200;
+	tSkill.m_eSkill_CutDownKey = CK_END;
+	pIcon->Set_Skill_Icon_Info(tSkill);
+
+	m_vecSkill.push_back(pIcon);
+}
+
+void CSkill_UI::Skill_Icon_Position(void)
+{
+	float fx = 10.f;
+	float fy = 32.f;
+	for (size_t i = 0; i < m_vecSkill.size(); ++i)
+	{
+		m_vecSkill[i]->SetPos(m_tInfo.fx + fx, m_tInfo.fy + fy + (32.f * i));
+		m_vecSkill[i]->SetSize(32.f, 32.f);
+		m_vecSkill[i]->Set_Skill_Icon_Num(i);
+	}
+}
+
+void CSkill_UI::Skill_Icon_Update(void)
+{
+	for (size_t i = 0; i < m_vecSkill.size(); ++i)
+	{
+		m_vecSkill[i]->Update();
+	}
+}
+
+void CSkill_UI::Skill_Icon_Render(HDC _dc)
+{
+	TCHAR szOn[30] = L"_On";
+	TCHAR szIcon_Name[50] = L"";
+
+	for (size_t i = 0; i < m_vecSkill.size(); ++i)
+	{
+		//Icon Image Render
+		lstrcpy(szIcon_Name, m_vecSkill[i]->Get_Skill_Icon_Info()->m_szName);
+		lstrcat(szIcon_Name, szOn);
+
+		TransparentBlt(_dc,
+			int(m_vecSkill[i]->GetInfo()->fx), int(m_vecSkill[i]->GetInfo()->fy),
+			int(m_vecSkill[i]->GetInfo()->fcx), int(m_vecSkill[i]->GetInfo()->fcy),
+			GETS(CBitMapMgr)->FindImage(szIcon_Name)->GetMemDC(),
+			0, 0,
+			int(m_vecSkill[i]->GetInfo()->fcx), int(m_vecSkill[i]->GetInfo()->fcy),
+			RGB(255, 255, 255));
+
+		//Rect Render
+		//m_vecSkill[i]->Render(_dc);
+	}
+}
+#pragma endregion
+
 

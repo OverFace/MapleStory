@@ -180,6 +180,8 @@
     <ClInclude Include="MainGame.h" />
     <ClInclude Include="Messo.h" />
     <ClInclude Include="Monster.h" />
+    <ClInclude Include="Skill_Icon.h" />
+    <ClInclude Include="Skill_Slot.h" />
     <ClInclude Include="Slim.h" />
     <ClInclude Include="Mouse.h" />
     <ClInclude Include="MpBar.h" />
@@ -238,6 +240,8 @@
     <ClCompile Include="MainGame.cpp" />
     <ClCompile Include="Messo.cpp" />
     <ClCompile Include="Monster.cpp" />
+    <ClCompile Include="Skill_Icon.cpp" />
+    <ClCompile Include="Skill_Slot.cpp" />
     <ClCompile Include="Slim.cpp" />
     <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="MpBar.cpp" />

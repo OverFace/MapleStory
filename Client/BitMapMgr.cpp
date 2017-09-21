@@ -152,7 +152,18 @@ void CBitMapMgr::LoadImageByScene(eSceneType eType)
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Weapon/Weapon2.bmp", L"Weapon2");
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Weapon/Weapon3.bmp", L"Weapon3");
 #pragma endregion
-		break;
+
+#pragma region Skill_Icon
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Skill/MeanStrike/Icon/MeanStrike_On.bmp", L"MeanStrike_Icon_On");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Skill/MeanStrike/Icon/MeanStrike_Off.bmp", L"MeanStrike_Icon_Off");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Skill/Blot/Icon/Blot_On.bmp", L"Blot_Icon_On");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Skill/Blot/Icon/Blot_Off.bmp", L"Blot_Icon_Off");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Skill/Ascension/Icon/Ascension_On.bmp", L"Ascension_Icon_On");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Skill/Ascension/Icon/Ascension_Off.bmp", L"Ascension_Icon_Off");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Skill/Annihilation/Icon/Annihilation_On.bmp", L"Annihilation_Icon_On");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Skill/Annihilation/Icon/Annihilation_Off.bmp", L"Annihilation_Icon_Off");
+#pragma endregion
+	break;
 	case SCENE_STAGE2:
 		//Tile Image
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Tile/Box2(62).bmp", L"Tile_62");
@@ -244,6 +255,17 @@ void CBitMapMgr::LoadImageByScene(eSceneType eType)
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Weapon/Weapon2.bmp", L"Weapon2");
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Weapon/Weapon3.bmp", L"Weapon3");
 #pragma endregion
+
+#pragma region Skill_Icon
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Skill/MeanStrike/Icon/MeanStrike_On.bmp", L"MeanStrike_Icon_On");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Skill/MeanStrike/Icon/MeanStrike_Off.bmp", L"MeanStrike_Icon_Off");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Skill/Blot/Icon/Blot_On.bmp", L"Blot_Icon_On");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Skill/Blot/Icon/Blot_Off.bmp", L"Blot_Icon_Off");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Skill/Ascension/Icon/Ascension_On.bmp", L"Ascension_Icon_On");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Skill/Ascension/Icon/Ascension_Off.bmp", L"Ascension_Icon_Off");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Skill/Annihilation/Icon/Annihilation_On.bmp", L"Annihilation_Icon_On");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Skill/Annihilation/Icon/Annihilation_Off.bmp", L"Annihilation_Icon_Off");
+#pragma endregion
 		break;
 	case SCENE_STAGE3:
 		//Tile Image
@@ -331,6 +353,17 @@ void CBitMapMgr::LoadImageByScene(eSceneType eType)
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Weapon/Weapon1.bmp", L"Weapon1");
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Weapon/Weapon2.bmp", L"Weapon2");
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Weapon/Weapon3.bmp", L"Weapon3");
+#pragma endregion
+
+#pragma region Skill_Icon
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Skill/MeanStrike/Icon/MeanStrike_On.bmp", L"MeanStrike_Icon_On");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Skill/MeanStrike/Icon/MeanStrike_Off.bmp", L"MeanStrike_Icon_Off");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Skill/Blot/Icon/Blot_On.bmp", L"Blot_Icon_On");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Skill/Blot/Icon/Blot_Off.bmp", L"Blot_Icon_Off");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Skill/Ascension/Icon/Ascension_On.bmp", L"Ascension_Icon_On");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Skill/Ascension/Icon/Ascension_Off.bmp", L"Ascension_Icon_Off");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Skill/Annihilation/Icon/Annihilation_On.bmp", L"Annihilation_Icon_On");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Skill/Annihilation/Icon/Annihilation_Off.bmp", L"Annihilation_Icon_Off");
 #pragma endregion
 		break;
 	case SCENE_EDIT:
@@ -438,6 +471,17 @@ void CBitMapMgr::LoadImageByScene(eSceneType eType)
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Weapon/Weapon1.bmp", L"Weapon1");
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Weapon/Weapon2.bmp", L"Weapon2");
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Weapon/Weapon3.bmp", L"Weapon3");
+#pragma endregion
+
+#pragma region Skill_Icon
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Skill/MeanStrike/Icon/MeanStrike_On.bmp", L"MeanStrike_Icon_On");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Skill/MeanStrike/Icon/MeanStrike_Off.bmp", L"MeanStrike_Icon_Off");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Skill/Blot/Icon/Blot_On.bmp", L"Blot_Icon_On");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Skill/Blot/Icon/Blot_Off.bmp", L"Blot_Icon_Off");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Skill/Ascension/Icon/Ascension_On.bmp", L"Ascension_Icon_On");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Skill/Ascension/Icon/Ascension_Off.bmp", L"Ascension_Icon_Off");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Skill/Annihilation/Icon/Annihilation_On.bmp", L"Annihilation_Icon_On");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Skill/Annihilation/Icon/Annihilation_Off.bmp", L"Annihilation_Icon_Off");
 #pragma endregion
 		break;
 	}

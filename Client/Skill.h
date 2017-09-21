@@ -1,7 +1,8 @@
 #pragma once
 #include "UI.h"
 
-class CSlot;
+class CSkill_Slot;
+class CSkill_Icon;
 class CSkill_UI : public CUi
 {
 public:
@@ -9,25 +10,27 @@ public:
 	virtual ~CSkill_UI(void);
 
 private:
-	INFO				m_tSkill_Input_Info;
-	RECT				m_tSkill_Input_Rect;
-	DWORD				m_dwTime;
+	vector<CSkill_Icon*>	m_vecSkill;
+	INFO					m_tSkill_Input_Info;
+	RECT					m_tSkill_Input_Rect;
+	DWORD					m_dwTime;
 
 private: //Skill Stauts Check
-	bool				m_bSkillMoveCheck;
-	bool				m_bSkillPlus_Button_Visible;
+	bool					m_bSkillMoveCheck;
+	bool					m_bSkillPlus_Button_Visible;
 
 private: //Button
-	RECT				m_tSkillMove_Rect;
-	INFO				m_tSkill_EscButton_Info;
-	RECT				m_tSkill_EscButton_Rect;
+	RECT					m_tSkillMove_Rect;
+	INFO					m_tSkill_EscButton_Info;
+	RECT					m_tSkill_EscButton_Rect;
 
 private: //Plus Button
-	INFO				m_tSkill_PlusButton_Info[4];
-	RECT				m_tSkill_PlusButton_Rect[4];
-	int					m_iSkill_PlusButton_Option[4];
+	INFO					m_tSkill_PlusButton_Info[4];
+	RECT					m_tSkill_PlusButton_Rect[4];
+	int						m_iSkill_PlusButton_Option[4];
 
 public: //Getter
+	inline vector<CSkill_Icon*>* Get_Skill(void) { return &m_vecSkill; }
 
 public: //Setter
 
@@ -39,6 +42,12 @@ private:
 private: //Button
 	void				Skill_EscButton_Click(void);
 	void				Skill_PlusButton_Click(void);
+
+private: //Skill Function
+	void				Skill_Icon_Create(void);
+	void				Skill_Icon_Position(void);
+	void				Skill_Icon_Update(void);
+	void				Skill_Icon_Render(HDC _dc);
 
 public:
 	virtual void		Initialize(void);
