@@ -9,7 +9,6 @@
 
 CSkill_Slot::CSkill_Slot(void)
 {
-	ZeroMemory(&m_tSkill, sizeof(SKILL));
 	m_iSlotNumber = 0;
 }
 
