@@ -113,7 +113,7 @@ int CStat::Update(void)
 	Stat_Move();
 
 	//Level Up Check Initialize
-	if (m_tStat.m_iSkillPoint == 0 && m_iStat_Limit <= 0 && m_bLevelUp_Check == true)
+	if (m_iStat_Limit <= 0 && m_bLevelUp_Check == true)
 		m_bLevelUp_Check = false;
 
 	return 0;
@@ -200,15 +200,17 @@ void CStat::Stat_Key(void)
 
 	static bool bIsPress_Level = false;
 	if (GETS(CKeyMgr)->OnceKeyDown('7') && bIsPress_Level == false)
-	{		
+	{
 		++iLevel;
 
 		m_tStat.m_iLevel += iLevel;
-		m_tStat.m_iSkillPoint = 20;
+		m_tStat.m_iSkillPoint = 10;
 		m_iStat_Limit = iLevel * 4;
 
 		bIsPress_Level = true;
 	}
+	else if (!GETS(CKeyMgr)->OnceKeyDown('7') && bIsPress_Level == true)
+		bIsPress_Level = false;
 }
 
 void CStat::Stat_Poisiton(STAT& _rStat, HDC _dc)

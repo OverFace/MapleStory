@@ -10,7 +10,7 @@ CBitMap::~CBitMap(void)
 	Release();
 }
 
-CBitMap * CBitMap::LoadBmp(const TCHAR * pFileName)
+CBitMap * CBitMap::LoadBmp(const TCHAR* pFileName)
 {
 	m_hDC   = GetDC(g_hWnd);
 	m_MemDC = CreateCompatibleDC(m_hDC);

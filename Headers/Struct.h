@@ -145,6 +145,7 @@ typedef struct tagSkill
 	TCHAR			m_szDescription[128];	//스킬 설명
 	float			m_fSkill_Att;			//스킬 공격력
 	int				m_iSkill_Level;			//스킬 레벨
+	int				m_iSkill_Master_Level;	//스킬 마스터 레벨
 	eCutDown_Key	m_eSkill_CutDownKey;	//스킬 단축기 저장값.
 }SKILL;
 //---------------------------------------------------------------------------------

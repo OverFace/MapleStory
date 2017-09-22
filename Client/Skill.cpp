@@ -31,6 +31,7 @@ CSkill_UI::CSkill_UI(void)
 	
 	m_bSkillMoveCheck = false;
 	m_bSkillPlus_Button_Visible = false;
+	m_bSkillLevel_Up_Check = false;
 }
 
 CSkill_UI::~CSkill_UI(void)
@@ -123,6 +124,7 @@ void CSkill_UI::Render(HDC _dc)
 
 		//Skill Icon
 		Skill_Icon_Render(_dc);
+		Skill_Icon_InfoRender(_dc);
 	}
 }
 
@@ -241,8 +243,22 @@ void CSkill_UI::Skill_PlusButton_Click(void)
 			pStat = ((CStat*)(*iter));
 	}
 
+	//Level Up Check On & Off
+	static bool bCheck = false;
+	if (pStat->Get_PlayerStat()->m_iSkillPoint <= 0 && bCheck == true)
+	{
+		m_bSkillLevel_Up_Check = false;
+		bCheck = false;
+	}
+
+	if (pStat->Get_PlayerStat()->m_iSkillPoint > 0 && bCheck == false)
+	{
+		m_bSkillLevel_Up_Check = true;
+		bCheck = true;
+	}
+
 	//Level Up Check
-	if (pStat->Get_LevelUp_Check() == true)
+	if (m_bSkillLevel_Up_Check == true)
 	{
 		m_bSkillPlus_Button_Visible = true;
 		
@@ -252,12 +268,48 @@ void CSkill_UI::Skill_PlusButton_Click(void)
 			//Plus Button 1 = First Skill Level Button
 			--pStat->Get_PlayerStat()->m_iSkillPoint;
 
+			for (size_t i = 0; i < m_vecSkill.size(); ++i)
+			{
+				if (m_vecSkill[i]->Get_Skill_Icon_Num() == 0)
+				{
+					//Skill Level
+					int iLevel = m_vecSkill[i]->Get_Skill_Icon_Info()->m_iSkill_Level;
+					++iLevel;
+					m_vecSkill[i]->Set_Skill_Icon_Level(iLevel);
+					
+					//Skill Att
+					float fAtt = m_vecSkill[i]->Get_Skill_Icon_Info()->m_fSkill_Att;
+					fAtt += 10.f;
+					m_vecSkill[i]->Set_Skill_Icon_Att(fAtt);
+
+					break;
+				}
+			}
+
 			bCheck = true;
 		}
 		else if (PtInRect(&m_tSkill_PlusButton_Rect[1], pt) && GETS(CKeyMgr)->OnceKeyDown(VK_LBUTTON) && bCheck == false)
 		{
 			//Plus Button 2 = Second Skill Level Button
 			--pStat->Get_PlayerStat()->m_iSkillPoint;
+
+			for (size_t i = 0; i < m_vecSkill.size(); ++i)
+			{
+				if (m_vecSkill[i]->Get_Skill_Icon_Num() == 1)
+				{
+					//Skill Level
+					int iLevel = m_vecSkill[i]->Get_Skill_Icon_Info()->m_iSkill_Level;
+					++iLevel;
+					m_vecSkill[i]->Set_Skill_Icon_Level(iLevel);
+
+					//Skill Att
+					float fAtt = m_vecSkill[i]->Get_Skill_Icon_Info()->m_fSkill_Att;
+					fAtt += 20.f;
+					m_vecSkill[i]->Set_Skill_Icon_Att(fAtt);
+
+					break;
+				}
+			}
 
 			bCheck = true;
 		}
@@ -266,12 +318,48 @@ void CSkill_UI::Skill_PlusButton_Click(void)
 			//Plus Button 3 = Thrid Skill Level Button
 			--pStat->Get_PlayerStat()->m_iSkillPoint;
 
+			for (size_t i = 0; i < m_vecSkill.size(); ++i)
+			{
+				if (m_vecSkill[i]->Get_Skill_Icon_Num() == 2)
+				{
+					//Skill Level
+					int iLevel = m_vecSkill[i]->Get_Skill_Icon_Info()->m_iSkill_Level;
+					++iLevel;
+					m_vecSkill[i]->Set_Skill_Icon_Level(iLevel);
+
+					//Skill Att
+					float fAtt = m_vecSkill[i]->Get_Skill_Icon_Info()->m_fSkill_Att;
+					fAtt += 30.f;
+					m_vecSkill[i]->Set_Skill_Icon_Att(fAtt);
+
+					break;
+				}
+			}
+
 			bCheck = true;
 		}
 		else if (PtInRect(&m_tSkill_PlusButton_Rect[3], pt) && GETS(CKeyMgr)->OnceKeyDown(VK_LBUTTON) && bCheck == false)
 		{
 			//Plus Button 4 = Four Skill Level Button
 			--pStat->Get_PlayerStat()->m_iSkillPoint;
+
+			for (size_t i = 0; i < m_vecSkill.size(); ++i)
+			{
+				if (m_vecSkill[i]->Get_Skill_Icon_Num() == 3)
+				{
+					//Skill Level
+					int iLevel = m_vecSkill[i]->Get_Skill_Icon_Info()->m_iSkill_Level;
+					++iLevel;
+					m_vecSkill[i]->Set_Skill_Icon_Level(iLevel);
+
+					//Skill Att
+					float fAtt = m_vecSkill[i]->Get_Skill_Icon_Info()->m_fSkill_Att;
+					fAtt += 40.f;
+					m_vecSkill[i]->Set_Skill_Icon_Att(fAtt);
+
+					break;
+				}
+			}
 
 			bCheck = true;
 		}
@@ -301,7 +389,7 @@ void CSkill_UI::Skill_Icon_Create(void)
 	MeanStrike_Icon_On & MeanStrike_Icon_Off       - skill 1
 	Blot_Icon_On & Blot_Icon_Off			       - skill 2
 	Ascension_Icon_On & Ascension_Icon_Off		   - skill 3
-	Annihilation_Icon_On & Annihilation_Icon_Off   = skill 4
+	Annihilation_Icon_On & Annihilation_Icon_Off   - skill 4
 	*/
 
 	//MeanStrike
@@ -313,8 +401,9 @@ void CSkill_UI::Skill_Icon_Create(void)
 	//MeanStrike
 	ZeroMemory(&tSkill, sizeof(SKILL));
 	lstrcpy(tSkill.m_szName, L"MeanStrike");
-	lstrcpy(tSkill.m_szDescription, L"±âº» °ø°Ý");
+	lstrcpy(tSkill.m_szDescription, L"½Ø·Á»Ñ!");
 	tSkill.m_iSkill_Level = 1;
+	tSkill.m_iSkill_Master_Level = 15;
 	tSkill.m_fSkill_Att = 10;
 	tSkill.m_eSkill_CutDownKey = CK_END;	
 	pIcon->Set_Skill_Icon_Info(tSkill);
@@ -325,8 +414,9 @@ void CSkill_UI::Skill_Icon_Create(void)
 	pIcon = new CSkill_Icon();
 	ZeroMemory(&tSkill, sizeof(SKILL));
 	lstrcpy(tSkill.m_szName, L"Blot");
-	lstrcpy(tSkill.m_szDescription, L"ÃµÃµ º®·Â");
+	lstrcpy(tSkill.m_szDescription, L"¸¶! ¹ø°³°£´ÙÀÌ~");
 	tSkill.m_iSkill_Level = 0;
+	tSkill.m_iSkill_Master_Level = 20;
 	tSkill.m_fSkill_Att = 30;
 	tSkill.m_eSkill_CutDownKey = CK_END;
 	pIcon->Set_Skill_Icon_Info(tSkill);
@@ -337,8 +427,9 @@ void CSkill_UI::Skill_Icon_Create(void)
 	pIcon = new CSkill_Icon();
 	ZeroMemory(&tSkill, sizeof(SKILL));
 	lstrcpy(tSkill.m_szName, L"Ascension");
-	lstrcpy(tSkill.m_szDescription, L"½ÂÃµ");
+	lstrcpy(tSkill.m_szDescription, L"°ñ·Î °¡°í½Í³ª¾Æ~?");
 	tSkill.m_iSkill_Level = 0;
+	tSkill.m_iSkill_Master_Level = 20;
 	tSkill.m_fSkill_Att = 50;
 	tSkill.m_eSkill_CutDownKey = CK_END;
 	pIcon->Set_Skill_Icon_Info(tSkill);
@@ -348,9 +439,10 @@ void CSkill_UI::Skill_Icon_Create(void)
 	//Annihilation(¼¶¸ê)
 	pIcon = new CSkill_Icon();
 	ZeroMemory(&tSkill, sizeof(SKILL));
-	lstrcpy(tSkill.m_szName, L"Ascension");
-	lstrcpy(tSkill.m_szDescription, L"¼¶¸ê");
+	lstrcpy(tSkill.m_szName, L"Annihilation");
+	lstrcpy(tSkill.m_szDescription, L"µû ¶§·Á »Ç»ç»Ô¶ó");
 	tSkill.m_iSkill_Level = 0;
+	tSkill.m_iSkill_Master_Level = 30;
 	tSkill.m_fSkill_Att = 200;
 	tSkill.m_eSkill_CutDownKey = CK_END;
 	pIcon->Set_Skill_Icon_Info(tSkill);
@@ -360,11 +452,11 @@ void CSkill_UI::Skill_Icon_Create(void)
 
 void CSkill_UI::Skill_Icon_Position(void)
 {
-	float fx = 10.f;
-	float fy = 32.f;
+	float fx = 12.f;
+	float fy = 95.f;
 	for (size_t i = 0; i < m_vecSkill.size(); ++i)
 	{
-		m_vecSkill[i]->SetPos(m_tInfo.fx + fx, m_tInfo.fy + fy + (32.f * i));
+		m_vecSkill[i]->SetPos(m_tInfo.fx + fx, m_tInfo.fy + fy + (40.f * i));
 		m_vecSkill[i]->SetSize(32.f, 32.f);
 		m_vecSkill[i]->Set_Skill_Icon_Num(i);
 	}
@@ -372,34 +464,88 @@ void CSkill_UI::Skill_Icon_Position(void)
 
 void CSkill_UI::Skill_Icon_Update(void)
 {
+	float fx = 12.f;
+	float fy = 95.f;
 	for (size_t i = 0; i < m_vecSkill.size(); ++i)
 	{
+		m_vecSkill[i]->SetPos(m_tInfo.fx + fx, m_tInfo.fy + fy + (40.f * i));
 		m_vecSkill[i]->Update();
+
+		//Skill On Off Check1
+		if (m_vecSkill[i]->Get_Skill_Icon_Info()->m_iSkill_Level == 0)
+			m_vecSkill[i]->Set_Skill_Icon_Check(false);
+		else if(m_vecSkill[i]->Get_Skill_Icon_Info()->m_iSkill_Level != 0)
+			m_vecSkill[i]->Set_Skill_Icon_Check(true);
 	}
 }
 
 void CSkill_UI::Skill_Icon_Render(HDC _dc)
 {
-	TCHAR szOn[30] = L"_On";
+	TCHAR szOn[30] = L"_Icon_On";
 	TCHAR szIcon_Name[50] = L"";
+	TCHAR szOff[30] = L"_Icon_Off";
+	TCHAR szIcon_OffName[50] = L"";
 
 	for (size_t i = 0; i < m_vecSkill.size(); ++i)
 	{
+		//Icon Off Render
+		lstrcpy(szIcon_OffName, m_vecSkill[i]->Get_Skill_Icon_Info()->m_szName);
+		lstrcat(szIcon_OffName, szOff);
+
+		if (m_vecSkill[i]->Get_Skill_Icon_Check() == false)
+		{
+			TransparentBlt(_dc,
+				int(m_vecSkill[i]->GetInfo()->fx), int(m_vecSkill[i]->GetInfo()->fy),
+				int(m_vecSkill[i]->GetInfo()->fcx), int(m_vecSkill[i]->GetInfo()->fcy),
+				GETS(CBitMapMgr)->FindImage(szIcon_OffName)->GetMemDC(),
+				0, 0,
+				int(m_vecSkill[i]->GetInfo()->fcx), int(m_vecSkill[i]->GetInfo()->fcy),
+				RGB(255, 255, 255));
+		}
+
 		//Icon Image Render
 		lstrcpy(szIcon_Name, m_vecSkill[i]->Get_Skill_Icon_Info()->m_szName);
 		lstrcat(szIcon_Name, szOn);
 
-		TransparentBlt(_dc,
-			int(m_vecSkill[i]->GetInfo()->fx), int(m_vecSkill[i]->GetInfo()->fy),
-			int(m_vecSkill[i]->GetInfo()->fcx), int(m_vecSkill[i]->GetInfo()->fcy),
-			GETS(CBitMapMgr)->FindImage(szIcon_Name)->GetMemDC(),
-			0, 0,
-			int(m_vecSkill[i]->GetInfo()->fcx), int(m_vecSkill[i]->GetInfo()->fcy),
-			RGB(255, 255, 255));
-
-		//Rect Render
-		//m_vecSkill[i]->Render(_dc);
+		if (m_vecSkill[i]->Get_Skill_Icon_Check() == true)
+		{
+			TransparentBlt(_dc,
+				int(m_vecSkill[i]->GetInfo()->fx), int(m_vecSkill[i]->GetInfo()->fy),
+				int(m_vecSkill[i]->GetInfo()->fcx), int(m_vecSkill[i]->GetInfo()->fcy),
+				GETS(CBitMapMgr)->FindImage(szIcon_Name)->GetMemDC(),
+				0, 0,
+				int(m_vecSkill[i]->GetInfo()->fcx), int(m_vecSkill[i]->GetInfo()->fcy),
+				RGB(255, 255, 255));
+		}
 	}
+}
+
+void CSkill_UI::Skill_Icon_InfoRender(HDC _dc)
+{
+	//Skill Icon Info Render
+	for(size_t i = 0; i < m_vecSkill.size(); ++i)
+		m_vecSkill[i]->Render(_dc);
+
+	//Skill Point Render
+	CStat* pStat = NULL;
+	OBJITER iter = GETS(CObjMgr)->GetObjList(OBJ_UI)->begin();
+	OBJITER iter_End = GETS(CObjMgr)->GetObjList(OBJ_UI)->end();
+	for (iter; iter != iter_End; ++iter)
+	{
+		if (((CUi*)(*iter))->GetUiType() == UI_STAT)
+			pStat = ((CStat*)(*iter));
+	}
+
+	m_myFont = CreateFont(11, 5, 0, 0, 0, 0, 0, 0, DEFAULT_CHARSET, 0, 0, 0, 0, L"±¼¸²");
+	HFONT oldFont = (HFONT)SelectObject(_dc, m_myFont);
+
+	//Skill Point
+	TCHAR szSkill_Point[100] = { 0 };
+	_stprintf_s(szSkill_Point, _countof(szSkill_Point), L"%d", pStat->Get_PlayerStat()->m_iSkillPoint);
+
+	SetBkMode(_dc, TRANSPARENT);
+	TextOut(_dc, int(m_tInfo.fx + 145.f), int(m_tInfo.fy + 258.f), szSkill_Point, lstrlen(szSkill_Point));
+	SelectObject(_dc, oldFont);
 }
 #pragma endregion
 

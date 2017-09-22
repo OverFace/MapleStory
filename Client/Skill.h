@@ -14,10 +14,12 @@ private:
 	INFO					m_tSkill_Input_Info;
 	RECT					m_tSkill_Input_Rect;
 	DWORD					m_dwTime;
+	HFONT					m_myFont;
 
 private: //Skill Stauts Check
 	bool					m_bSkillMoveCheck;
 	bool					m_bSkillPlus_Button_Visible;
+	bool					m_bSkillLevel_Up_Check;
 
 private: //Button
 	RECT					m_tSkillMove_Rect;
@@ -48,6 +50,7 @@ private: //Skill Function
 	void				Skill_Icon_Position(void);
 	void				Skill_Icon_Update(void);
 	void				Skill_Icon_Render(HDC _dc);
+	void				Skill_Icon_InfoRender(HDC _dc);
 
 public:
 	virtual void		Initialize(void);
