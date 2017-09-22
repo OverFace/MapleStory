@@ -1,0 +1,26 @@
+#pragma once
+#include "UI.h"
+
+class CQuick_Slot;
+class CUi_QuickSlot : public CUi
+{
+public:
+	CUi_QuickSlot(void);
+	virtual ~CUi_QuickSlot(void);
+
+private:
+	list<CQuick_Slot*>	m_QuickSlot_List;
+
+private: //Quick Slot Status Check
+
+public:	//Getter
+	inline list<CQuick_Slot*>* Get_QuickSlot(void) { return &m_QuickSlot_List; }
+
+public: //Setter
+
+public:
+	virtual void		Initialize(void);
+	virtual	int			Update(void);
+	virtual void		Render(HDC _dc);
+	virtual void		Release(void);
+};

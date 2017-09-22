@@ -169,6 +169,12 @@
     <ClCompile Include="Skill_Icon.cpp">
       <Filter>02.Object\04.UI\Skill\Icon</Filter>
     </ClCompile>
+    <ClCompile Include="Quick_Slot.cpp">
+      <Filter>02.Object\04.UI\Slot\Quick Slot</Filter>
+    </ClCompile>
+    <ClCompile Include="UI_QuickSlot.cpp">
+      <Filter>02.Object\04.UI\QuickSlot</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainGame.h">
@@ -344,6 +350,12 @@
     </ClInclude>
     <ClInclude Include="Skill_Icon.h">
       <Filter>02.Object\04.UI\Skill\Icon</Filter>
+    </ClInclude>
+    <ClInclude Include="Quick_Slot.h">
+      <Filter>02.Object\04.UI\Slot\Quick Slot</Filter>
+    </ClInclude>
+    <ClInclude Include="UI_QuickSlot.h">
+      <Filter>02.Object\04.UI\QuickSlot</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -522,6 +534,12 @@
     </Filter>
     <Filter Include="02.Object\04.UI\Skill\Icon">
       <UniqueIdentifier>{ea2bfa10-7a69-4b85-8b2e-79ef1b627462}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Object\04.UI\Slot\Quick Slot">
+      <UniqueIdentifier>{3c33614f-7eb0-462c-97f0-4d557565764f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Object\04.UI\QuickSlot">
+      <UniqueIdentifier>{6d022e2b-f055-49c6-9830-8c46629b945f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

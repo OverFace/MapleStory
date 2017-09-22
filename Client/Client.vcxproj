@@ -180,6 +180,7 @@
     <ClInclude Include="MainGame.h" />
     <ClInclude Include="Messo.h" />
     <ClInclude Include="Monster.h" />
+    <ClInclude Include="Quick_Slot.h" />
     <ClInclude Include="Skill_Icon.h" />
     <ClInclude Include="Skill_Slot.h" />
     <ClInclude Include="Slim.h" />
@@ -211,6 +212,7 @@
     <ClInclude Include="Store_Npc.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="UI.h" />
+    <ClInclude Include="UI_QuickSlot.h" />
     <ClInclude Include="Weapon.h" />
   </ItemGroup>
   <ItemGroup>
@@ -240,6 +242,7 @@
     <ClCompile Include="MainGame.cpp" />
     <ClCompile Include="Messo.cpp" />
     <ClCompile Include="Monster.cpp" />
+    <ClCompile Include="Quick_Slot.cpp" />
     <ClCompile Include="Skill_Icon.cpp" />
     <ClCompile Include="Skill_Slot.cpp" />
     <ClCompile Include="Slim.cpp" />
@@ -274,6 +277,7 @@
     <ClCompile Include="Store.cpp" />
     <ClCompile Include="Store_Npc.cpp" />
     <ClCompile Include="UI.cpp" />
+    <ClCompile Include="UI_QuickSlot.cpp" />
     <ClCompile Include="Weapon.cpp" />
   </ItemGroup>
   <ItemGroup>
