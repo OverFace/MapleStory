@@ -82,6 +82,7 @@ enum eUiType
 	UI_STORE,
 	UI_STAT,
 	UI_STATUS,
+	UI_QUICKSLOT,
 	UI_END
 };
 
@@ -138,14 +139,14 @@ enum eBGType
 //Skill CutDonw Key
 enum eCutDown_Key
 {
-	CK_A,
-	CK_D,		
-	CK_F,
-	CK_G,
 	CK_1,
 	CK_2,
 	CK_3,
 	CK_4,
+	CK_A,
+	CK_D,		
+	CK_F,
+	CK_G,
 	CK_END
 };
 

@@ -23,6 +23,7 @@ private: //Skill Stauts Check
 	bool					m_bSkillPlus_Button_Visible;
 	bool					m_bSkillLevel_Up_Check;
 	bool					m_bSkill_Select_Check;
+	bool					m_bSkill_Drop_Check;
 
 private: //Button
 	RECT					m_tSkillMove_Rect;
@@ -37,8 +38,11 @@ private: //Plus Button
 public: //Getter
 	inline vector<CSkill_Icon*>* Get_Skill(void) { return &m_vecSkill; }
 	inline vector<CSkill_Slot*>* Get_Skill_Icon(void) { return &m_vecSkill_Slot; }
+	inline CSkill_Icon*		     Get_Select_Icon(void) { return m_pSelect_Skill; }
+	inline bool				     Get_Drop_Check(void) { return m_bSkill_Drop_Check; }
 
 public: //Setter
+	inline void			Set_Drop_Check(bool _bCheck) { m_bSkill_Drop_Check = _bCheck; }
 
 private:
 	void				Skill_Key(void);

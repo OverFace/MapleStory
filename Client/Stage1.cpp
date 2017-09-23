@@ -24,6 +24,7 @@
 #include "HpBar.h"
 #include "MpBar.h"
 #include "ExpBar.h"
+#include "UI_QuickSlot.h"
 //-------------------------------------
 
 CStage1::CStage1(void)
@@ -107,6 +108,10 @@ void CStage1::Initialize(void)
 	GETS(CObjMgr)->AddObject(OBJ_UI, pObj);
 	//Exp_Bar
 	pObj = new CExpBar;
+	pObj->Initialize();
+	GETS(CObjMgr)->AddObject(OBJ_UI, pObj);
+	//Quick Slot
+	pObj = new CUi_QuickSlot;
 	pObj->Initialize();
 	GETS(CObjMgr)->AddObject(OBJ_UI, pObj);
 	//---------------------------------------------------------------------

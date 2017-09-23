@@ -12,6 +12,8 @@
 #include "Skill_Icon.h"
 #include "Skill_Slot.h"
 
+typedef list<CSkill_Slot*>::iterator SKILLSLOTITER;
+
 CSkill_UI::CSkill_UI(void)
 {
 	m_eUiType = UI_SKILL;
@@ -33,6 +35,7 @@ CSkill_UI::CSkill_UI(void)
 	m_bSkillPlus_Button_Visible = false;
 	m_bSkillLevel_Up_Check = false;
 	m_bSkill_Select_Check = false;
+	m_bSkill_Drop_Check = false;
 
 	m_pSelect_Skill = NULL;
 }
@@ -647,6 +650,7 @@ void CSkill_UI::Skill_Icon_Drag(void)
 		else if (m_bSkill_Select_Check == true && !GETS(CKeyMgr)->StayKeyDown(VK_LBUTTON))
 		{
 			m_bSkill_Select_Check = false;
+			m_bSkill_Drop_Check = true;
 		}
 	}
 
