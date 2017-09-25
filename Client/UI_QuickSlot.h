@@ -22,6 +22,7 @@ public: //Setter
 
 public: //Quick Slot Interlock To Skill UI
 	void				QuickSlot_Set_SkillIcon(void);
+	void				QuickSlot_Set_Position(void);
 
 public:
 	virtual void		Initialize(void);

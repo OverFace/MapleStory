@@ -159,6 +159,9 @@ void CSkill_UI::Release(void)
 		SAFE_DELETE(m_vecSkill_Slot[i]);
 	}
 	m_vecSkill_Slot.clear();
+
+	if (m_pSelect_Skill != NULL)
+		SAFE_DELETE(m_pSelect_Skill);
 }
 
 void CSkill_UI::Skill_Key(void)
@@ -654,7 +657,7 @@ void CSkill_UI::Skill_Icon_Drag(void)
 		}
 	}
 
-	if (m_bSkill_Select_Check == true)
+	if (m_bSkill_Select_Check == true && m_bSkill_Drop_Check == false)
 	{
 		//Drag ¿òÁ÷ÀÓ
 		m_pSelect_Skill->SetPos(pt.x - (m_pSelect_Skill->GetInfo()->fcx / 2.f), pt.y - (m_pSelect_Skill->GetInfo()->fcy / 2.f));
@@ -664,7 +667,16 @@ void CSkill_UI::Skill_Icon_Drag(void)
 void CSkill_UI::Skill_DragIcon_Update(void)
 {
 	if (m_pSelect_Skill != NULL)
+	{
 		m_pSelect_Skill->Update();
+
+		system("cls");
+		cout << m_pSelect_Skill->GetRect()->left << endl;
+		cout << m_pSelect_Skill->GetRect()->right << endl;
+		cout << m_pSelect_Skill->GetRect()->top << endl;
+		cout << m_pSelect_Skill->GetRect()->bottom << endl;
+		cout << m_bSkill_Drop_Check << endl;
+	}
 }
 
 void CSkill_UI::Skill_DragIcon_Render(HDC _dc)

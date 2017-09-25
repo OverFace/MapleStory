@@ -36,8 +36,8 @@ private: //Plus Button
 	int						m_iSkill_PlusButton_Option[4];
 
 public: //Getter
-	inline vector<CSkill_Icon*>* Get_Skill(void) { return &m_vecSkill; }
-	inline vector<CSkill_Slot*>* Get_Skill_Icon(void) { return &m_vecSkill_Slot; }
+	inline vector<CSkill_Icon*>* Get_Skill_Icon(void) { return &m_vecSkill; }
+	inline vector<CSkill_Slot*>* Get_Skill_Slot(void) { return &m_vecSkill_Slot; }
 	inline CSkill_Icon*		     Get_Select_Icon(void) { return m_pSelect_Skill; }
 	inline bool				     Get_Drop_Check(void) { return m_bSkill_Drop_Check; }
 

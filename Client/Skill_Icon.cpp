@@ -12,6 +12,7 @@ CSkill_Icon::CSkill_Icon(void)
 {
 	ZeroMemory(&m_tSkill, sizeof(SKILL));
 	m_iSkill_Number = 0;
+	m_iSkill_QuickSlot_Number = 0;
 	m_bSkill_Icon_Check = false;
 }
 

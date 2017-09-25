@@ -9,8 +9,10 @@
 #include "Skill.h"
 #include "Inven.h"
 #include "Quick_Slot.h"
+#include "Skill_Icon.h"
 
 typedef list<CQuick_Slot*>::iterator SLOTITER;
+typedef list<CSkill_Icon*>::iterator SKILLITER;
 
 CUi_QuickSlot::CUi_QuickSlot(void)
 {
@@ -68,6 +70,9 @@ int CUi_QuickSlot::Update(void)
 		(*iter)->Update();
 	}
 
+	QuickSlot_Set_SkillIcon();
+	QuickSlot_Set_Position();
+
 	return 0;
 }
 
@@ -77,7 +82,7 @@ void CUi_QuickSlot::Render(HDC _dc)
 	SLOTITER iter_End = m_QuickSlot_List.end();
 	for (iter; iter != iter_End; ++iter)
 	{
-		(*iter)->Render(_dc);
+		//(*iter)->Render(_dc);
 	}
 }
 
@@ -119,13 +124,79 @@ void CUi_QuickSlot::QuickSlot_Set_SkillIcon(void)
 
 		for (iter_Slot; iter_Slot != iter_Slot_End; ++iter_Slot)
 		{
-			if (IntersectRect(&rc, pSkill_Ui->GetRect(), (*iter_Slot)->GetRect()))
+			if (IntersectRect(&rc, pSkill_Ui->Get_Select_Icon()->GetRect(), (*iter_Slot)->GetRect()))
 			{
 				//Quick Slot의 Rect와 선택된 스킬 아이콘의 Rect가 충돌할때
+				//Quick Slot의 Slot Number를 Skill Icon에 넣어준 다음(구분 용도) 
 				//list에 넣어줌.
+				pSkill_Ui->Get_Select_Icon()->Set_Skill_Icon_QuickNumber((*iter_Slot)->Get_SlotNumber());
+				pSkill_Ui->Get_Select_Icon()->Set_Skill_Icon_QuickSetCheck(true);
 				m_QuickSlot_SkillList.push_back(pSkill_Ui->Get_Select_Icon());
 				break;
 			}
+			else
+			{
+				pSkill_Ui->Get_Select_Icon()->Set_Skill_Icon_QuickSetCheck(false);
+			}
+
+			if ((*iter_Slot)->Get_SlotNumber() == 0)
+			{
+				cout << "======================" << endl;
+				cout << (*iter_Slot)->GetRect()->left << endl;
+				cout << (*iter_Slot)->GetRect()->right << endl;
+				cout << (*iter_Slot)->GetRect()->top << endl;
+				cout << (*iter_Slot)->GetRect()->bottom << endl;
+			}
+		}
+
+		pSkill_Ui->Set_Drop_Check(false);
+	}
+}
+
+void CUi_QuickSlot::QuickSlot_Set_Position(void)
+{
+	CSkill_UI* pSkill_Ui = NULL;
+	OBJITER iter = GETS(CObjMgr)->GetObjList(OBJ_UI)->begin();
+	OBJITER iter_End = GETS(CObjMgr)->GetObjList(OBJ_UI)->end();
+	for (iter; iter != iter_End; ++iter)
+	{
+		if (((CUi*)(*iter))->GetUiType() == UI_SKILL)
+		{
+			pSkill_Ui = (CSkill_UI*)(*iter);
+			break;
+		}
+	}
+
+	SKILLITER iter_Skill = m_QuickSlot_SkillList.begin();
+	SKILLITER iter_Skill_End = m_QuickSlot_SkillList.end();
+
+	for (iter_Skill; iter_Skill != iter_Skill_End; ++iter_Skill)
+	{
+		SLOTITER iter_Slot = m_QuickSlot_List.begin();
+		SLOTITER iter_Slot_End = m_QuickSlot_List.end();
+
+		for (iter_Slot; iter_Slot != iter_Slot_End; ++iter_Slot)
+		{
+			//Skill Icon의 Number와 Quick Slot 자체의 넘버가 같으면 그 위치에 셋팅
+			if ((*iter_Skill)->Get_Skill_Icon_QuickNumber() == (*iter_Slot)->Get_SlotNumber())
+			{
+				if((*iter_Skill)->Get_Skill_Icon_QuickSetCheck() == true)
+					(*iter_Skill)->SetPos((*iter_Slot)->GetInfo()->fx, (*iter_Slot)->GetInfo()->fy);
+				else
+				{
+					vector<CSkill_Icon*>::iterator iter = pSkill_Ui->Get_Skill_Icon()->begin();
+					vector<CSkill_Icon*>::iterator iter_End = pSkill_Ui->Get_Skill_Icon()->end();
+
+					for (iter; iter != iter_End; ++iter)
+					{
+						if ((*iter)->Get_Skill_Icon_Num() == (*iter_Skill)->Get_Skill_Icon_Num())
+						{
+							(*iter_Skill)->SetPos((*iter)->GetInfo()->fx, (*iter)->GetInfo()->fy);
+							break;
+						}
+					}
+				}
+			} 
 		}
 	}
 }
