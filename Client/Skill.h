@@ -16,7 +16,8 @@ private:
 	RECT					m_tSkill_Input_Rect;
 	DWORD					m_dwTime;
 	HFONT					m_myFont;
-	CSkill_Icon*			m_pSelect_Skill;
+	CSkill_Icon*			m_pSelect_Skill[4];
+	CSkill_Icon*			m_pPick_Icon;
 
 private: //Skill Stauts Check
 	bool					m_bSkillMoveCheck;
@@ -38,7 +39,7 @@ private: //Plus Button
 public: //Getter
 	inline vector<CSkill_Icon*>* Get_Skill_Icon(void) { return &m_vecSkill; }
 	inline vector<CSkill_Slot*>* Get_Skill_Slot(void) { return &m_vecSkill_Slot; }
-	inline CSkill_Icon*		     Get_Select_Icon(void) { return m_pSelect_Skill; }
+	inline CSkill_Icon*		     Get_Select_Icon(void) { return m_pPick_Icon; }
 	inline bool				     Get_Drop_Check(void) { return m_bSkill_Drop_Check; }
 
 public: //Setter

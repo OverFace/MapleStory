@@ -12,6 +12,10 @@ public:
 private:
 	list<CQuick_Slot*>	m_QuickSlot_List;
 	list<CSkill_Icon*>	m_QuickSlot_SkillList;
+	CSkill_Icon*		m_pSelect_SkillIcon;
+	bool				m_bSkill_Icon_DragCheck;
+	bool				m_bSkill_Icon_DropCheck;
+	bool				m_bSkill_Icon_OverlapCheck;
 
 private: //Quick Slot Status Check
 
@@ -20,9 +24,14 @@ public:	//Getter
 
 public: //Setter
 
-public: //Quick Slot Interlock To Skill UI
+private: //Quick Slot Interlock To Skill UI
 	void				QuickSlot_Set_SkillIcon(void);
 	void				QuickSlot_Set_Position(void);
+	void				QuickSlot_Drag_SkillIcon(void);
+	void				QuickSlot_Drop_SkillIcon(void);
+
+private: //Quick Slot Render
+	void				QuickSlot_Skill_Icon_Render(HDC _dc);
 
 public:
 	virtual void		Initialize(void);
