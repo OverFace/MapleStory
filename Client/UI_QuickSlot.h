@@ -16,6 +16,7 @@ private:
 	bool				m_bSkill_Icon_DragCheck;
 	bool				m_bSkill_Icon_DropCheck;
 	bool				m_bSkill_Icon_OverlapCheck;
+	bool				m_bSkill_Icon_SwapCheck;
 
 private: //Quick Slot Status Check
 
@@ -29,6 +30,7 @@ private: //Quick Slot Interlock To Skill UI
 	void				QuickSlot_Set_Position(void);
 	void				QuickSlot_Drag_SkillIcon(void);
 	void				QuickSlot_Drop_SkillIcon(void);
+	void				QuickSlot_Swap_SkillIcon(void);
 
 private: //Quick Slot Render
 	void				QuickSlot_Skill_Icon_Render(HDC _dc);

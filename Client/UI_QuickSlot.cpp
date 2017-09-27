@@ -23,6 +23,7 @@ CUi_QuickSlot::CUi_QuickSlot(void)
 	m_bSkill_Icon_DragCheck = false;
 	m_bSkill_Icon_DropCheck = false;
 	m_bSkill_Icon_OverlapCheck = false;
+	m_bSkill_Icon_SwapCheck = false;
 }
 
 CUi_QuickSlot::~CUi_QuickSlot(void)
@@ -86,6 +87,7 @@ int CUi_QuickSlot::Update(void)
 	QuickSlot_Set_Position();
 	QuickSlot_Drag_SkillIcon();
 	QuickSlot_Drop_SkillIcon();
+	QuickSlot_Swap_SkillIcon();
 
 	return 0;
 }
@@ -274,7 +276,7 @@ void CUi_QuickSlot::QuickSlot_Drag_SkillIcon(void)
 			//지정되면서 퀵슬롯 체크를 false로 만들어 준다.
 			if ((*iter)->Get_Skill_Icon_QuickSetCheck() == true)
 			{
-				if (PtInRect((*iter)->GetRect(), pt) && GETS(CKeyMgr)->OnceKeyDown(VK_LBUTTON))
+				if (PtInRect((*iter_Slot)->GetRect(), pt) && GETS(CKeyMgr)->OnceKeyDown(VK_LBUTTON))
 				{
 					if ((*iter_Slot)->Get_SlotNumber() == (*iter)->Get_Skill_Icon_QuickNumber())
 					{
@@ -284,8 +286,6 @@ void CUi_QuickSlot::QuickSlot_Drag_SkillIcon(void)
 				}
 			}
 		}
-
-		break;
 	}
 
 	//Drag Skill Icon
@@ -298,6 +298,7 @@ void CUi_QuickSlot::QuickSlot_Drag_SkillIcon(void)
 		}
 		else if (m_bSkill_Icon_DragCheck == true && !GETS(CKeyMgr)->StayKeyDown(VK_LBUTTON))
 		{
+			m_bSkill_Icon_SwapCheck = false;
 			m_bSkill_Icon_DragCheck = false;
 			m_bSkill_Icon_DropCheck = true;
 		}
@@ -314,7 +315,6 @@ void CUi_QuickSlot::QuickSlot_Drop_SkillIcon(void)
 {
 	/*
 		Skill Icon을 Drop 했을때 list 안에 있는 Skill 아이콘을 지운다.
-		잘안된다..... m_pSelect_SkillIcon이 바뀌지 않음.
 	*/
 
 	if (m_bSkill_Icon_DropCheck == true)
@@ -333,6 +333,82 @@ void CUi_QuickSlot::QuickSlot_Drop_SkillIcon(void)
 		}
 
 		m_bSkill_Icon_DropCheck = false;
+	}
+}
+
+void CUi_QuickSlot::QuickSlot_Swap_SkillIcon(void)
+{
+	if (m_bSkill_Icon_DropCheck == true && !GETS(CKeyMgr)->StayKeyDown(VK_LBUTTON))
+	{
+		SLOTITER iter_Slot = m_QuickSlot_List.begin();
+		SLOTITER iter_Slot_End = m_QuickSlot_List.end();
+
+		CSkill_Icon* pTemp = NULL;
+		RECT rc;
+
+		for (iter_Slot; iter_Slot != iter_Slot_End; ++iter_Slot)
+		{
+			if (IntersectRect(&rc, m_pSelect_SkillIcon->GetRect(), (*iter_Slot)->GetRect()))
+			{
+				SKILLITER iter_Skill = m_QuickSlot_SkillList.begin();
+				SKILLITER iter_Skill_End = m_QuickSlot_SkillList.begin();
+				SKILLITER iter_Select;
+
+				if ((*iter_Slot)->Get_SlotNumber() == m_pSelect_SkillIcon->Get_Skill_Icon_QuickNumber())
+					break;
+
+				//Find Select Skill Icon Iterator 
+				for (iter_Skill; iter_Skill != iter_Skill_End; ++iter_Skill)
+				{
+					if (lstrcmp((*iter_Skill)->Get_Skill_Icon_Info()->m_szName, m_pSelect_SkillIcon->Get_Skill_Icon_Info()->m_szName))
+					{
+						iter_Select = iter_Skill;
+						break;
+					}
+				}
+
+				iter_Skill = m_QuickSlot_SkillList.begin();
+				iter_Skill_End = m_QuickSlot_SkillList.begin();
+				for (iter_Skill; iter_Skill != iter_Skill_End;)
+				{
+					if ((*iter_Slot)->Get_SlotNumber() == (*iter_Select)->Get_Skill_Icon_QuickNumber() && m_bSkill_Icon_SwapCheck == false)
+					{
+						//pTemp Allocate
+						SKILL tSkill;
+						ZeroMemory(&tSkill, sizeof(SKILL));
+						memcpy_s(&tSkill, sizeof(SKILL), (*iter_Select)->Get_Skill_Icon_Info(), sizeof(SKILL));
+
+						pTemp = new CSkill_Icon();
+						pTemp->Set_Skill_Icon_Info(tSkill);
+						pTemp->Set_Skill_Icon_Num((*iter_Select)->Get_Skill_Icon_Num());
+						pTemp->SetSize(32.f, 32.f);
+						pTemp->Set_Skill_Icon_QuickNumber((*iter_Select)->Get_Skill_Icon_QuickNumber());
+						pTemp->Set_Skill_Icon_QuickSetCheck(true);
+						pTemp->Set_Skill_Icon_Check(true);
+
+						//Select Skill Icon Input
+						m_pSelect_SkillIcon->Set_Skill_Icon_QuickNumber((*iter_Skill)->Get_Skill_Icon_QuickNumber());
+						m_QuickSlot_SkillList.insert(iter_Skill, m_pSelect_SkillIcon);
+
+						//Temp Skill Icon Input
+						m_QuickSlot_SkillList.insert(iter_Select, pTemp);
+
+						//Replace Skill Icon Erase
+						m_QuickSlot_SkillList.erase(iter_Skill);
+						iter_Skill = m_QuickSlot_SkillList.begin();
+
+						m_QuickSlot_SkillList.erase(iter_Select);
+						iter_Skill = m_QuickSlot_SkillList.begin();
+
+						m_bSkill_Icon_SwapCheck = true;
+					}
+					else
+						++iter_Skill;
+				}
+
+				m_bSkill_Icon_DropCheck = false;
+			}
+		}
 	}
 }
 #pragma endregion
