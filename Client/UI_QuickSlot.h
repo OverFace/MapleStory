@@ -17,19 +17,24 @@ private:
 	bool				m_bSkill_Icon_DropCheck;
 	bool				m_bSkill_Icon_OverlapCheck;
 	bool				m_bSkill_Icon_SwapCheck;
+	bool				m_bSkill_Icon_EscapeCheck;
 
 private: //Quick Slot Status Check
 
 public:	//Getter
 	inline list<CQuick_Slot*>* Get_QuickSlot(void) { return &m_QuickSlot_List; }
+	inline bool			Get_QuickSlot_EscapeCheck(void) { return m_bSkill_Icon_EscapeCheck; }
 
 public: //Setter
+	inline void			Set_QuickSlot_EscapeCheck(bool _bCheck) { m_bSkill_Icon_EscapeCheck = _bCheck; }
 
 private: //Quick Slot Interlock To Skill UI
 	void				QuickSlot_Set_SkillIcon(void);
 	void				QuickSlot_Set_Position(void);
 	void				QuickSlot_Drag_SkillIcon(void);
-	void				QuickSlot_Drop_SkillIcon(void);
+	void				QuickSlot_Escape_SkillIcon(void);
+
+	void				QuickSlot_Drop_Swap_SkillIcon(void);
 	void				QuickSlot_Swap_SkillIcon(void);
 
 private: //Quick Slot Render

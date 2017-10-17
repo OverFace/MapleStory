@@ -11,6 +11,7 @@
 #include "Stat.h"
 #include "Skill_Icon.h"
 #include "Skill_Slot.h"
+#include "UI_QuickSlot.h"
 
 typedef list<CSkill_Slot*>::iterator SKILLSLOTITER;
 
@@ -144,9 +145,9 @@ void CSkill_UI::Render(HDC _dc)
 
 		//Skill Slot
 		//Skill_Slot_Render(_dc);
-	}
 
-	Skill_DragIcon_Render(_dc);
+		Skill_DragIcon_Render(_dc);
+	}
 }
 
 void CSkill_UI::Release(void)
@@ -639,9 +640,9 @@ void CSkill_UI::Skill_Icon_Drag(void)
 						{
 							m_pSelect_Skill[0] = new CSkill_Icon();
 							m_pSelect_Skill[0]->Set_Skill_Icon_Info(tSkill);
-							m_pSelect_Skill[0]->Set_Skill_Icon_Num(m_vecSkill[i]->Get_Skill_Icon_Num());
-							m_pSelect_Skill[0]->SetSize(32.f, 32.f);
-							m_pSelect_Skill[0]->SetPos(pt.x - (m_pSelect_Skill[0]->GetInfo()->fcx / 2.f), pt.y - (m_pSelect_Skill[0]->GetInfo()->fcy / 2.f));
+m_pSelect_Skill[0]->Set_Skill_Icon_Num(m_vecSkill[i]->Get_Skill_Icon_Num());
+m_pSelect_Skill[0]->SetSize(32.f, 32.f);
+m_pSelect_Skill[0]->SetPos(pt.x - (m_pSelect_Skill[0]->GetInfo()->fcx / 2.f), pt.y - (m_pSelect_Skill[0]->GetInfo()->fcy / 2.f));
 						}
 
 						m_pPick_Icon = m_pSelect_Skill[0];
@@ -685,7 +686,7 @@ void CSkill_UI::Skill_Icon_Drag(void)
 
 						m_pPick_Icon = m_pSelect_Skill[3];
 					}
-					
+
 					break;
 				}
 			}
@@ -707,6 +708,10 @@ void CSkill_UI::Skill_Icon_Drag(void)
 		{
 			m_bSkill_Select_Check = false;
 			m_bSkill_Drop_Check = true;
+
+			//Skill Icon이 Drop 되었을때 Quick Slot의 Rect와 충돌하지 않으면 지워준다.
+			delete m_pPick_Icon;
+			m_pPick_Icon = NULL;
 		}
 	}
 
@@ -714,6 +719,32 @@ void CSkill_UI::Skill_Icon_Drag(void)
 	{
 		//Drag 움직임
 		m_pPick_Icon->SetPos(pt.x - (m_pPick_Icon->GetInfo()->fcx / 2.f), pt.y - (m_pPick_Icon->GetInfo()->fcy / 2.f));
+	}
+}
+
+void CSkill_UI::Skill_Icon_Escape(void)
+{
+	/*
+	선택된 Skill Icon이 Quick Slot의 Rect와 충돌하지 않았을때 선택된 Skill Icon 지우기.
+	선택된 Skill Icon은 새로 할당한 Skill Icon이기 때문에
+	*/
+
+	CUi_QuickSlot* pQuick_Slot = NULL;
+	OBJITER iter = GETS(CObjMgr)->GetObjList(OBJ_UI)->begin();
+	OBJITER iter_End = GETS(CObjMgr)->GetObjList(OBJ_UI)->end();
+	for (iter; iter != iter_End; ++iter)
+	{
+		if (((CUi*)(*iter))->GetUiType() == UI_QUICKSLOT)
+		{
+			pQuick_Slot = (CUi_QuickSlot*)(*iter);
+			break;
+		}
+	}
+
+	if (pQuick_Slot->Get_QuickSlot_EscapeCheck() == true)
+	{
+		
+		pQuick_Slot->Set_QuickSlot_EscapeCheck(false);
 	}
 }
 

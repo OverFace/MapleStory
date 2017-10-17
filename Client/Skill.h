@@ -66,6 +66,7 @@ private: //Skill Icon Drag & Slot
 	void				Skill_Slot_Update(void);
 	void				Skill_Slot_Render(HDC _dc);
 	void				Skill_Icon_Drag(void);
+	void				Skill_Icon_Escape(void);
 	void				Skill_DragIcon_Update(void);
 	void				Skill_DragIcon_Render(HDC _dc);
 

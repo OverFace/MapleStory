@@ -24,6 +24,7 @@ CUi_QuickSlot::CUi_QuickSlot(void)
 	m_bSkill_Icon_DropCheck = false;
 	m_bSkill_Icon_OverlapCheck = false;
 	m_bSkill_Icon_SwapCheck = false;
+	m_bSkill_Icon_EscapeCheck = false;
 }
 
 CUi_QuickSlot::~CUi_QuickSlot(void)
@@ -86,8 +87,7 @@ int CUi_QuickSlot::Update(void)
 	QuickSlot_Set_SkillIcon();
 	QuickSlot_Set_Position();
 	QuickSlot_Drag_SkillIcon();
-	QuickSlot_Drop_SkillIcon();
-	QuickSlot_Swap_SkillIcon();
+	//QuickSlot_Drop_Swap_SkillIcon();
 
 	return 0;
 }
@@ -301,38 +301,169 @@ void CUi_QuickSlot::QuickSlot_Drag_SkillIcon(void)
 			m_bSkill_Icon_SwapCheck = false;
 			m_bSkill_Icon_DragCheck = false;
 			m_bSkill_Icon_DropCheck = true;
+
+			//Skill Icon이 Slot에서 벗어 났을 때 선택된 스킬 아이콘을 지운다.
+			QuickSlot_Escape_SkillIcon();
 		}
 	}
 
 	if (m_bSkill_Icon_DragCheck == true && m_bSkill_Icon_DropCheck == false)
 	{
 		//Skill Drag 움직임
-		m_pSelect_SkillIcon->SetPos(pt.x - (m_pSelect_SkillIcon->GetInfo()->fcx / 2.f), pt.y - (m_pSelect_SkillIcon->GetInfo()->fcy / 2.f));
+		if(m_pSelect_SkillIcon != NULL)
+			m_pSelect_SkillIcon->SetPos(pt.x - (m_pSelect_SkillIcon->GetInfo()->fcx / 2.f), pt.y - (m_pSelect_SkillIcon->GetInfo()->fcy / 2.f));
 	}
 }
 
-void CUi_QuickSlot::QuickSlot_Drop_SkillIcon(void)
+void CUi_QuickSlot::QuickSlot_Escape_SkillIcon(void)
 {
 	/*
-		Skill Icon을 Drop 했을때 list 안에 있는 Skill 아이콘을 지운다.
+	선택된 Skill Icon이 Quick Slot의 어느 Rect에도 충돌 되지 않았을때 
+	Skill Icon 삭제 하는 함수.
 	*/
+
+	SLOTITER iter = m_QuickSlot_List.begin();
+	SLOTITER iter_End = m_QuickSlot_List.end();
+	RECT rc;
 
 	if (m_bSkill_Icon_DropCheck == true)
 	{
+		if (m_pSelect_SkillIcon != NULL)
+		{
+			for (iter; iter != iter_End; ++iter)
+			{
+				if (!IntersectRect(&rc, (*iter)->GetRect(), m_pSelect_SkillIcon->GetRect()))
+				{
+					m_bSkill_Icon_EscapeCheck = true;
+
+					//충돌 되지 않았을때.
+					SKILLITER iter_Skill = m_QuickSlot_SkillList.begin();
+					SKILLITER iter_Skill_End = m_QuickSlot_SkillList.end();
+					for (iter_Skill; iter_Skill != iter_Skill_End; )
+					{
+						if ((*iter_Skill)->Get_Skill_Icon_QuickNumber() == m_pSelect_SkillIcon->Get_Skill_Icon_QuickNumber())
+						{
+							m_QuickSlot_SkillList.erase(iter_Skill);
+							iter_Skill = m_QuickSlot_SkillList.begin();
+						}
+						else
+							++iter_Skill;
+					}
+
+					m_bSkill_Icon_DropCheck = false;
+				}
+			}
+		}
+	}
+}
+
+void CUi_QuickSlot::QuickSlot_Drop_Swap_SkillIcon(void)
+{
+	/*
+		Skill Icon을 Drop 했을때 list 안에 있는 Skill 아이콘을 지운다.
+		Skill Icon을 Drop 시 Slot과 충돌되면 Swap 한다.
+	*/
+
+	if (m_bSkill_Icon_DropCheck == true && !GETS(CKeyMgr)->StayKeyDown(VK_LBUTTON))
+	{
+		//iter가 없는 값으로 나와서 안된다... 이거 찾아야 된다.
+
+		SLOTITER  iter_Slot = m_QuickSlot_List.begin();
+		SLOTITER  iter_Slot_End = m_QuickSlot_List.end();
 		SKILLITER iter = m_QuickSlot_SkillList.begin();
 		SKILLITER iter_End = m_QuickSlot_SkillList.end();
-		for (iter; iter != iter_End; )
-		{
-			if ((*iter)->Get_Skill_Icon_QuickNumber() == m_pSelect_SkillIcon->Get_Skill_Icon_QuickNumber())
-			{
-				m_QuickSlot_SkillList.erase(iter);
-				iter = m_QuickSlot_SkillList.begin();
-			}
-			else
-				++iter;
-		}
+		SKILLITER iter_Select;								//선택된 Skill Icon의 List에서의 위치.
+		CSkill_Icon* pTemp = NULL;
+		RECT rc;
 
-		m_bSkill_Icon_DropCheck = false;
+		for (iter_Slot; iter_Slot != iter_Slot_End; ++iter_Slot)
+		{
+			if (IntersectRect(&rc, m_pSelect_SkillIcon->GetRect(), (*iter_Slot)->GetRect()))
+				m_bSkill_Icon_SwapCheck = true;
+
+			if (m_bSkill_Icon_SwapCheck == true)
+			{
+				/*	Swap 기능 */
+
+				//자기 자신일때는 Swap 안되게 예외처리
+				//if ((*iter_Slot)->Get_SlotNumber() == m_pSelect_SkillIcon->Get_Skill_Icon_QuickNumber())
+					//break;
+
+				//Find Select Skill Icon Iterator 
+				for (iter; iter != iter_End; ++iter)
+				{
+					if ((*iter)->Get_Skill_Icon_Num() == m_pSelect_SkillIcon->Get_Skill_Icon_Num())
+					{
+						iter_Select = iter;
+						break;
+					}
+				}
+
+				if ((*iter_Select) != NULL)
+				{
+					iter = m_QuickSlot_SkillList.begin();
+					iter_End = m_QuickSlot_SkillList.end();
+					for (iter; iter != iter_End;)
+					{
+						if ((*iter_Slot)->Get_SlotNumber() == (*iter_Select)->Get_Skill_Icon_QuickNumber())
+						{
+							//pTemp Allocate
+							SKILL tSkill;
+							ZeroMemory(&tSkill, sizeof(SKILL));
+							memcpy_s(&tSkill, sizeof(SKILL), (*iter_Select)->Get_Skill_Icon_Info(), sizeof(SKILL));
+
+							pTemp = new CSkill_Icon();
+							pTemp->Set_Skill_Icon_Info(tSkill);
+							pTemp->Set_Skill_Icon_Num((*iter_Select)->Get_Skill_Icon_Num());
+							pTemp->SetSize(32.f, 32.f);
+							pTemp->Set_Skill_Icon_QuickNumber((*iter_Select)->Get_Skill_Icon_QuickNumber());
+							pTemp->Set_Skill_Icon_QuickSetCheck(true);
+							pTemp->Set_Skill_Icon_Check(true);
+
+							//Select Skill Icon Input
+							m_pSelect_SkillIcon->Set_Skill_Icon_QuickNumber((*iter)->Get_Skill_Icon_QuickNumber());
+							m_QuickSlot_SkillList.insert(iter, m_pSelect_SkillIcon);
+
+							//Temp Skill Icon Input
+							m_QuickSlot_SkillList.insert(iter_Select, pTemp);
+
+							//Replace Skill Icon Erase
+							m_QuickSlot_SkillList.erase(iter);
+							iter = m_QuickSlot_SkillList.begin();
+
+							m_QuickSlot_SkillList.erase(iter_Select);
+							iter = m_QuickSlot_SkillList.begin();
+
+							m_bSkill_Icon_SwapCheck = false;
+							break;
+						}
+						else
+							++iter;
+					}
+				}
+
+				m_bSkill_Icon_DropCheck = false;
+			}
+			else if (m_bSkill_Icon_SwapCheck == false)
+			{
+				/*Drop 기능 */
+
+				iter = m_QuickSlot_SkillList.begin();
+				iter_End = m_QuickSlot_SkillList.end();
+				for (iter; iter != iter_End;)
+				{
+					if ((*iter)->Get_Skill_Icon_QuickNumber() == m_pSelect_SkillIcon->Get_Skill_Icon_QuickNumber())
+					{
+						m_QuickSlot_SkillList.erase(iter);
+						iter = m_QuickSlot_SkillList.begin();
+					}
+					else
+						++iter;
+				}
+
+				m_bSkill_Icon_DropCheck = false;
+			}
+		}
 	}
 }
 
@@ -350,6 +481,8 @@ void CUi_QuickSlot::QuickSlot_Swap_SkillIcon(void)
 		{
 			if (IntersectRect(&rc, m_pSelect_SkillIcon->GetRect(), (*iter_Slot)->GetRect()))
 			{
+				m_bSkill_Icon_SwapCheck = true;
+
 				SKILLITER iter_Skill = m_QuickSlot_SkillList.begin();
 				SKILLITER iter_Skill_End = m_QuickSlot_SkillList.begin();
 				SKILLITER iter_Select;
@@ -399,8 +532,6 @@ void CUi_QuickSlot::QuickSlot_Swap_SkillIcon(void)
 
 						m_QuickSlot_SkillList.erase(iter_Select);
 						iter_Skill = m_QuickSlot_SkillList.begin();
-
-						m_bSkill_Icon_SwapCheck = true;
 					}
 					else
 						++iter_Skill;
