@@ -265,12 +265,16 @@ void CSkill_UI::Skill_PlusButton_Click(void)
 	
 	//Get Stat UI
 	CStat* pStat = NULL;
+	CUi_QuickSlot* pQuick_Slot = NULL;
 	OBJITER iter = GETS(CObjMgr)->GetObjList(OBJ_UI)->begin();
 	OBJITER iter_End = GETS(CObjMgr)->GetObjList(OBJ_UI)->end();
 	for (iter; iter != iter_End; ++iter)
 	{
 		if (((CUi*)(*iter))->GetUiType() == UI_STAT)
 			pStat = ((CStat*)(*iter));
+
+		if (((CUi*)(*iter))->GetUiType() == UI_QUICKSLOT)
+			pQuick_Slot = ((CUi_QuickSlot*)(*iter));
 	}
 
 	//Level Up Check On & Off
@@ -337,6 +341,12 @@ void CSkill_UI::Skill_PlusButton_Click(void)
 					fAtt += 20.f;
 					m_vecSkill[i]->Set_Skill_Icon_Att(fAtt);
 
+					//Skill Cool Time;
+					float fCoolTime = m_vecSkill[i]->Get_Skill_Icon_Info()->m_fSkill_CoolTime;
+					fCoolTime += 0.3f;
+					m_vecSkill[i]->Set_Skill_Icon_CoolTime(fCoolTime);
+					pQuick_Slot->Set_QuickSlot_SkillIcon_CoolTime(m_vecSkill[i]->Get_Skill_Icon_Info()->m_fSkill_CoolTime, 1);
+
 					break;
 				}
 			}
@@ -362,6 +372,12 @@ void CSkill_UI::Skill_PlusButton_Click(void)
 					fAtt += 30.f;
 					m_vecSkill[i]->Set_Skill_Icon_Att(fAtt);
 
+					//Skill Cool Time;
+					float fCoolTime = m_vecSkill[i]->Get_Skill_Icon_Info()->m_fSkill_CoolTime;
+					fCoolTime += 0.5f;
+					m_vecSkill[i]->Set_Skill_Icon_CoolTime(fCoolTime);
+					pQuick_Slot->Set_QuickSlot_SkillIcon_CoolTime(m_vecSkill[i]->Get_Skill_Icon_Info()->m_fSkill_CoolTime, 2);
+
 					break;
 				}
 			}
@@ -386,6 +402,12 @@ void CSkill_UI::Skill_PlusButton_Click(void)
 					float fAtt = m_vecSkill[i]->Get_Skill_Icon_Info()->m_fSkill_Att;
 					fAtt += 40.f;
 					m_vecSkill[i]->Set_Skill_Icon_Att(fAtt);
+
+					//Skill Cool Time;
+					float fCoolTime = m_vecSkill[i]->Get_Skill_Icon_Info()->m_fSkill_CoolTime;
+					fCoolTime += 0.7f;
+					m_vecSkill[i]->Set_Skill_Icon_CoolTime(fCoolTime);
+					pQuick_Slot->Set_QuickSlot_SkillIcon_CoolTime(m_vecSkill[i]->Get_Skill_Icon_Info()->m_fSkill_CoolTime, 3);
 
 					break;
 				}
@@ -435,7 +457,8 @@ void CSkill_UI::Skill_Icon_Create(void)
 	tSkill.m_iSkill_Level = 1;
 	tSkill.m_iSkill_Master_Level = 15;
 	tSkill.m_fSkill_Att = 10;
-	tSkill.m_eSkill_CutDownKey = CK_END;	
+	tSkill.m_eSkill_CutDownKey = CK_1;	
+	tSkill.m_fSkill_CoolTime = 0.5f;
 	pIcon->Set_Skill_Icon_Info(tSkill);
 
 	m_vecSkill.push_back(pIcon);
@@ -448,7 +471,8 @@ void CSkill_UI::Skill_Icon_Create(void)
 	tSkill.m_iSkill_Level = 0;
 	tSkill.m_iSkill_Master_Level = 20;
 	tSkill.m_fSkill_Att = 30;
-	tSkill.m_eSkill_CutDownKey = CK_END;
+	tSkill.m_eSkill_CutDownKey = CK_2;
+	tSkill.m_fSkill_CoolTime = 2.f;
 	pIcon->Set_Skill_Icon_Info(tSkill);
 
 	m_vecSkill.push_back(pIcon);
@@ -461,7 +485,8 @@ void CSkill_UI::Skill_Icon_Create(void)
 	tSkill.m_iSkill_Level = 0;
 	tSkill.m_iSkill_Master_Level = 20;
 	tSkill.m_fSkill_Att = 50;
-	tSkill.m_eSkill_CutDownKey = CK_END;
+	tSkill.m_eSkill_CutDownKey = CK_3;
+	tSkill.m_fSkill_CoolTime = 4.f;
 	pIcon->Set_Skill_Icon_Info(tSkill);
 
 	m_vecSkill.push_back(pIcon);
@@ -474,7 +499,8 @@ void CSkill_UI::Skill_Icon_Create(void)
 	tSkill.m_iSkill_Level = 0;
 	tSkill.m_iSkill_Master_Level = 30;
 	tSkill.m_fSkill_Att = 200;
-	tSkill.m_eSkill_CutDownKey = CK_END;
+	tSkill.m_eSkill_CutDownKey = CK_4;
+	tSkill.m_fSkill_CoolTime = 6.f;
 	pIcon->Set_Skill_Icon_Info(tSkill);
 
 	m_vecSkill.push_back(pIcon);
@@ -613,189 +639,6 @@ void CSkill_UI::Skill_Slot_Render(HDC _dc)
 }
 #pragma endregion
 
-#pragma region 기능 변경 해서 필요 없는 부분
-/*
-void CSkill_UI::Skill_Icon_Drag(void)
-{
-	POINT pt;
-	pt = CMouse::GetPos();
-
-	//Select Skill
-	for (size_t i = 0; i < m_vecSkill_Slot.size(); ++i)
-	{
-		if (PtInRect(m_vecSkill_Slot[i]->GetRect(), pt) && GETS(CKeyMgr)->OnceKeyDown(VK_LBUTTON))
-		{
-			for (size_t j = 0; j < m_vecSkill.size(); ++j)
-			{
-				if (m_vecSkill_Slot[i]->Get_SlotNumber() == m_vecSkill[i]->Get_Skill_Icon_Num())
-				{
-					//Allocate Skill Icon
-					SKILL tSkill;
-					memcpy_s(&tSkill, sizeof(SKILL), m_vecSkill[i]->Get_Skill_Icon_Info(), sizeof(SKILL));
-
-					if (m_vecSkill[i]->Get_Skill_Icon_Num() == 0)
-					{
-						if (m_pSelect_Skill[0] == NULL)
-						{
-							m_pSelect_Skill[0] = new CSkill_Icon();
-							m_pSelect_Skill[0]->Set_Skill_Icon_Info(tSkill);
-							m_pSelect_Skill[0]->Set_Skill_Icon_Num(m_vecSkill[i]->Get_Skill_Icon_Num());
-							m_pSelect_Skill[0]->SetSize(32.f, 32.f);
-							m_pSelect_Skill[0]->SetPos(pt.x - (m_pSelect_Skill[0]->GetInfo()->fcx / 2.f), pt.y - (m_pSelect_Skill[0]->GetInfo()->fcy / 2.f));
-						}
-
-						m_pPick_Icon = m_pSelect_Skill[0];
-					}
-					else if (m_vecSkill[i]->Get_Skill_Icon_Num() == 1)
-					{
-						if (m_pSelect_Skill[1] == NULL)
-						{
-							m_pSelect_Skill[1] = new CSkill_Icon();
-							m_pSelect_Skill[1]->Set_Skill_Icon_Info(tSkill);
-							m_pSelect_Skill[1]->Set_Skill_Icon_Num(m_vecSkill[i]->Get_Skill_Icon_Num());
-							m_pSelect_Skill[1]->SetSize(32.f, 32.f);
-							m_pSelect_Skill[1]->SetPos(pt.x - (m_pSelect_Skill[1]->GetInfo()->fcx / 2.f), pt.y - (m_pSelect_Skill[1]->GetInfo()->fcy / 2.f));
-						}
-
-						m_pPick_Icon = m_pSelect_Skill[1];
-					}
-					else if (m_vecSkill[i]->Get_Skill_Icon_Num() == 2)
-					{
-						if (m_pSelect_Skill[2] == NULL)
-						{
-							m_pSelect_Skill[2] = new CSkill_Icon();
-							m_pSelect_Skill[2]->Set_Skill_Icon_Info(tSkill);
-							m_pSelect_Skill[2]->Set_Skill_Icon_Num(m_vecSkill[i]->Get_Skill_Icon_Num());
-							m_pSelect_Skill[2]->SetSize(32.f, 32.f);
-							m_pSelect_Skill[2]->SetPos(pt.x - (m_pSelect_Skill[2]->GetInfo()->fcx / 2.f), pt.y - (m_pSelect_Skill[2]->GetInfo()->fcy / 2.f));
-						}
-
-						m_pPick_Icon = m_pSelect_Skill[2];
-					}
-					else if (m_vecSkill[i]->Get_Skill_Icon_Num() == 3)
-					{
-						if (m_pSelect_Skill[3] == NULL)
-						{
-							m_pSelect_Skill[3] = new CSkill_Icon();
-							m_pSelect_Skill[3]->Set_Skill_Icon_Info(tSkill);
-							m_pSelect_Skill[3]->Set_Skill_Icon_Num(m_vecSkill[i]->Get_Skill_Icon_Num());
-							m_pSelect_Skill[3]->SetSize(32.f, 32.f);
-							m_pSelect_Skill[3]->SetPos(pt.x - (m_pSelect_Skill[3]->GetInfo()->fcx / 2.f), pt.y - (m_pSelect_Skill[3]->GetInfo()->fcy / 2.f));
-						}
-
-						m_pPick_Icon = m_pSelect_Skill[3];
-					}
-
-					break;
-				}
-			}
-
-			break;
-		}
-	}
-
-	//Drag Skill
-	if (m_pPick_Icon != NULL)
-	{
-		if (PtInRect(m_pPick_Icon->GetRect(), pt) && GETS(CKeyMgr)->StayKeyDown(VK_LBUTTON)
-			&& m_bSkillMoveCheck == false)
-		{
-			//VK_LBUTTON 계속 누르고 SkillMoveCheck가 false일때 Drag
-			m_bSkill_Select_Check = true;
-		}
-		else if (m_bSkill_Select_Check == true && !GETS(CKeyMgr)->StayKeyDown(VK_LBUTTON))
-		{
-			m_bSkill_Select_Check = false;
-			m_bSkill_Drop_Check = true;
-
-			//Skill Icon이 Drop 되었을때 Quick Slot의 Rect와 충돌하지 않으면 지워준다.
-		}
-	}
-
-	if (m_bSkill_Select_Check == true && m_bSkill_Drop_Check == false)
-	{
-		//Drag 움직임
-		m_pPick_Icon->SetPos(pt.x - (m_pPick_Icon->GetInfo()->fcx / 2.f), pt.y - (m_pPick_Icon->GetInfo()->fcy / 2.f));
-	}
-}
-
-void CSkill_UI::Skill_Icon_Escape(void)
-{
-	CUi_QuickSlot* pQuick_Slot = NULL;
-	OBJITER iter = GETS(CObjMgr)->GetObjList(OBJ_UI)->begin();
-	OBJITER iter_End = GETS(CObjMgr)->GetObjList(OBJ_UI)->end();
-	for (iter; iter != iter_End; ++iter)
-	{
-		if (((CUi*)(*iter))->GetUiType() == UI_QUICKSLOT)
-		{
-			pQuick_Slot = (CUi_QuickSlot*)(*iter);
-			break;
-		}
-	}
-
-	if (pQuick_Slot->Get_QuickSlot_EscapeCheck() == true)
-	{
-		
-		pQuick_Slot->Set_QuickSlot_EscapeCheck(false);
-	}
-}
-
-void CSkill_UI::Skill_DragIcon_Update(void)
-{
-	if (m_pPick_Icon != NULL)
-	{
-		m_pPick_Icon->Update();
-	}
-}
-
-void CSkill_UI::Skill_DragIcon_Render(HDC _dc)
-{
-	if (m_pPick_Icon != NULL)
-	{
-		TCHAR szOn[30] = L"_Icon_On";
-		TCHAR szIcon_Name[50] = L"";
-		TCHAR szOff[30] = L"_Icon_Off";
-		TCHAR szIcon_OffName[50] = L"";
-
-		//Icon Off Render
-		lstrcpy(szIcon_OffName, m_pPick_Icon->Get_Skill_Icon_Info()->m_szName);
-		lstrcat(szIcon_OffName, szOff);
-		
-		//Skill Icon On / Off Setting
-		if (m_pPick_Icon->Get_Skill_Icon_Info()->m_iSkill_Level <= 0)
-			m_pPick_Icon->Set_Skill_Icon_Check(false);
-		else if (m_pPick_Icon->Get_Skill_Icon_Info()->m_iSkill_Level > 0)
-			m_pPick_Icon->Set_Skill_Icon_Check(true);
-
-		if (m_pPick_Icon->Get_Skill_Icon_Check() == false)
-		{
-			TransparentBlt(_dc,
-				int(m_pPick_Icon->GetInfo()->fx), int(m_pPick_Icon->GetInfo()->fy),
-				int(m_pPick_Icon->GetInfo()->fcx), int(m_pPick_Icon->GetInfo()->fcy),
-				GETS(CBitMapMgr)->FindImage(szIcon_OffName)->GetMemDC(),
-				0, 0,
-				int(m_pPick_Icon->GetInfo()->fcx), int(m_pPick_Icon->GetInfo()->fcy),
-				RGB(255, 255, 255));
-		}
-
-		//Icon Image Render
-		lstrcpy(szIcon_Name, m_pPick_Icon->Get_Skill_Icon_Info()->m_szName);
-		lstrcat(szIcon_Name, szOn);
-
-		if (m_pPick_Icon->Get_Skill_Icon_Check() == true)
-		{
-			TransparentBlt(_dc,
-				int(m_pPick_Icon->GetInfo()->fx), int(m_pPick_Icon->GetInfo()->fy),
-				int(m_pPick_Icon->GetInfo()->fcx), int(m_pPick_Icon->GetInfo()->fcy),
-				GETS(CBitMapMgr)->FindImage(szIcon_Name)->GetMemDC(),
-				0, 0,
-				int(m_pPick_Icon->GetInfo()->fcx), int(m_pPick_Icon->GetInfo()->fcy),
-				RGB(255, 255, 255));
-		}
-	}
-}
-*/
-#pragma endregion
 
 
 

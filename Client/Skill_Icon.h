@@ -31,6 +31,7 @@ public: //Setter
 	inline void		Set_Skill_Icon_Att(float _fAtt) { m_tSkill.m_fSkill_Att = _fAtt; }
 	inline void		Set_Skill_Icon_QuickNumber(int _iNumber) { m_iSkill_QuickSlot_Number = _iNumber; }
 	inline void		Set_Skill_Icon_QuickSetCheck(bool _bCheck) { m_bSkill_QuickSlot_SetCheck = _bCheck; }
+	inline void		Set_Skill_Icon_CoolTime(float _fTime) { m_tSkill.m_fSkill_CoolTime = _fTime; }
 
 public:
 	virtual void	Initialize(void);

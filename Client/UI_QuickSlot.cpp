@@ -20,12 +20,10 @@ CUi_QuickSlot::CUi_QuickSlot(void)
 {
 	m_eUiType = UI_QUICKSLOT;
 	m_pSelect_SkillIcon = NULL;
-	m_bSkill_Icon_DragCheck = false;
-	m_bSkill_Icon_DropCheck = false;
-	m_bSkill_Icon_OverlapCheck = false;
-	m_bSkill_Icon_SwapCheck = false;
-	m_bSkill_Icon_EscapeCheck = false;
+	m_dwTime = 0;
 
+	for (int i = 0; i < CK_END; ++i)
+		m_bSkill_CutDownKey_check[i] = false;
 	m_bSkill_Icon_pushCheck = false;
 }
 
@@ -82,6 +80,8 @@ int CUi_QuickSlot::Update(void)
 	QuickSlot_Set_SkillIcon();
 	QuickSlot_Set_SkillIcon_Position();
 	QuickSlot_Set_SkillIcon_Active();
+	QuickSlot_Set_SkillIcon_CutDownKey();
+	QuickSlot_SkillIcon_CoolTime();
 
 	//QuickSlot_Drag_SkillIcon();
 	//QuickSlot_Drop_Swap_SkillIcon();
@@ -118,6 +118,21 @@ void CUi_QuickSlot::Release(void)
 		SAFE_DELETE(*iter_Skill);
 	}
 	m_QuickSlot_SkillList.clear();
+}
+
+void CUi_QuickSlot::Set_QuickSlot_SkillIcon_CoolTime(float _fTime, int _iSkillNum)
+{
+	SKILLITER iter = m_QuickSlot_SkillList.begin();
+	SKILLITER iter_End = m_QuickSlot_SkillList.end();
+
+	for (iter; iter != iter_End; ++iter)
+	{
+		if ((*iter)->Get_Skill_Icon_Num() == _iSkillNum)
+		{
+			(*iter)->Set_Skill_Icon_CoolTime(_fTime);
+			break;
+		}
+	}
 }
 
 #pragma region QuickSlot Skill Icon Function
@@ -245,7 +260,133 @@ void CUi_QuickSlot::QuickSlot_Set_SkillIcon_Active(void)
 	}
 }
 
+void CUi_QuickSlot::QuickSlot_Set_SkillIcon_CutDownKey(void)
+{
+	/*
+		Skill Icon CutDown 키로 스킬을 사용하는 함수.
+		-- 나중에 스킬이 나가도록 조정 해야 된다 --
+	*/
 
+	//0x30 ~ 0x39 : 0 ~ 9번 숫자키.
+	if (GETS(CKeyMgr)->OnceKeyDown(0x31))
+	{
+		SKILLITER iter = m_QuickSlot_SkillList.begin();
+		SKILLITER iter_End = m_QuickSlot_SkillList.end();
+
+		for (iter; iter != iter_End; ++iter)
+		{
+			//1번 숫자키 클릭시 
+			if ((*iter)->Get_Skill_Icon_Info()->m_eSkill_CutDownKey == CK_1
+				&& (*iter)->Get_Skill_Icon_Check() == true
+				&& m_bSkill_CutDownKey_check[CK_1] == false)
+			{
+				cout << "1번 스킬 발동" << endl;
+				//m_bSkill_CutDownKey_check[CK_1] = true;
+			}
+		}
+	}
+	else if (GETS(CKeyMgr)->OnceKeyUp(0x31))
+	{
+		m_bSkill_CutDownKey_check[CK_1] = false;
+	}
+
+	if (GETS(CKeyMgr)->OnceKeyDown(0x32))
+	{
+		SKILLITER iter = m_QuickSlot_SkillList.begin();
+		SKILLITER iter_End = m_QuickSlot_SkillList.end();
+
+		for (iter; iter != iter_End; ++iter)
+		{
+			//2번 숫자키 클릭시 
+			if ((*iter)->Get_Skill_Icon_Info()->m_eSkill_CutDownKey == CK_2
+				&& (*iter)->Get_Skill_Icon_Check() == true
+				&& m_bSkill_CutDownKey_check[CK_2] == false)
+			{
+				cout << "2번 스킬 발동" << endl;
+				//m_bSkill_CutDownKey_check[CK_2] = true;
+			}
+		}
+	}
+	else if (GETS(CKeyMgr)->OnceKeyUp(0x32))
+	{
+		m_bSkill_CutDownKey_check[CK_2] = false;
+	}
+
+	if (GETS(CKeyMgr)->OnceKeyDown(0x33))
+	{
+		SKILLITER iter = m_QuickSlot_SkillList.begin();
+		SKILLITER iter_End = m_QuickSlot_SkillList.end();
+
+		for (iter; iter != iter_End; ++iter)
+		{
+			//3번 숫자키 클릭시 
+			if ((*iter)->Get_Skill_Icon_Info()->m_eSkill_CutDownKey == CK_3
+				&& (*iter)->Get_Skill_Icon_Check() == true
+				&& m_bSkill_CutDownKey_check[CK_3] == false)
+			{
+				cout << "3번 스킬 발동" << endl;
+				//m_bSkill_CutDownKey_check[CK_3] = true;
+			}
+		}
+	}
+	else if (GETS(CKeyMgr)->OnceKeyUp(0x33))
+	{
+		m_bSkill_CutDownKey_check[CK_3] = false;
+	}
+
+	if (GETS(CKeyMgr)->OnceKeyDown(0x34))
+	{
+		SKILLITER iter = m_QuickSlot_SkillList.begin();
+		SKILLITER iter_End = m_QuickSlot_SkillList.end();
+
+		for (iter; iter != iter_End; ++iter)
+		{
+			//4번 숫자키 클릭시 
+			if ((*iter)->Get_Skill_Icon_Info()->m_eSkill_CutDownKey == CK_4
+				&& (*iter)->Get_Skill_Icon_Check() == true
+				&& m_bSkill_CutDownKey_check[CK_4] == false)
+			{
+				cout << "4번 스킬 발동" << endl;
+				//m_bSkill_CutDownKey_check[CK_4] = true;
+			}
+		}
+	}
+	else if (GETS(CKeyMgr)->OnceKeyUp(0x34))
+	{
+		m_bSkill_CutDownKey_check[CK_4] = false;
+	}
+}
+
+void CUi_QuickSlot::QuickSlot_SkillIcon_CoolTime(void)
+{
+	SKILLITER iter = m_QuickSlot_SkillList.begin();
+	SKILLITER iter_End = m_QuickSlot_SkillList.end();
+
+	for (iter; iter != iter_End; ++iter)
+	{
+		if ((*iter)->Get_Skill_Icon_Check() == true)
+		{
+			if (m_bSkill_CutDownKey_check[(*iter)->Get_Skill_Icon_Info()->m_eSkill_CutDownKey])
+			{
+				//Skill Icon의 단축기가 눌렸을때 Cool Time 시간 동안 활성화.
+				//이렇게 하면 안된다. 각각 Skill Icon이 시간을 가지고 있어야 된다.
+				//Skill struct 부터 건드리자!!!
+				m_dwTime = GetTickCount();
+
+				if (m_dwTime > (*iter)->Get_Skill_Icon_Info()->m_fSkill_CoolTime)
+				{
+					m_dwTime = 0;
+					m_bSkill_CutDownKey_check[(*iter)->Get_Skill_Icon_Info()->m_eSkill_CutDownKey] = false;
+					(*iter)->Set_Skill_Icon_Check(true);
+				}
+				else
+				{
+					(*iter)->Set_Skill_Icon_Check(false);
+				}
+			}
+		}
+	}
+}
 #pragma endregion
 
 #pragma region 기능 변경 후 필요 없는 부분.
@@ -312,7 +453,7 @@ void CUi_QuickSlot::QuickSlot_Drag_SkillIcon(void)
 
 void CUi_QuickSlot::QuickSlot_Escape_SkillIcon(void)
 {
-	//선택된 Skill Icon이 Quick Slot의 어느 Rect에도 충돌 되지 않았을때 
+	//선택된 Skill Icon이 Quick Slot의 어느 Rect에도 충돌 되지 않았을때
 	//Skill Icon 삭제 하는 함수.
 
 	SLOTITER iter = m_QuickSlot_List.begin();
@@ -380,7 +521,7 @@ void CUi_QuickSlot::QuickSlot_Drop_Swap_SkillIcon(void)
 				//if ((*iter_Slot)->Get_SlotNumber() == m_pSelect_SkillIcon->Get_Skill_Icon_QuickNumber())
 				//break;
 
-				//Find Select Skill Icon Iterator 
+				//Find Select Skill Icon Iterator
 				for (iter; iter != iter_End; ++iter)
 				{
 					if ((*iter)->Get_Skill_Icon_Num() == m_pSelect_SkillIcon->Get_Skill_Icon_Num())
@@ -481,7 +622,7 @@ void CUi_QuickSlot::QuickSlot_Swap_SkillIcon(void)
 				if ((*iter_Slot)->Get_SlotNumber() == m_pSelect_SkillIcon->Get_Skill_Icon_QuickNumber())
 					break;
 
-				//Find Select Skill Icon Iterator 
+				//Find Select Skill Icon Iterator
 				for (iter_Skill; iter_Skill != iter_Skill_End; ++iter_Skill)
 				{
 					if (lstrcmp((*iter_Skill)->Get_Skill_Icon_Info()->m_szName, m_pSelect_SkillIcon->Get_Skill_Icon_Info()->m_szName))

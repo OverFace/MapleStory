@@ -143,6 +143,7 @@ typedef struct tagSkill
 {
 	TCHAR			m_szName[128];			//스킬 이름
 	TCHAR			m_szDescription[128];	//스킬 설명
+	float			m_fSkill_CoolTime;		//스킬 쿨 타임.
 	float			m_fSkill_Att;			//스킬 공격력
 	int				m_iSkill_Level;			//스킬 레벨
 	int				m_iSkill_Master_Level;	//스킬 마스터 레벨

@@ -13,26 +13,24 @@ private:
 	list<CQuick_Slot*>	m_QuickSlot_List;
 	list<CSkill_Icon*>	m_QuickSlot_SkillList;
 	CSkill_Icon*		m_pSelect_SkillIcon;
-	bool				m_bSkill_Icon_DragCheck;
-	bool				m_bSkill_Icon_DropCheck;
-	bool				m_bSkill_Icon_OverlapCheck;
-	bool				m_bSkill_Icon_SwapCheck;
-	bool				m_bSkill_Icon_EscapeCheck;
+	DWORD				m_dwTime;
 
 private: //Quick Slot Status Check
 	bool				m_bSkill_Icon_pushCheck;
+	bool				m_bSkill_CutDownKey_check[CK_END];
 
 public:	//Getter
 	inline list<CQuick_Slot*>* Get_QuickSlot(void) { return &m_QuickSlot_List; }
-	inline bool			Get_QuickSlot_EscapeCheck(void) { return m_bSkill_Icon_EscapeCheck; }
 
 public: //Setter
-	inline void			Set_QuickSlot_EscapeCheck(bool _bCheck) { m_bSkill_Icon_EscapeCheck = _bCheck; }
+	void				Set_QuickSlot_SkillIcon_CoolTime(float _fTime, int _iSkillNum);
 
 private: //Quick Slot Interlock To Skill UI
 	void				QuickSlot_Set_SkillIcon(void);
 	void				QuickSlot_Set_SkillIcon_Position(void);
 	void				QuickSlot_Set_SkillIcon_Active(void);
+	void				QuickSlot_Set_SkillIcon_CutDownKey(void);
+	void				QuickSlot_SkillIcon_CoolTime(void);
 
 	/*     기능 변경 하여서 필요 없는 부분.
 	void				QuickSlot_Drag_SkillIcon(void);
