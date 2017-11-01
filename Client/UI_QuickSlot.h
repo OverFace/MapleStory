@@ -20,6 +20,7 @@ private:
 	bool				m_bSkill_Icon_EscapeCheck;
 
 private: //Quick Slot Status Check
+	bool				m_bSkill_Icon_pushCheck;
 
 public:	//Getter
 	inline list<CQuick_Slot*>* Get_QuickSlot(void) { return &m_QuickSlot_List; }
@@ -30,12 +31,15 @@ public: //Setter
 
 private: //Quick Slot Interlock To Skill UI
 	void				QuickSlot_Set_SkillIcon(void);
-	void				QuickSlot_Set_Position(void);
+	void				QuickSlot_Set_SkillIcon_Position(void);
+	void				QuickSlot_Set_SkillIcon_Active(void);
+
+	/*     기능 변경 하여서 필요 없는 부분.
 	void				QuickSlot_Drag_SkillIcon(void);
 	void				QuickSlot_Escape_SkillIcon(void);
-
 	void				QuickSlot_Drop_Swap_SkillIcon(void);
 	void				QuickSlot_Swap_SkillIcon(void);
+	*/
 
 private: //Quick Slot Render
 	void				QuickSlot_Skill_Icon_Render(HDC _dc);

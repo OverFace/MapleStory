@@ -25,6 +25,8 @@ CUi_QuickSlot::CUi_QuickSlot(void)
 	m_bSkill_Icon_OverlapCheck = false;
 	m_bSkill_Icon_SwapCheck = false;
 	m_bSkill_Icon_EscapeCheck = false;
+
+	m_bSkill_Icon_pushCheck = false;
 }
 
 CUi_QuickSlot::~CUi_QuickSlot(void)
@@ -77,16 +79,11 @@ int CUi_QuickSlot::Update(void)
 		(*iter)->Update();
 	}
 
-	SKILLITER iter_Skill = m_QuickSlot_SkillList.begin();
-	SKILLITER iter_Skill_End = m_QuickSlot_SkillList.end();
-	for (iter_Skill; iter_Skill != iter_Skill_End; ++iter_Skill)
-	{
-		(*iter_Skill)->Update();
-	}
-
 	QuickSlot_Set_SkillIcon();
-	QuickSlot_Set_Position();
-	QuickSlot_Drag_SkillIcon();
+	QuickSlot_Set_SkillIcon_Position();
+	QuickSlot_Set_SkillIcon_Active();
+
+	//QuickSlot_Drag_SkillIcon();
 	//QuickSlot_Drop_Swap_SkillIcon();
 
 	return 0;
@@ -113,14 +110,24 @@ void CUi_QuickSlot::Release(void)
 		SAFE_DELETE(*iter);
 	}
 	m_QuickSlot_List.clear();
+
+	SKILLITER iter_Skill = m_QuickSlot_SkillList.begin();
+	SKILLITER iter_Skill_End = m_QuickSlot_SkillList.end();
+	for (iter_Skill; iter_Skill != iter_Skill_End; ++iter_Skill)
+	{
+		SAFE_DELETE(*iter_Skill);
+	}
+	m_QuickSlot_SkillList.clear();
 }
 
-#pragma region Quick Slot Interlock To Skill UI
+#pragma region QuickSlot Skill Icon Function
 void CUi_QuickSlot::QuickSlot_Set_SkillIcon(void)
 {
 	/*
 	스킬 아이콘을 QuickSlot에 등록하는 함수.
 	*/
+
+	//Skill UI Pointer Variable Setting
 	CSkill_UI* pSkill_Ui = NULL;
 	OBJITER iter = GETS(CObjMgr)->GetObjList(OBJ_UI)->begin();
 	OBJITER iter_End = GETS(CObjMgr)->GetObjList(OBJ_UI)->end();
@@ -133,86 +140,30 @@ void CUi_QuickSlot::QuickSlot_Set_SkillIcon(void)
 		}
 	}
 
-	//Function
-	RECT rc;
-	if (pSkill_Ui->Get_Drop_Check() == true)
+	//Skill Icon Setting Function
+	if (pSkill_Ui != NULL && m_bSkill_Icon_pushCheck == false)
 	{
-		SLOTITER iter_Slot = m_QuickSlot_List.begin();
-		SLOTITER iter_Slot_End = m_QuickSlot_List.end();
+		vector<CSkill_Icon*>* pSkill_Icon_List = pSkill_Ui->Get_Skill_Icon();
 
-		for (iter_Slot; iter_Slot != iter_Slot_End; ++iter_Slot)
+		for (size_t i = 0; i < pSkill_Icon_List->size(); ++i)
 		{
-			if (IntersectRect(&rc, pSkill_Ui->Get_Select_Icon()->GetRect(), (*iter_Slot)->GetRect()))
-			{
-				//먼저 충돌된 곳에 Skill_Icon이 있는지 없는지 판단해서
-				//있으면 만들어 지지 않게 한다.
-				SKILLITER iter_Skill = m_QuickSlot_SkillList.begin();
-				SKILLITER iter_Skill_End = m_QuickSlot_SkillList.end();
-				for (iter_Skill; iter_Skill != iter_Skill_End; ++iter_Skill)
-				{
-					if ((*iter_Skill)->Get_Skill_Icon_QuickNumber() == (*iter_Slot)->Get_SlotNumber())
-					{
-						if ((*iter_Skill)->Get_Skill_Icon_QuickSetCheck() == true)
-						{
-							m_bSkill_Icon_OverlapCheck = true;
-							break;
-						}
-					}
-				}
+			SKILL tSkill;
+			memcpy_s(&tSkill, sizeof(SKILL), (*pSkill_Icon_List)[i]->Get_Skill_Icon_Info(), sizeof(SKILL));
 
-				//Quick Slot의 Rect와 선택된 스킬 아이콘의 Rect가 충돌할때
-				//Quick Slot의 Slot Number를 Skill Icon에 넣어준 다음(구분 용도) 
-				//Skill Icon을 새로 만들어서 list에 넣어줌.
-				if (pSkill_Ui->Get_Select_Icon()->Get_Skill_Icon_Check() == true && m_bSkill_Icon_OverlapCheck == false)
-				{
-					//Skill Icon이 활성화 상태일때만 QuickSlot에 넣어준다.
-					SKILL tSkill;
-					memcpy_s(&tSkill, sizeof(SKILL), pSkill_Ui->Get_Select_Icon()->Get_Skill_Icon_Info(), sizeof(SKILL));
+			CSkill_Icon* pSkill = new CSkill_Icon();
+			pSkill->Set_Skill_Icon_Info(tSkill);
+			pSkill->Set_Skill_Icon_Num((*pSkill_Icon_List)[i]->Get_Skill_Icon_Num());
+			pSkill->SetSize(32.f, 32.f);
 
-					CSkill_Icon* pSkill_Icon = new CSkill_Icon();
-					pSkill_Icon->Set_Skill_Icon_Info(tSkill);
-					pSkill_Icon->Set_Skill_Icon_Num(pSkill_Ui->Get_Select_Icon()->Get_Skill_Icon_Num());
-					pSkill_Icon->SetSize(32.f, 32.f);
-					pSkill_Icon->Set_Skill_Icon_QuickNumber((*iter_Slot)->Get_SlotNumber());
-					pSkill_Icon->Set_Skill_Icon_QuickSetCheck(true);
-					pSkill_Icon->Set_Skill_Icon_Check(true);
-
-					m_QuickSlot_SkillList.push_back(pSkill_Icon);
-				}
-
-				//Skill UI 에서 선택됫던 Icon은 원래 위치대로 되돌리자.
-				for (size_t i = 0; i < pSkill_Ui->Get_Skill_Icon()->size(); ++i)
-				{
-					if ((*(pSkill_Ui->Get_Skill_Icon()))[i]->Get_Skill_Icon_Num() == pSkill_Ui->Get_Select_Icon()->Get_Skill_Icon_Num())
-					{
-						pSkill_Ui->Get_Select_Icon()->SetPos((*(pSkill_Ui->Get_Skill_Icon()))[i]->GetInfo()->fx, (*(pSkill_Ui->Get_Skill_Icon()))[i]->GetInfo()->fy);
-						break;
-					}
-				}
-
-				break;
-			}
+			m_QuickSlot_SkillList.push_back(pSkill);
 		}
 
-		pSkill_Ui->Set_Drop_Check(false);
-		m_bSkill_Icon_OverlapCheck = false;
+		m_bSkill_Icon_pushCheck = true;
 	}
 }
 
-void CUi_QuickSlot::QuickSlot_Set_Position(void)
+void CUi_QuickSlot::QuickSlot_Set_SkillIcon_Position(void)
 {
-	CSkill_UI* pSkill_Ui = NULL;
-	OBJITER iter = GETS(CObjMgr)->GetObjList(OBJ_UI)->begin();
-	OBJITER iter_End = GETS(CObjMgr)->GetObjList(OBJ_UI)->end();
-	for (iter; iter != iter_End; ++iter)
-	{
-		if (((CUi*)(*iter))->GetUiType() == UI_SKILL)
-		{
-			pSkill_Ui = (CSkill_UI*)(*iter);
-			break;
-		}
-	}
-
 	SKILLITER iter_Skill = m_QuickSlot_SkillList.begin();
 	SKILLITER iter_Skill_End = m_QuickSlot_SkillList.end();
 
@@ -223,41 +174,85 @@ void CUi_QuickSlot::QuickSlot_Set_Position(void)
 
 		for (iter_Slot; iter_Slot != iter_Slot_End; ++iter_Slot)
 		{
-			//Skill Icon의 Number와 Quick Slot 자체의 넘버가 같으면 그 위치에 셋팅
-			if ((*iter_Skill)->Get_Skill_Icon_QuickNumber() == (*iter_Slot)->Get_SlotNumber())
-			{
-				if ((*iter_Skill)->Get_Skill_Icon_QuickSetCheck() == true)
-				{
-					(*iter_Skill)->SetPos((*iter_Slot)->GetInfo()->fx, (*iter_Slot)->GetInfo()->fy);
-				}
-				else if((*iter_Skill)->Get_Skill_Icon_QuickSetCheck() == false)
-				{
-					//Skill Icon Drag 상태가 아닐 때
-					if (m_bSkill_Icon_DragCheck == false)
-					{
-						vector<CSkill_Icon*>::iterator iter_Skill_Ui = pSkill_Ui->Get_Skill_Icon()->begin();
-						vector<CSkill_Icon*>::iterator iter_Skill_Ui_End = pSkill_Ui->Get_Skill_Icon()->end();
-
-						for (iter_Skill_Ui; iter_Skill_Ui != iter_Skill_Ui_End; ++iter_Skill_Ui)
-						{
-							if ((*iter_Skill_Ui)->Get_Skill_Icon_Num() == (*iter_Skill)->Get_Skill_Icon_Num())
-							{
-								(*iter_Skill)->SetPos((*iter_Skill_Ui)->GetInfo()->fx, (*iter_Skill_Ui)->GetInfo()->fy);
-								break;
-							}
-						}
-					}
-				}
-			} 
+			if ((*iter_Slot)->Get_SlotNumber() == (*iter_Skill)->Get_Skill_Icon_Num())
+				(*iter_Skill)->SetPos((*iter_Slot)->GetInfo()->fx, (*iter_Slot)->GetInfo()->fy);
 		}
 	}
 }
 
+void CUi_QuickSlot::QuickSlot_Set_SkillIcon_Active(void)
+{
+	//Skill UI 에서 스킬 아이콘이 활성화 되어 있는지 확인하여
+	//활성화 시키는 함수.
+
+	CSkill_UI* pSkill_Ui = NULL;
+	OBJITER iter = GETS(CObjMgr)->GetObjList(OBJ_UI)->begin();
+	OBJITER iter_End = GETS(CObjMgr)->GetObjList(OBJ_UI)->end();
+	for (iter; iter != iter_End; ++iter)
+	{
+		if (((CUi*)(*iter))->GetUiType() == UI_SKILL)
+		{
+			pSkill_Ui = (CSkill_UI*)(*iter);
+			break;
+		}
+	}
+
+	if (pSkill_Ui != NULL)
+	{
+		for (size_t i = 0; i < pSkill_Ui->Get_Skill_Icon()->size(); ++i)
+		{
+			CSkill_Icon* pTemp = (*pSkill_Ui->Get_Skill_Icon())[i];
+
+			//for문 안에서 계속해서 받아와야 갱신이된다.
+			SKILLITER iter_Skill = m_QuickSlot_SkillList.begin();
+			SKILLITER iter_Skill_End = m_QuickSlot_SkillList.end();
+			for (iter_Skill; iter_Skill != iter_Skill_End; ++iter_Skill)
+			{
+				if (pTemp->Get_Skill_Icon_Num() == 0 && (*iter_Skill)->Get_Skill_Icon_Num() == 0)
+				{
+					//0번 스킬
+					if (pTemp->Get_Skill_Icon_Check() == true)
+						(*iter_Skill)->Set_Skill_Icon_Check(true);
+					else
+						(*iter_Skill)->Set_Skill_Icon_Check(false);
+				}
+				else if (pTemp->Get_Skill_Icon_Num() == 1 && (*iter_Skill)->Get_Skill_Icon_Num() == 1)
+				{
+					//1번 스킬
+					if (pTemp->Get_Skill_Icon_Check() == true)
+						(*iter_Skill)->Set_Skill_Icon_Check(true);
+					else
+						(*iter_Skill)->Set_Skill_Icon_Check(false);
+				}
+				else if (pTemp->Get_Skill_Icon_Num() == 2 && (*iter_Skill)->Get_Skill_Icon_Num() == 2)
+				{
+					//2번 스킬
+					if (pTemp->Get_Skill_Icon_Check() == true)
+						(*iter_Skill)->Set_Skill_Icon_Check(true);
+					else
+						(*iter_Skill)->Set_Skill_Icon_Check(false);
+				}
+				else if (pTemp->Get_Skill_Icon_Num() == 3 && (*iter_Skill)->Get_Skill_Icon_Num() == 3)
+				{
+					//3번 스킬
+					if (pTemp->Get_Skill_Icon_Check() == true)
+						(*iter_Skill)->Set_Skill_Icon_Check(true);
+					else
+						(*iter_Skill)->Set_Skill_Icon_Check(false);
+				}
+			}
+		}
+	}
+}
+
+
+#pragma endregion
+
+#pragma region 기능 변경 후 필요 없는 부분.
+/*
 void CUi_QuickSlot::QuickSlot_Drag_SkillIcon(void)
 {
-	/*
-		Quick Slot에 있는 Skill Icon Drag 기능.
-	*/
+	//Quick Slot에 있는 Skill Icon Drag 기능
 
 	POINT pt;
 	pt = CMouse::GetPos();
@@ -310,17 +305,15 @@ void CUi_QuickSlot::QuickSlot_Drag_SkillIcon(void)
 	if (m_bSkill_Icon_DragCheck == true && m_bSkill_Icon_DropCheck == false)
 	{
 		//Skill Drag 움직임
-		if(m_pSelect_SkillIcon != NULL)
+		if (m_pSelect_SkillIcon != NULL)
 			m_pSelect_SkillIcon->SetPos(pt.x - (m_pSelect_SkillIcon->GetInfo()->fcx / 2.f), pt.y - (m_pSelect_SkillIcon->GetInfo()->fcy / 2.f));
 	}
 }
 
 void CUi_QuickSlot::QuickSlot_Escape_SkillIcon(void)
 {
-	/*
-	선택된 Skill Icon이 Quick Slot의 어느 Rect에도 충돌 되지 않았을때 
-	Skill Icon 삭제 하는 함수.
-	*/
+	//선택된 Skill Icon이 Quick Slot의 어느 Rect에도 충돌 되지 않았을때 
+	//Skill Icon 삭제 하는 함수.
 
 	SLOTITER iter = m_QuickSlot_List.begin();
 	SLOTITER iter_End = m_QuickSlot_List.end();
@@ -359,10 +352,8 @@ void CUi_QuickSlot::QuickSlot_Escape_SkillIcon(void)
 
 void CUi_QuickSlot::QuickSlot_Drop_Swap_SkillIcon(void)
 {
-	/*
-		Skill Icon을 Drop 했을때 list 안에 있는 Skill 아이콘을 지운다.
-		Skill Icon을 Drop 시 Slot과 충돌되면 Swap 한다.
-	*/
+	//Skill Icon을 Drop 했을때 list 안에 있는 Skill 아이콘을 지운다.
+	//Skill Icon을 Drop 시 Slot과 충돌되면 Swap 한다.
 
 	if (m_bSkill_Icon_DropCheck == true && !GETS(CKeyMgr)->StayKeyDown(VK_LBUTTON))
 	{
@@ -383,11 +374,11 @@ void CUi_QuickSlot::QuickSlot_Drop_Swap_SkillIcon(void)
 
 			if (m_bSkill_Icon_SwapCheck == true)
 			{
-				/*	Swap 기능 */
+				//Swap 기능
 
 				//자기 자신일때는 Swap 안되게 예외처리
 				//if ((*iter_Slot)->Get_SlotNumber() == m_pSelect_SkillIcon->Get_Skill_Icon_QuickNumber())
-					//break;
+				//break;
 
 				//Find Select Skill Icon Iterator 
 				for (iter; iter != iter_End; ++iter)
@@ -446,7 +437,7 @@ void CUi_QuickSlot::QuickSlot_Drop_Swap_SkillIcon(void)
 			}
 			else if (m_bSkill_Icon_SwapCheck == false)
 			{
-				/*Drop 기능 */
+				//Drop 기능
 
 				iter = m_QuickSlot_SkillList.begin();
 				iter_End = m_QuickSlot_SkillList.end();
@@ -542,31 +533,49 @@ void CUi_QuickSlot::QuickSlot_Swap_SkillIcon(void)
 		}
 	}
 }
+*/
 #pragma endregion
 
 #pragma region Quick Slot Render
 void CUi_QuickSlot::QuickSlot_Skill_Icon_Render(HDC _dc)
 {
-	SKILLITER iter_Skill = m_QuickSlot_SkillList.begin();
-	SKILLITER iter_Skill_End = m_QuickSlot_SkillList.end();
-	for (iter_Skill; iter_Skill != iter_Skill_End; ++iter_Skill)
+	TCHAR szOn[30] = L"_Icon_On";
+	TCHAR szIcon_Name[50] = L"";
+	TCHAR szOff[30] = L"_Icon_Off";
+	TCHAR szIcon_OffName[50] = L"";
+
+	SKILLITER iter = m_QuickSlot_SkillList.begin();
+	SKILLITER iter_End = m_QuickSlot_SkillList.end();
+
+	for (iter; iter != iter_End; ++iter)
 	{
-		TCHAR szOn[30] = L"_Icon_On";
-		TCHAR szIcon_Name[50] = L"";
-		TCHAR szOff[30] = L"_Icon_Off";
-		TCHAR szIcon_OffName[50] = L"";
+		//Icon Off Render
+		lstrcpy(szIcon_OffName, (*iter)->Get_Skill_Icon_Info()->m_szName);
+		lstrcat(szIcon_OffName, szOff);
 
-		lstrcpy(szIcon_Name, (*iter_Skill)->Get_Skill_Icon_Info()->m_szName);
-		lstrcat(szIcon_Name, szOn);
-
-		if ((*iter_Skill)->Get_Skill_Icon_Check() == true)
+		if ((*iter)->Get_Skill_Icon_Check() == false)
 		{
 			TransparentBlt(_dc,
-				int((*iter_Skill)->GetInfo()->fx), int((*iter_Skill)->GetInfo()->fy),
-				int((*iter_Skill)->GetInfo()->fcx), int((*iter_Skill)->GetInfo()->fcy),
+				int((*iter)->GetInfo()->fx), int((*iter)->GetInfo()->fy),
+				int((*iter)->GetInfo()->fcx), int((*iter)->GetInfo()->fcy),
+				GETS(CBitMapMgr)->FindImage(szIcon_OffName)->GetMemDC(),
+				0, 0,
+				int((*iter)->GetInfo()->fcx), int((*iter)->GetInfo()->fcy),
+				RGB(255, 255, 255));
+		}
+
+		//Icon On Render
+		lstrcpy(szIcon_Name, (*iter)->Get_Skill_Icon_Info()->m_szName);
+		lstrcat(szIcon_Name, szOn);
+
+		if ((*iter)->Get_Skill_Icon_Check() == true)
+		{
+			TransparentBlt(_dc,
+				int((*iter)->GetInfo()->fx), int((*iter)->GetInfo()->fy),
+				int((*iter)->GetInfo()->fcx), int((*iter)->GetInfo()->fcy),
 				GETS(CBitMapMgr)->FindImage(szIcon_Name)->GetMemDC(),
 				0, 0,
-				int((*iter_Skill)->GetInfo()->fcx), int((*iter_Skill)->GetInfo()->fcy),
+				int((*iter)->GetInfo()->fcx), int((*iter)->GetInfo()->fcy),
 				RGB(255, 255, 255));
 		}
 	}

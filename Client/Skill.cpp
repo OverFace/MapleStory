@@ -104,8 +104,6 @@ int CSkill_UI::Update(void)
 
 		//Skill Slot
 		Skill_Slot_Update();
-		Skill_Icon_Drag();
-		Skill_DragIcon_Update();
 	}
 
 	return 0;
@@ -145,8 +143,6 @@ void CSkill_UI::Render(HDC _dc)
 
 		//Skill Slot
 		//Skill_Slot_Render(_dc);
-
-		Skill_DragIcon_Render(_dc);
 	}
 }
 
@@ -583,7 +579,7 @@ void CSkill_UI::Skill_Icon_InfoRender(HDC _dc)
 }
 #pragma endregion
 
-#pragma region Skill Icon Drag & Slot
+#pragma region Skill Slot
 void CSkill_UI::Skill_Slot_Create(void)
 {
 	float fx = 12.f;
@@ -615,7 +611,10 @@ void CSkill_UI::Skill_Slot_Render(HDC _dc)
 	for (size_t i = 0; i < m_vecSkill_Slot.size(); ++i)
 		m_vecSkill_Slot[i]->Render(_dc);
 }
+#pragma endregion
 
+#pragma region 기능 변경 해서 필요 없는 부분
+/*
 void CSkill_UI::Skill_Icon_Drag(void)
 {
 	POINT pt;
@@ -640,9 +639,9 @@ void CSkill_UI::Skill_Icon_Drag(void)
 						{
 							m_pSelect_Skill[0] = new CSkill_Icon();
 							m_pSelect_Skill[0]->Set_Skill_Icon_Info(tSkill);
-m_pSelect_Skill[0]->Set_Skill_Icon_Num(m_vecSkill[i]->Get_Skill_Icon_Num());
-m_pSelect_Skill[0]->SetSize(32.f, 32.f);
-m_pSelect_Skill[0]->SetPos(pt.x - (m_pSelect_Skill[0]->GetInfo()->fcx / 2.f), pt.y - (m_pSelect_Skill[0]->GetInfo()->fcy / 2.f));
+							m_pSelect_Skill[0]->Set_Skill_Icon_Num(m_vecSkill[i]->Get_Skill_Icon_Num());
+							m_pSelect_Skill[0]->SetSize(32.f, 32.f);
+							m_pSelect_Skill[0]->SetPos(pt.x - (m_pSelect_Skill[0]->GetInfo()->fcx / 2.f), pt.y - (m_pSelect_Skill[0]->GetInfo()->fcy / 2.f));
 						}
 
 						m_pPick_Icon = m_pSelect_Skill[0];
@@ -710,8 +709,6 @@ m_pSelect_Skill[0]->SetPos(pt.x - (m_pSelect_Skill[0]->GetInfo()->fcx / 2.f), pt
 			m_bSkill_Drop_Check = true;
 
 			//Skill Icon이 Drop 되었을때 Quick Slot의 Rect와 충돌하지 않으면 지워준다.
-			delete m_pPick_Icon;
-			m_pPick_Icon = NULL;
 		}
 	}
 
@@ -724,11 +721,6 @@ m_pSelect_Skill[0]->SetPos(pt.x - (m_pSelect_Skill[0]->GetInfo()->fcx / 2.f), pt
 
 void CSkill_UI::Skill_Icon_Escape(void)
 {
-	/*
-	선택된 Skill Icon이 Quick Slot의 Rect와 충돌하지 않았을때 선택된 Skill Icon 지우기.
-	선택된 Skill Icon은 새로 할당한 Skill Icon이기 때문에
-	*/
-
 	CUi_QuickSlot* pQuick_Slot = NULL;
 	OBJITER iter = GETS(CObjMgr)->GetObjList(OBJ_UI)->begin();
 	OBJITER iter_End = GETS(CObjMgr)->GetObjList(OBJ_UI)->end();
@@ -802,6 +794,9 @@ void CSkill_UI::Skill_DragIcon_Render(HDC _dc)
 		}
 	}
 }
+*/
 #pragma endregion
+
+
 
 

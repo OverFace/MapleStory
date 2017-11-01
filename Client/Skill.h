@@ -40,10 +40,10 @@ public: //Getter
 	inline vector<CSkill_Icon*>* Get_Skill_Icon(void) { return &m_vecSkill; }
 	inline vector<CSkill_Slot*>* Get_Skill_Slot(void) { return &m_vecSkill_Slot; }
 	inline CSkill_Icon*		     Get_Select_Icon(void) { return m_pPick_Icon; }
-	inline bool				     Get_Drop_Check(void) { return m_bSkill_Drop_Check; }
+	//inline bool				 Get_Drop_Check(void) { return m_bSkill_Drop_Check; }
 
 public: //Setter
-	inline void			Set_Drop_Check(bool _bCheck) { m_bSkill_Drop_Check = _bCheck; }
+	//inline void			Set_Drop_Check(bool _bCheck) { m_bSkill_Drop_Check = _bCheck; }
 
 private:
 	void				Skill_Key(void);
@@ -65,11 +65,12 @@ private: //Skill Icon Drag & Slot
 	void				Skill_Slot_Create(void);
 	void				Skill_Slot_Update(void);
 	void				Skill_Slot_Render(HDC _dc);
+	/*	 기능 수정 후 필요 없는 함수.
 	void				Skill_Icon_Drag(void);
 	void				Skill_Icon_Escape(void);
 	void				Skill_DragIcon_Update(void);
 	void				Skill_DragIcon_Render(HDC _dc);
-
+	*/
 public:
 	virtual void		Initialize(void);
 	virtual	int			Update(void);
