@@ -3,6 +3,7 @@
 
 class CQuick_Slot;
 class CSkill_Icon;
+class CItem;
 class CUi_QuickSlot : public CUi
 {
 public:
@@ -12,10 +13,12 @@ public:
 private:
 	list<CQuick_Slot*>	m_QuickSlot_List;
 	list<CSkill_Icon*>	m_QuickSlot_SkillList;
+	list<CItem*>		m_QuickSlot_ItemList;
 	CSkill_Icon*		m_pSelect_SkillIcon;
 
 private: //Quick Slot Status Check
 	bool				m_bSkill_Icon_pushCheck;
+	bool				m_bItem_Icon_pushCheck;
 	bool				m_bSkill_CutDownKey_check[CK_END];
 	bool				m_bSkill_Cool_TimeCheck[4];
 
@@ -32,15 +35,14 @@ private: //Quick Slot Interlock To Skill UI
 	void				QuickSlot_Set_SkillIcon_CutDownKey(void);
 	void				QuickSlot_SkillIcon_CoolTime(void);
 
-	/*     기능 변경 하여서 필요 없는 부분.
-	void				QuickSlot_Drag_SkillIcon(void);
-	void				QuickSlot_Escape_SkillIcon(void);
-	void				QuickSlot_Drop_Swap_SkillIcon(void);
-	void				QuickSlot_Swap_SkillIcon(void);
-	*/
+private: //Quick Slot Interlock To Inven UI
+	void				QuickSlot_Set_ItemIcon(void);
+	void				QuickSlot_Set_ItemIcon_Position(void);
+	void				QuickSlot_Set_ItemIcon_CutDownKey(void);
 
 private: //Quick Slot Render
 	void				QuickSlot_Skill_Icon_Render(HDC _dc);
+	void				QuickSlot_Item_Icon_Render(HDC _dc);
 
 public:
 	virtual void		Initialize(void);
