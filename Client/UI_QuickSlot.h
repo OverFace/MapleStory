@@ -13,11 +13,11 @@ private:
 	list<CQuick_Slot*>	m_QuickSlot_List;
 	list<CSkill_Icon*>	m_QuickSlot_SkillList;
 	CSkill_Icon*		m_pSelect_SkillIcon;
-	DWORD				m_dwTime;
 
 private: //Quick Slot Status Check
 	bool				m_bSkill_Icon_pushCheck;
 	bool				m_bSkill_CutDownKey_check[CK_END];
+	bool				m_bSkill_Cool_TimeCheck[4];
 
 public:	//Getter
 	inline list<CQuick_Slot*>* Get_QuickSlot(void) { return &m_QuickSlot_List; }

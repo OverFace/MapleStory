@@ -22,6 +22,7 @@ public: //Getter
 	inline bool		Get_Skill_Icon_Check(void) { return m_bSkill_Icon_Check; }
 	inline int		Get_Skill_Icon_QuickNumber(void) { return m_iSkill_QuickSlot_Number; }
 	inline bool		Get_Skill_Icon_QuickSetCheck(void) { return m_bSkill_QuickSlot_SetCheck; }
+	inline DWORD	Get_Skill_Icon_CoolTime_Prs(void) { return m_tSkill.m_dwSkill_Prs_Time; }
 
 public: //Setter
 	inline void		Set_Skill_Icon_Info(SKILL _tSkill) { memcpy_s(&m_tSkill, sizeof(SKILL), &_tSkill, sizeof(SKILL)); }
@@ -32,6 +33,7 @@ public: //Setter
 	inline void		Set_Skill_Icon_QuickNumber(int _iNumber) { m_iSkill_QuickSlot_Number = _iNumber; }
 	inline void		Set_Skill_Icon_QuickSetCheck(bool _bCheck) { m_bSkill_QuickSlot_SetCheck = _bCheck; }
 	inline void		Set_Skill_Icon_CoolTime(float _fTime) { m_tSkill.m_fSkill_CoolTime = _fTime; }
+	inline void		Set_Skill_Icon_CoolTime_Prs(DWORD _dwTime) { m_tSkill.m_dwSkill_Prs_Time = _dwTime; }
 
 public:
 	virtual void	Initialize(void);

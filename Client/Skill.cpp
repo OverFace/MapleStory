@@ -343,7 +343,7 @@ void CSkill_UI::Skill_PlusButton_Click(void)
 
 					//Skill Cool Time;
 					float fCoolTime = m_vecSkill[i]->Get_Skill_Icon_Info()->m_fSkill_CoolTime;
-					fCoolTime += 0.3f;
+					fCoolTime += 3.f;
 					m_vecSkill[i]->Set_Skill_Icon_CoolTime(fCoolTime);
 					pQuick_Slot->Set_QuickSlot_SkillIcon_CoolTime(m_vecSkill[i]->Get_Skill_Icon_Info()->m_fSkill_CoolTime, 1);
 
@@ -374,7 +374,7 @@ void CSkill_UI::Skill_PlusButton_Click(void)
 
 					//Skill Cool Time;
 					float fCoolTime = m_vecSkill[i]->Get_Skill_Icon_Info()->m_fSkill_CoolTime;
-					fCoolTime += 0.5f;
+					fCoolTime += 5.f;
 					m_vecSkill[i]->Set_Skill_Icon_CoolTime(fCoolTime);
 					pQuick_Slot->Set_QuickSlot_SkillIcon_CoolTime(m_vecSkill[i]->Get_Skill_Icon_Info()->m_fSkill_CoolTime, 2);
 
@@ -405,7 +405,7 @@ void CSkill_UI::Skill_PlusButton_Click(void)
 
 					//Skill Cool Time;
 					float fCoolTime = m_vecSkill[i]->Get_Skill_Icon_Info()->m_fSkill_CoolTime;
-					fCoolTime += 0.7f;
+					fCoolTime += 7.f;
 					m_vecSkill[i]->Set_Skill_Icon_CoolTime(fCoolTime);
 					pQuick_Slot->Set_QuickSlot_SkillIcon_CoolTime(m_vecSkill[i]->Get_Skill_Icon_Info()->m_fSkill_CoolTime, 3);
 
@@ -472,7 +472,7 @@ void CSkill_UI::Skill_Icon_Create(void)
 	tSkill.m_iSkill_Master_Level = 20;
 	tSkill.m_fSkill_Att = 30;
 	tSkill.m_eSkill_CutDownKey = CK_2;
-	tSkill.m_fSkill_CoolTime = 2.f;
+	tSkill.m_fSkill_CoolTime = 10.f;
 	pIcon->Set_Skill_Icon_Info(tSkill);
 
 	m_vecSkill.push_back(pIcon);
@@ -486,7 +486,7 @@ void CSkill_UI::Skill_Icon_Create(void)
 	tSkill.m_iSkill_Master_Level = 20;
 	tSkill.m_fSkill_Att = 50;
 	tSkill.m_eSkill_CutDownKey = CK_3;
-	tSkill.m_fSkill_CoolTime = 4.f;
+	tSkill.m_fSkill_CoolTime = 20.f;
 	pIcon->Set_Skill_Icon_Info(tSkill);
 
 	m_vecSkill.push_back(pIcon);
@@ -500,7 +500,7 @@ void CSkill_UI::Skill_Icon_Create(void)
 	tSkill.m_iSkill_Master_Level = 30;
 	tSkill.m_fSkill_Att = 200;
 	tSkill.m_eSkill_CutDownKey = CK_4;
-	tSkill.m_fSkill_CoolTime = 6.f;
+	tSkill.m_fSkill_CoolTime = 30.f;
 	pIcon->Set_Skill_Icon_Info(tSkill);
 
 	m_vecSkill.push_back(pIcon);
