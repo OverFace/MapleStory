@@ -12,8 +12,14 @@ private: //Value
 	int				m_iChangeCount;
 	bool			m_bStageCheck[4];
 	bool			m_bLineCreate_Check;
+	bool			m_bLineClick_Check;
+	bool			m_bLineComplete_Check;
 	list<LINE*>		m_LineList_Stage1;
 	list<LINE*>		m_LineList_Stage2;
+	list<LINE*>		m_LineList_Stage3;
+	list<LINE*>		m_LineList_BossStage;
+	LINEPOINT		m_tLine_Point_Left;
+	LINEPOINT		m_tLine_Point_Right;
 
 private: //BackGrond
 	CObj*			m_pStage1_Back;
@@ -23,11 +29,14 @@ private: //BackGrond
 	CObj*			m_pBStage_Back;
 	CObj*			m_pBStage_Map;
 
-public: //Function
+private: //Function
 	void			ShortCut_Key(void);
 	void			Scene_Change(void);
 	void			Save_Data(void);
 	void			Load_Data(void);
+
+private: //Line
+	void			Create_Line(void);
 
 public:
 	virtual void	Initialize(void);

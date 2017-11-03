@@ -24,6 +24,8 @@ CLine_Tool::CLine_Tool(void)
 	for(int i = 0; i < 4; ++i)
 		m_bStageCheck[i] = false;
 	m_bLineCreate_Check = false;
+	m_bLineClick_Check = false;
+	m_bLineComplete_Check = false;
 
 	m_pStage1_Back = NULL;
 	m_pStage1_Map = NULL;
@@ -31,6 +33,9 @@ CLine_Tool::CLine_Tool(void)
 	m_pStage3_Map = NULL;
 	m_pBStage_Back = NULL;
 	m_pBStage_Map = NULL;
+
+	ZeroMemory(&m_tLine_Point_Left, sizeof(LINEPOINT));
+	ZeroMemory(&m_tLine_Point_Right, sizeof(LINEPOINT));
 }
 
 CLine_Tool::~CLine_Tool(void)
@@ -101,11 +106,41 @@ int CLine_Tool::Update(void)
 	ShortCut_Key();
 	Scene_Change();
 
+	//Line
+	Create_Line();
+
 	return 0;
 }
 
 void CLine_Tool::Render(HDC _dc)
 {
+	//Line Render
+	if (m_bStageCheck[0] == true)
+	{
+		//Stage 1
+		if (m_LineList_Stage1.empty() == false)
+		{
+			MoveToEx(_dc, (int)m_LineList_Stage1.front()->tLeft_Point.fx, (int)m_LineList_Stage1.front()->tLeft_Point.fy, NULL);
+
+			LINEITER iter = m_LineList_Stage1.begin();
+			LINEITER iter_End = m_LineList_Stage1.end();
+			for (iter; iter != iter_End; ++iter)
+				LineTo(_dc, (int)(*iter)->tRight_Point.fx, (int)(*iter)->tRight_Point.fy);
+		}
+	}
+	else if (m_bStageCheck[1] == true)
+	{
+		//Stage 2
+	}
+	else if (m_bStageCheck[2] == true)
+	{
+		//Stage 3
+	}
+	else if (m_bStageCheck[3] == true)
+	{
+		//Boss Stage
+	}
+
 	//Obj Mgr Render
 	GETS(CObjMgr)->Render(_dc);
 }
@@ -121,6 +156,16 @@ void CLine_Tool::Release(void)
 	LINEITER iter_Stage2_End = m_LineList_Stage2.end();
 	for (iter_Stage2; iter_Stage2 != iter_Stage2_End; ++iter_Stage2)
 		SAFE_DELETE(*iter_Stage2);
+
+	LINEITER iter_Stage3 = m_LineList_Stage3.begin();
+	LINEITER iter_Stage3_End = m_LineList_Stage3.end();
+	for (iter_Stage3; iter_Stage3 != iter_Stage3_End; ++iter_Stage3)
+		SAFE_DELETE(*iter_Stage3);
+
+	LINEITER iter_Boss = m_LineList_BossStage.begin();
+	LINEITER iter_Boss_End = m_LineList_BossStage.end();
+	for (iter_Boss; iter_Boss != iter_Boss_End; ++iter_Boss)
+		SAFE_DELETE(*iter_Boss);
 }
 
 #pragma region Function
@@ -250,5 +295,62 @@ void CLine_Tool::Save_Data(void)
 void CLine_Tool::Load_Data(void)
 {
 
+}
+#pragma endregion
+
+#pragma region Line
+void CLine_Tool::Create_Line(void)
+{
+	POINT pt;
+	pt = CMouse::GetPos();
+
+	if (m_bLineCreate_Check == true)
+	{
+		if (m_bStageCheck[0] == true)
+		{
+			//Stage1
+			if (GETS(CKeyMgr)->OnceKeyDown(VK_LBUTTON) && m_bLineClick_Check == false)
+			{
+				m_tLine_Point_Left.fx = (float)pt.x;
+				m_tLine_Point_Left.fy = (float)pt.y;
+				m_bLineClick_Check = true;
+			}
+			
+			//이 부분이 안된다.. 머지???
+			if (GETS(CKeyMgr)->OnceKeyDown(VK_LBUTTON) && m_bLineClick_Check == true)
+			{
+				if (m_bLineComplete_Check == false)
+				{
+					m_tLine_Point_Right.fx = (float)pt.x;
+					m_tLine_Point_Right.fy = (float)pt.y;
+
+					m_bLineClick_Check = false;
+					m_bLineComplete_Check = true;
+				}
+			}
+
+			if (m_bLineComplete_Check == true)
+			{
+				m_LineList_Stage1.push_back(new LINE(m_tLine_Point_Left, m_tLine_Point_Right));
+				m_bLineComplete_Check = false;
+			}
+
+			system("cls");
+			cout << m_bLineClick_Check << endl;
+			cout << m_bLineComplete_Check << endl;
+		}
+		else if (m_bStageCheck[1] == true)
+		{
+			//Stage2
+		}
+		else if (m_bStageCheck[2] == true)
+		{
+			//Stage3
+		}
+		else if (m_bStageCheck[3] == true)
+		{
+			//Boss Stage
+		}
+	}
 }
 #pragma endregion
