@@ -11,6 +11,7 @@
 //UI
 #include "Equip.h"
 #include "Store.h"
+#include "UI_QuickSlot.h"
 
 //Item----------------------------
 #include "Npc.h"
@@ -155,12 +156,13 @@ int CInven::Update(void)
 		Inven_EscButton_Click();
 
 		Inven_ItemUpdate();		//Inven Update
-
 	}
 
 	//Slot
 	Inven_SlotUpdate();
 
+	//QuickSlot ItemData 갱신.
+	Inven_ItemData_Goto_QuickSlot();	
 	return 0;
 }
 
@@ -698,12 +700,54 @@ void CInven::Inven_ItemEquip(void)
 	}
 }
 
+void CInven::Inven_ItemData_Goto_QuickSlot(void)
+{
+	/*
+		Inven 에서 Item Data를 QuickSlot의 Item Data에 갱신해주는 함수.
+	*/
+
+	//ObjMgr에서 Quick Slot 가져오기.
+	CUi_QuickSlot* pQuick_Slot = NULL;
+	OBJITER iter = GETS(CObjMgr)->GetObjList(OBJ_UI)->begin();
+	OBJITER iter_End = GETS(CObjMgr)->GetObjList(OBJ_UI)->end();
+	for (iter; iter != iter_End; ++iter)
+	{
+		if (((CUi*)(*iter))->GetUiType() == UI_QUICKSLOT)
+		{
+			pQuick_Slot = (CUi_QuickSlot*)(*iter);
+			break;
+		}
+	}
+
+	//Quick Slot Item Data Update();
+	if (pQuick_Slot != NULL)
+	{
+		//Inven에 있는 ItemList에서 Potion Info를 가져온다.
+		ITEMITER iter_Inven = m_Inven_ConsumeList.begin();
+		ITEMITER iter_Inven_End = m_Inven_ConsumeList.end();
+		for (iter_Inven; iter_Inven != iter_Inven_End; ++iter_Inven)
+		{
+			//Quick Slot에 있는 Item List를 가져온다.
+			ITEMITER iter_QuickSlot = pQuick_Slot->Get_QuickSlot_ItemList()->begin();
+			ITEMITER iter_QuickSlot_End = pQuick_Slot->Get_QuickSlot_ItemList()->end();
+			for (iter_QuickSlot; iter_QuickSlot != iter_QuickSlot_End; ++iter_QuickSlot)
+			{
+				if ((*iter_Inven)->GetItemData()->m_dwOption == (*iter_QuickSlot)->GetItemData()->m_dwOption)
+				{
+					//Inven의 Item dwOption값과 QuickSlot의 Item dwOption 값이 같으면 Count 수를 넣어준다.
+					(*iter_QuickSlot)->SetItem_Count((*iter_Inven)->GetItemData()->m_iCount);
+				}
+			}
+		}
+	}
+}
+
 void CInven::Inven_ConsumeItem_CountRender(HDC _dc)
 {
 	if (m_bInvenMode[INVEN_CONSUME])
 	{
 		m_myConsumeItemFont = CreateFont(11, 5, 0, 0, 0, 0, 0, 0, DEFAULT_CHARSET, 0, 0, 0, 0, L"굴림");
-		HFONT oldFont = (HFONT)SelectObject(_dc, m_myFont);
+		HFONT oldFont = (HFONT)SelectObject(_dc, m_myConsumeItemFont);
 
 		TCHAR szHpPotion_Count[100] = { 0 };
 		TCHAR szMpPotion_Count[100] = { 0 };

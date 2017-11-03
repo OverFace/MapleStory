@@ -12,6 +12,7 @@
 #include "Inven.h"
 #include "Quick_Slot.h"
 #include "Skill_Icon.h"
+#include "Stat.h"
 
 //Item
 #include "Item.h"
@@ -94,6 +95,7 @@ int CUi_QuickSlot::Update(void)
 	//Item Icon
 	QuickSlot_Set_ItemIcon();
 	QuickSlot_Set_ItemIcon_Position();
+	QuickSlot_Set_ItemIcon_CutDownKey();
 
 	return 0;
 }
@@ -644,6 +646,10 @@ void CUi_QuickSlot::QuickSlot_Set_ItemIcon(void)
 
 void CUi_QuickSlot::QuickSlot_Set_ItemIcon_Position(void)
 {
+	/*
+		Item List Postion Setting
+	*/
+
 	ITEMITER iter = m_QuickSlot_ItemList.begin();
 	ITEMITER iter_End = m_QuickSlot_ItemList.end();
 
@@ -674,7 +680,135 @@ void CUi_QuickSlot::QuickSlot_Set_ItemIcon_Position(void)
 
 void CUi_QuickSlot::QuickSlot_Set_ItemIcon_CutDownKey(void)
 {
+	/*
+		Item CutDown Key Setting
+		0x46 : F key
+		0x47 : G Key
+	*/
 
+	//ObjMgr 에서 Stat 가져오기
+	CStat* pStat = NULL;
+	OBJITER iter = GETS(CObjMgr)->GetObjList(OBJ_UI)->begin();
+	OBJITER iter_End = GETS(CObjMgr)->GetObjList(OBJ_UI)->end();
+	for (iter; iter != iter_End; ++iter)
+	{
+		if (((CUi*)(*iter))->GetUiType() == UI_STAT)
+		{
+			pStat = (CStat*)(*iter);
+			break;
+		}
+	}
+
+	if (GETS(CKeyMgr)->OnceKeyDown(0x46))
+	{
+		//F Key : Hp Potion Using
+		ITEMITER iter = m_QuickSlot_ItemList.begin();
+		ITEMITER iter_End = m_QuickSlot_ItemList.end();
+		for (iter; iter != iter_End; ++iter)
+		{
+			if ((*iter)->GetItemData()->m_dwOption == 11)
+			{
+				if ((*iter)->GetItemData()->m_iCount > 0)
+				{
+					//Item Count가 1개 이상일때 Count Setting
+					int iCount = (*iter)->GetItemData()->m_iCount;
+					--iCount;
+					(*iter)->SetItem_Count(iCount);
+					cout << (*iter)->GetItemData()->m_iCount << endl;
+
+					//Using Hp Potion Function(Player Hp 채우기)
+					QucikSlot_Potion_Using(pStat, (*iter), (*iter)->GetItemData()->m_dwOption);
+					break;
+				}
+			}
+		}
+	}
+	if(GETS(CKeyMgr)->OnceKeyDown(0x47))
+	{
+		//G Key : Mp Potion Using
+		ITEMITER iter = m_QuickSlot_ItemList.begin();
+		ITEMITER iter_End = m_QuickSlot_ItemList.end();
+		for (iter; iter != iter_End; ++iter)
+		{
+			if ((*iter)->GetItemData()->m_dwOption == 12)
+			{
+				if ((*iter)->GetItemData()->m_iCount > 0)
+				{
+					//Item Count가 1개 이상일때 Count Setting
+					int iCount = (*iter)->GetItemData()->m_iCount;
+					--iCount;
+					(*iter)->SetItem_Count(iCount);
+
+					//Using Mp Potion Function(Player Mp 채우기)
+					QucikSlot_Potion_Using(pStat, (*iter), (*iter)->GetItemData()->m_dwOption);
+					break;
+				}
+			}
+		}
+	}
+}
+
+void CUi_QuickSlot::QucikSlot_Potion_Using(CStat * _pStat, CItem* _pItem, DWORD _dwOption)
+{
+	if (_dwOption == 11)
+	{
+		//Hp Potion
+		if (_pStat->Get_PlayerStat()->m_iHp >= _pStat->Get_PlayerStat()->m_iMaxHp)
+		{
+			//Max Hp에 비해 Hp가 같거나 크면
+			_pStat->Set_PlayerHp(_pStat->Get_PlayerStat()->m_iMaxHp);
+		}
+		else if (_pStat->Get_PlayerStat()->m_iHp <  _pStat->Get_PlayerStat()->m_iMaxHp)
+		{
+			//Max Hp 보다 Hp가 작으면
+			int iHp_Gap = _pStat->Get_PlayerStat()->m_iMaxHp - _pStat->Get_PlayerStat()->m_iHp;
+			
+			//HpGap이 Hp Potion 회복량 보다 작으면 HpGap 만큼 회복
+			//HpGap이 Hp Potion 회복량 보다 크면 회복량 만큼 회복.
+			if (iHp_Gap <= 1000)
+			{
+				int iHp = _pStat->Get_PlayerStat()->m_iHp;
+				iHp += iHp_Gap;
+				_pStat->Set_PlayerHp(iHp);
+			}
+			else
+			{
+				int iHp = _pStat->Get_PlayerStat()->m_iHp;
+				iHp += _pItem->GetItemData()->m_iHp;
+				_pStat->Set_PlayerHp(iHp);
+			}
+		}
+	}
+
+	if (_dwOption == 12)
+	{
+		//Mp Potion
+		if (_pStat->Get_PlayerStat()->m_iMp >= _pStat->Get_PlayerStat()->m_iMaxMp)
+		{
+			//Max Hp에 비해 Hp가 같거나 크면
+			_pStat->Set_PlayerMp(_pStat->Get_PlayerStat()->m_iMaxMp);
+		}
+		else if (_pStat->Get_PlayerStat()->m_iMp <  _pStat->Get_PlayerStat()->m_iMaxMp)
+		{
+			//Max Mp 보다 Mp가 작으면
+			int iMp_Gap = _pStat->Get_PlayerStat()->m_iMaxMp - _pStat->Get_PlayerStat()->m_iMp;
+
+			//MpGap이 Mp Potion 회복량 보다 작으면 MpGap 만큼 회복
+			//MpGap이 Mp Potion 회복량 보다 크면 회복량 만큼 회복.
+			if (iMp_Gap <= 1000)
+			{
+				int iMp = _pStat->Get_PlayerStat()->m_iMp;
+				iMp += iMp_Gap;
+				_pStat->Set_PlayerHp(iMp);
+			}
+			else
+			{
+				int iMp = _pStat->Get_PlayerStat()->m_iMp;
+				iMp += _pItem->GetItemData()->m_iMp;
+				_pStat->Set_PlayerHp(iMp);
+			}
+		}
+	}
 }
 #pragma endregion
 
@@ -725,6 +859,9 @@ void CUi_QuickSlot::QuickSlot_Skill_Icon_Render(HDC _dc)
 
 void CUi_QuickSlot::QuickSlot_Item_Icon_Render(HDC _dc)
 {
+	/*
+		Item Icon Render & Item Count Render(카운트 갯수는 Inven과 실시간 연동.
+	*/
 	ITEMITER iter = m_QuickSlot_ItemList.begin();
 	ITEMITER iter_End = m_QuickSlot_ItemList.end();
 	for (iter; iter != iter_End; ++iter)

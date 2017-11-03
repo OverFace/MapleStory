@@ -141,6 +141,8 @@ void CBitMapMgr::LoadImageByScene(eSceneType eType)
 		//Item_Potion
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Potion/Hp_Potion.bmp", L"Hp_Potion");
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Potion/Mp_Potion.bmp", L"Mp_Potion");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Potion/Hp_Potion_Nothing.bmp", L"Hp_Potion_Nothing");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Potion/Mp_Potion_Nothing.bmp", L"Hp_Potion_Nothing");
 		//Item_Shoes
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Shoes/Shoes.bmp", L"Shoes");
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Shoes/Shoes1.bmp", L"Shoes1");
@@ -244,6 +246,8 @@ void CBitMapMgr::LoadImageByScene(eSceneType eType)
 		//Item_Potion
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Potion/Hp_Potion.bmp", L"Hp_Potion");
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Potion/Mp_Potion.bmp", L"Mp_Potion");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Potion/Hp_Potion_Nothing.bmp", L"Hp_Potion_Nothing");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Potion/Mp_Potion_Nothing.bmp", L"Hp_Potion_Nothing");
 		//Item_Shoes
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Shoes/Shoes.bmp", L"Shoes");
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Shoes/Shoes1.bmp", L"Shoes1");
@@ -343,6 +347,8 @@ void CBitMapMgr::LoadImageByScene(eSceneType eType)
 		//Item_Potion
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Potion/Hp_Potion.bmp", L"Hp_Potion");
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Potion/Mp_Potion.bmp", L"Mp_Potion");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Potion/Hp_Potion_Nothing.bmp", L"Hp_Potion_Nothing");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Potion/Mp_Potion_Nothing.bmp", L"Hp_Potion_Nothing");
 		//Item_Shoes
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Shoes/Shoes.bmp", L"Shoes");
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Shoes/Shoes1.bmp", L"Shoes1");
@@ -461,6 +467,8 @@ void CBitMapMgr::LoadImageByScene(eSceneType eType)
 		//Item_Potion
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Potion/Hp_Potion.bmp", L"Hp_Potion");
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Potion/Mp_Potion.bmp", L"Mp_Potion");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Potion/Hp_Potion_Nothing.bmp", L"Hp_Potion_Nothing");
+		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Potion/Mp_Potion_Nothing.bmp", L"Hp_Potion_Nothing");
 		//Item_Shoes
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Shoes/Shoes.bmp", L"Shoes");
 		GETS(CBitMapMgr)->LoadImage(L"../Resource/Texture/Item/Shoes/Shoes1.bmp", L"Shoes1");

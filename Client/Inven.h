@@ -81,6 +81,7 @@ private: //Inven Function
 	void			Inven_DragItem(void);
 	void			Inven_SwapItem(void);
 	void			Inven_ItemEquip(void);
+	void			Inven_ItemData_Goto_QuickSlot(void);
 	
 private: //Inven Render
 	void			Inven_ConsumeItem_CountRender(HDC _dc);

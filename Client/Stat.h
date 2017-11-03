@@ -26,6 +26,8 @@ public: //Getter
 
 public: //Setter
 	inline void			Set_PlayerStat(STAT _tStat) { memcpy_s(&m_tStat, sizeof(STAT), &_tStat, sizeof(STAT)); }
+	inline void			Set_PlayerHp(int _iHp) { m_tStat.m_iHp = _iHp; }
+	inline void			Set_PlayerMp(int _iMp) { m_tStat.m_iMp = _iMp; }
 
 private:
 	void				Stat_Key(void);

@@ -72,6 +72,8 @@ void CStat::Initialize(void)
 	m_tStat.m_iExp = 0;
 	m_tStat.m_iHp = 100;
 	m_tStat.m_iMp = 100;
+	m_tStat.m_iMaxHp = 100;
+	m_tStat.m_iMaxMp = 100;
 	m_tStat.m_iPopularity = 0;
 	lstrcpy(m_tStat.m_szName, L"최영준");
 	lstrcpy(m_tStat.m_szJop, L"해적");

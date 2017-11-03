@@ -1,6 +1,7 @@
 #pragma once
 #include "UI.h"
 
+class CStat;
 class CQuick_Slot;
 class CSkill_Icon;
 class CItem;
@@ -15,6 +16,7 @@ private:
 	list<CSkill_Icon*>	m_QuickSlot_SkillList;
 	list<CItem*>		m_QuickSlot_ItemList;
 	CSkill_Icon*		m_pSelect_SkillIcon;
+	HFONT				m_MyItemFont;
 
 private: //Quick Slot Status Check
 	bool				m_bSkill_Icon_pushCheck;
@@ -24,6 +26,7 @@ private: //Quick Slot Status Check
 
 public:	//Getter
 	inline list<CQuick_Slot*>* Get_QuickSlot(void) { return &m_QuickSlot_List; }
+	inline list<CItem*>*	   Get_QuickSlot_ItemList(void) { return &m_QuickSlot_ItemList; }
 
 public: //Setter
 	void				Set_QuickSlot_SkillIcon_CoolTime(float _fTime, int _iSkillNum);
@@ -39,6 +42,7 @@ private: //Quick Slot Interlock To Inven UI
 	void				QuickSlot_Set_ItemIcon(void);
 	void				QuickSlot_Set_ItemIcon_Position(void);
 	void				QuickSlot_Set_ItemIcon_CutDownKey(void);
+	void				QucikSlot_Potion_Using(CStat* _pStat, CItem* _pItem, DWORD _dwOption);
 
 private: //Quick Slot Render
 	void				QuickSlot_Skill_Icon_Render(HDC _dc);

@@ -12,7 +12,7 @@ typedef struct tagInfo
 }INFO;
 //---------------------------------------------------------------------------------
 
-//Player Stat 정보 구조체
+//Player Stat Info Struct
 //---------------------------------------------------------------------------------
 typedef struct tagStatInfo
 {
@@ -24,7 +24,9 @@ typedef struct tagStatInfo
 	int		m_iFameValue;		//명성치
 	TCHAR	m_szGuild[128];		//길드
 	int		m_iHp;				//HP
+	int		m_iMaxHp;			//Max Hp
 	int		m_iMp;				//MP
+	int		m_iMaxMp;			//Max Mp
 	int		m_iPopularity;		//인기도
 	int		m_iSTR;				//힘
 	int		m_iDEX;				//민첩
