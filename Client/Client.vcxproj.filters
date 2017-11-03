@@ -175,6 +175,9 @@
     <ClCompile Include="UI_QuickSlot.cpp">
       <Filter>02.Object\04.UI\QuickSlot</Filter>
     </ClCompile>
+    <ClCompile Include="LineTool.cpp">
+      <Filter>02.Object\03.Scene\Line_Tool</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainGame.h">
@@ -356,6 +359,9 @@
     </ClInclude>
     <ClInclude Include="UI_QuickSlot.h">
       <Filter>02.Object\04.UI\QuickSlot</Filter>
+    </ClInclude>
+    <ClInclude Include="LineTool.h">
+      <Filter>02.Object\03.Scene\Line_Tool</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -540,6 +546,9 @@
     </Filter>
     <Filter Include="02.Object\04.UI\QuickSlot">
       <UniqueIdentifier>{6d022e2b-f055-49c6-9830-8c46629b945f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Object\03.Scene\Line_Tool">
+      <UniqueIdentifier>{d7ab84bb-fe08-4026-949d-3f53b4bbc9ab}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

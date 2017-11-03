@@ -5,6 +5,7 @@
 //--------------------------------------
 #include "Logo.h"
 #include "Edit.h"
+#include "LineTool.h"
 #include "LogIn.h"
 #include "Stage1.h"
 #include "Stage2.h"
@@ -64,6 +65,10 @@ void CSceneMgr::SetScene(eSceneType eType)
 	case SCENE_EDIT:
 		m_pNextScene = new CEdit();
 		m_eSceneType = SCENE_EDIT;
+		break;
+	case SCENE_EDIT_LINE:
+		m_pNextScene = new CLine_Tool();
+		m_eSceneType = SCENE_EDIT_LINE;
 		break;
 	case SCENE_BOSS:
 		m_pNextScene = new CBoss_Stage();

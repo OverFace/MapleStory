@@ -169,6 +169,7 @@
     <ClInclude Include="HpBar.h" />
     <ClInclude Include="Inven.h" />
     <ClInclude Include="Item.h" />
+    <ClInclude Include="LineTool.h" />
     <ClInclude Include="LogIn.h" />
     <ClInclude Include="LogIn_Back.h" />
     <ClInclude Include="Logo_Back.h" />
@@ -231,6 +232,7 @@
     <ClCompile Include="HpBar.cpp" />
     <ClCompile Include="Inven.cpp" />
     <ClCompile Include="Item.cpp" />
+    <ClCompile Include="LineTool.cpp" />
     <ClCompile Include="LogIn.cpp" />
     <ClCompile Include="LogIn_Back.cpp" />
     <ClCompile Include="Logo_Back.cpp" />
