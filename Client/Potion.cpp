@@ -48,29 +48,13 @@ int CPotion::Update(void)
 
 void CPotion::Render(HDC _dc)
 {
-	if (m_tItem.m_iCount > 0)
-	{
-		TransparentBlt(_dc,
-			int(m_tInfo.fx), int(m_tInfo.fy),
-			int(m_tInfo.fcx), int(m_tInfo.fcy),
-			GETS(CBitMapMgr)->FindImage(m_tItem.m_szName)->GetMemDC(),
-			int(m_iPotion_XFrame * m_tInfo.fcx), 0,
-			int(m_tInfo.fcx), int(m_tInfo.fcy),
-			RGB(0, 0, 0));
-	}
-	else if (m_tItem.m_iCount == 0)
-	{
-		TCHAR szNothing[30] = L"_Nothing";
-		lstrcpy(m_tItem.m_szName, szNothing);
-
-		TransparentBlt(_dc,
-			int(m_tInfo.fx), int(m_tInfo.fy),
-			int(m_tInfo.fcx), int(m_tInfo.fcy),
-			GETS(CBitMapMgr)->FindImage(m_tItem.m_szName)->GetMemDC(),
-			0, 0,
-			int(m_tInfo.fcx), int(m_tInfo.fcy),
-			RGB(0, 0, 0));
-	}
+	TransparentBlt(_dc,
+		int(m_tInfo.fx), int(m_tInfo.fy),
+		int(m_tInfo.fcx), int(m_tInfo.fcy),
+		GETS(CBitMapMgr)->FindImage(m_tItem.m_szName)->GetMemDC(),
+		int(m_iPotion_XFrame * m_tInfo.fcx), 0,
+		int(m_tInfo.fcx), int(m_tInfo.fcy),
+		RGB(0, 0, 0));
 }
 
 void CPotion::Release(void)

@@ -688,6 +688,7 @@ void CUi_QuickSlot::QuickSlot_Set_ItemIcon_CutDownKey(void)
 
 	//ObjMgr 에서 Stat 가져오기
 	CStat* pStat = NULL;
+	CInven* pInven = NULL;
 	OBJITER iter = GETS(CObjMgr)->GetObjList(OBJ_UI)->begin();
 	OBJITER iter_End = GETS(CObjMgr)->GetObjList(OBJ_UI)->end();
 	for (iter; iter != iter_End; ++iter)
@@ -695,6 +696,16 @@ void CUi_QuickSlot::QuickSlot_Set_ItemIcon_CutDownKey(void)
 		if (((CUi*)(*iter))->GetUiType() == UI_STAT)
 		{
 			pStat = (CStat*)(*iter);
+			break;
+		}
+	}
+	iter = GETS(CObjMgr)->GetObjList(OBJ_UI)->begin();
+	iter_End = GETS(CObjMgr)->GetObjList(OBJ_UI)->end();
+	for (iter; iter != iter_End; ++iter)
+	{
+		if (((CUi*)(*iter))->GetUiType() == UI_INVEN)
+		{
+			pInven = (CInven*)(*iter);
 			break;
 		}
 	}
@@ -711,10 +722,25 @@ void CUi_QuickSlot::QuickSlot_Set_ItemIcon_CutDownKey(void)
 				if ((*iter)->GetItemData()->m_iCount > 0)
 				{
 					//Item Count가 1개 이상일때 Count Setting
+					//Quick Slot
 					int iCount = (*iter)->GetItemData()->m_iCount;
 					--iCount;
 					(*iter)->SetItem_Count(iCount);
-					cout << (*iter)->GetItemData()->m_iCount << endl;
+
+					//Inven Item List에도 조정.
+					if (pInven != NULL)
+					{
+						ITEMITER iter_Inven = pInven->GetInevn_ConsumeItemList()->begin();
+						ITEMITER iter_Inven_End = pInven->GetInevn_ConsumeItemList()->end();
+						for (iter_Inven; iter_Inven != iter_Inven_End; ++iter_Inven)
+						{
+							if ((*iter_Inven)->GetItemData()->m_dwOption == 11)
+							{
+								(*iter_Inven)->SetItem_Count(iCount);
+								break;
+							}
+						}
+					}
 
 					//Using Hp Potion Function(Player Hp 채우기)
 					QucikSlot_Potion_Using(pStat, (*iter), (*iter)->GetItemData()->m_dwOption);
@@ -738,6 +764,21 @@ void CUi_QuickSlot::QuickSlot_Set_ItemIcon_CutDownKey(void)
 					int iCount = (*iter)->GetItemData()->m_iCount;
 					--iCount;
 					(*iter)->SetItem_Count(iCount);
+
+					//Inven Item List에도 조정.
+					if (pInven != NULL)
+					{
+						ITEMITER iter_Inven = pInven->GetInevn_ConsumeItemList()->begin();
+						ITEMITER iter_Inven_End = pInven->GetInevn_ConsumeItemList()->end();
+						for (iter_Inven; iter_Inven != iter_Inven_End; ++iter_Inven)
+						{
+							if ((*iter_Inven)->GetItemData()->m_dwOption == 12)
+							{
+								(*iter_Inven)->SetItem_Count(iCount);
+								break;
+							}
+						}
+					}
 
 					//Using Mp Potion Function(Player Mp 채우기)
 					QucikSlot_Potion_Using(pStat, (*iter), (*iter)->GetItemData()->m_dwOption);
@@ -779,8 +820,7 @@ void CUi_QuickSlot::QucikSlot_Potion_Using(CStat * _pStat, CItem* _pItem, DWORD 
 			}
 		}
 	}
-
-	if (_dwOption == 12)
+	else if (_dwOption == 12)
 	{
 		//Mp Potion
 		if (_pStat->Get_PlayerStat()->m_iMp >= _pStat->Get_PlayerStat()->m_iMaxMp)
@@ -799,13 +839,13 @@ void CUi_QuickSlot::QucikSlot_Potion_Using(CStat * _pStat, CItem* _pItem, DWORD 
 			{
 				int iMp = _pStat->Get_PlayerStat()->m_iMp;
 				iMp += iMp_Gap;
-				_pStat->Set_PlayerHp(iMp);
+				_pStat->Set_PlayerMp(iMp);
 			}
 			else
 			{
 				int iMp = _pStat->Get_PlayerStat()->m_iMp;
 				iMp += _pItem->GetItemData()->m_iMp;
-				_pStat->Set_PlayerHp(iMp);
+				_pStat->Set_PlayerMp(iMp);
 			}
 		}
 	}
@@ -866,7 +906,38 @@ void CUi_QuickSlot::QuickSlot_Item_Icon_Render(HDC _dc)
 	ITEMITER iter_End = m_QuickSlot_ItemList.end();
 	for (iter; iter != iter_End; ++iter)
 	{
-		(*iter)->Render(_dc);
+		if ((*iter)->GetItemData()->m_dwOption == 11)
+		{
+			//Hp Potion
+			if((*iter)->GetItemData()->m_iCount > 0)
+				(*iter)->Render(_dc);
+			else if ((*iter)->GetItemData()->m_iCount == 0)
+			{
+				TransparentBlt(_dc,
+					int((*iter)->GetInfo()->fx), int((*iter)->GetInfo()->fy),
+					int((*iter)->GetInfo()->fcx), int((*iter)->GetInfo()->fcy),
+					GETS(CBitMapMgr)->FindImage(L"Hp_Potion_Nothing")->GetMemDC(),
+					0, 0,
+					int((*iter)->GetInfo()->fcx), int((*iter)->GetInfo()->fcy),
+					RGB(0, 0, 0));
+			}
+		}
+		else if ((*iter)->GetItemData()->m_dwOption == 12)
+		{
+			//Mp Potion
+			if ((*iter)->GetItemData()->m_iCount > 0)
+				(*iter)->Render(_dc);
+			else if ((*iter)->GetItemData()->m_iCount == 0)
+			{
+				TransparentBlt(_dc,
+					int((*iter)->GetInfo()->fx), int((*iter)->GetInfo()->fy),
+					int((*iter)->GetInfo()->fcx), int((*iter)->GetInfo()->fcy),
+					GETS(CBitMapMgr)->FindImage(L"Mp_Potion_Nothing")->GetMemDC(),
+					0, 0,
+					int((*iter)->GetInfo()->fcx), int((*iter)->GetInfo()->fcy),
+					RGB(0, 0, 0));
+			}
+		}
 	}
 }
 #pragma endregion

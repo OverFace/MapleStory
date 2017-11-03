@@ -70,8 +70,8 @@ void CStat::Initialize(void)
 	m_tStat.m_iLevel = 1;
 	m_tStat.m_iHonorLevel = 1;
 	m_tStat.m_iExp = 0;
-	m_tStat.m_iHp = 100;
-	m_tStat.m_iMp = 100;
+	m_tStat.m_iHp = 90;
+	m_tStat.m_iMp = 90;
 	m_tStat.m_iMaxHp = 100;
 	m_tStat.m_iMaxMp = 100;
 	m_tStat.m_iPopularity = 0;
@@ -117,6 +117,12 @@ int CStat::Update(void)
 	//Level Up Check Initialize
 	if (m_iStat_Limit <= 0 && m_bLevelUp_Check == true)
 		m_bLevelUp_Check = false;
+
+	system("cls");
+	cout << "Hp : " << m_tStat.m_iHp << endl;
+	cout << "MaxHp : " << m_tStat.m_iMaxHp << endl;
+	cout << "Mp : " << m_tStat.m_iMp << endl;
+	cout << "MaxMp : " << m_tStat.m_iMaxMp << endl;
 
 	return 0;
 }
@@ -415,7 +421,9 @@ void CStat::Load_Data(void)
 			m_tStat.m_iHonorLevel = 1;
 			m_tStat.m_iExp = 0;
 			m_tStat.m_iHp = 100;
+			m_tStat.m_iMaxHp = 100;
 			m_tStat.m_iMp = 100;
+			m_tStat.m_iMaxMp = 100;
 			m_tStat.m_iPopularity = 0;
 			lstrcpy(m_tStat.m_szName, L"최영준");
 			lstrcpy(m_tStat.m_szJop, L"해적");
