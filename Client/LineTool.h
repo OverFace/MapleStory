@@ -13,13 +13,14 @@ private: //Value
 	bool			m_bStageCheck[4];
 	bool			m_bLineCreate_Check;
 	bool			m_bLineClick_Check;
-	bool			m_bLineComplete_Check;
+	bool			m_bLineReStart_Check;
 	list<LINE*>		m_LineList_Stage1;
 	list<LINE*>		m_LineList_Stage2;
 	list<LINE*>		m_LineList_Stage3;
 	list<LINE*>		m_LineList_BossStage;
-	LINEPOINT		m_tLine_Point_Left;
-	LINEPOINT		m_tLine_Point_Right;
+	LINEPOINT		m_tLine_StartPoint;
+	LINEPOINT		m_tLine_ReStart_Point;
+	HPEN			m_Pen;
 
 private: //BackGrond
 	CObj*			m_pStage1_Back;

@@ -21,11 +21,11 @@ CLine_Tool::CLine_Tool(void)
 	m_fScrollSpeed = 10.f;
 	m_iChangeCount = 0;
 
-	for(int i = 0; i < 4; ++i)
+	for (int i = 0; i < 4; ++i)
 		m_bStageCheck[i] = false;
 	m_bLineCreate_Check = false;
 	m_bLineClick_Check = false;
-	m_bLineComplete_Check = false;
+	m_bLineReStart_Check = false;
 
 	m_pStage1_Back = NULL;
 	m_pStage1_Map = NULL;
@@ -34,8 +34,7 @@ CLine_Tool::CLine_Tool(void)
 	m_pBStage_Back = NULL;
 	m_pBStage_Map = NULL;
 
-	ZeroMemory(&m_tLine_Point_Left, sizeof(LINEPOINT));
-	ZeroMemory(&m_tLine_Point_Right, sizeof(LINEPOINT));
+	ZeroMemory(&m_tLine_StartPoint, sizeof(LINEPOINT));
 }
 
 CLine_Tool::~CLine_Tool(void)
@@ -114,18 +113,45 @@ int CLine_Tool::Update(void)
 
 void CLine_Tool::Render(HDC _dc)
 {
+	//Obj Mgr Render
+	GETS(CObjMgr)->Render(_dc);
+
 	//Line Render
+	LINEPOINT tMousePos;
+	tMousePos.fx = (float)CMouse::GetPos().x;
+	tMousePos.fy = (float)CMouse::GetPos().y;
+
+	HPEN old_pen;
+	m_Pen = CreatePen(PS_SOLID, 2, RGB(255, 0, 0));
+	old_pen = (HPEN)SelectObject(_dc, m_Pen);
+
 	if (m_bStageCheck[0] == true)
 	{
 		//Stage 1
-		if (m_LineList_Stage1.empty() == false)
+		if (m_bLineCreate_Check == true)
 		{
-			MoveToEx(_dc, (int)m_LineList_Stage1.front()->tLeft_Point.fx, (int)m_LineList_Stage1.front()->tLeft_Point.fy, NULL);
+			if (m_LineList_Stage1.size() <= 0)
+			{
+				MoveToEx(_dc, int(m_tLine_StartPoint.fx), int(m_tLine_StartPoint.fy), NULL);
+				LineTo(_dc, int(tMousePos.fx), int(tMousePos.fy));
+			}
+			else
+			{
+				MoveToEx(_dc, (int)(m_LineList_Stage1.back()->tRight_Point.fx + g_fScrollX), (int)m_LineList_Stage1.back()->tRight_Point.fy, NULL);
+				LineTo(_dc, int(tMousePos.fx), int(tMousePos.fy));
+			}
+		}
+
+		if (m_LineList_Stage1.size() != 0)
+		{
+			MoveToEx(_dc, int(m_LineList_Stage1.front()->tLeft_Point.fx), int(m_LineList_Stage1.front()->tLeft_Point.fy), NULL);
 
 			LINEITER iter = m_LineList_Stage1.begin();
 			LINEITER iter_End = m_LineList_Stage1.end();
 			for (iter; iter != iter_End; ++iter)
-				LineTo(_dc, (int)(*iter)->tRight_Point.fx, (int)(*iter)->tRight_Point.fy);
+			{
+				LineTo(_dc, int((*iter)->tRight_Point.fx + g_fScrollX), int((*iter)->tRight_Point.fy));
+			}
 		}
 	}
 	else if (m_bStageCheck[1] == true)
@@ -141,8 +167,7 @@ void CLine_Tool::Render(HDC _dc)
 		//Boss Stage
 	}
 
-	//Obj Mgr Render
-	GETS(CObjMgr)->Render(_dc);
+	SelectObject(_dc, old_pen);
 }
 
 void CLine_Tool::Release(void)
@@ -166,6 +191,8 @@ void CLine_Tool::Release(void)
 	LINEITER iter_Boss_End = m_LineList_BossStage.end();
 	for (iter_Boss; iter_Boss != iter_Boss_End; ++iter_Boss)
 		SAFE_DELETE(*iter_Boss);
+
+	DeleteObject(m_Pen);
 }
 
 #pragma region Function
@@ -185,6 +212,8 @@ void CLine_Tool::ShortCut_Key(void)
 		((CStage3_Map*)(m_pStage3_Map))->SetRedner(false);
 		((CBstage_Back*)(m_pBStage_Back))->SetRedner(false);
 		((CBstage_Map*)(m_pBStage_Map))->SetRedner(false);
+		m_bLineClick_Check = false;
+		m_bLineCreate_Check = false;
 	}
 
 	if (GETS(CKeyMgr)->OnceKeyDown('2'))
@@ -200,6 +229,8 @@ void CLine_Tool::ShortCut_Key(void)
 		((CStage3_Map*)(m_pStage3_Map))->SetRedner(false);
 		((CBstage_Back*)(m_pBStage_Back))->SetRedner(false);
 		((CBstage_Map*)(m_pBStage_Map))->SetRedner(false);
+		m_bLineClick_Check = false;
+		m_bLineCreate_Check = false;
 	}
 
 	if (GETS(CKeyMgr)->OnceKeyDown('3'))
@@ -215,6 +246,8 @@ void CLine_Tool::ShortCut_Key(void)
 		((CStage3_Map*)(m_pStage3_Map))->SetRedner(true);
 		((CBstage_Back*)(m_pBStage_Back))->SetRedner(false);
 		((CBstage_Map*)(m_pBStage_Map))->SetRedner(false);
+		m_bLineClick_Check = false;
+		m_bLineCreate_Check = false;
 	}
 
 	if (GETS(CKeyMgr)->OnceKeyDown('4'))
@@ -230,28 +263,38 @@ void CLine_Tool::ShortCut_Key(void)
 		((CStage3_Map*)(m_pStage3_Map))->SetRedner(false);
 		((CBstage_Back*)(m_pBStage_Back))->SetRedner(true);
 		((CBstage_Map*)(m_pBStage_Map))->SetRedner(true);
+		m_bLineClick_Check = false;
+		m_bLineCreate_Check = false;
 	}
 #pragma endregion
 #pragma region Line Create Key
 	if (GETS(CKeyMgr)->OnceKeyDown('S'))
 	{
 		//Line Create Start
+		m_tLine_StartPoint.fx = (float)CMouse::GetPos().x;
+		m_tLine_StartPoint.fy = (float)CMouse::GetPos().y;
+
 		m_bLineCreate_Check = true;
 	}
-	if (m_bLineCreate_Check == true && GETS(CKeyMgr)->OnceKeyDown('S'))
+	if (GETS(CKeyMgr)->StayKeyDown('D'))
 	{
-		//Line Create Stop
 		m_bLineCreate_Check = false;
+		m_bLineReStart_Check = true;
 	}
+
+	system("cls");
+	cout << m_bLineCreate_Check << endl;
+
 #pragma endregion
 #pragma region Save & Load Key
 	if (GETS(CKeyMgr)->OnceKeyDown('5'))
 	{
-		//Save Data
+		Save_Data();
 	}
 	else if (GETS(CKeyMgr)->OnceKeyDown('6'))
 	{
 		//Load Data
+		Load_Data();
 	}
 #pragma endregion
 }
@@ -289,12 +332,190 @@ void CLine_Tool::Scene_Change(void)
 
 void CLine_Tool::Save_Data(void)
 {
+	if (m_bStageCheck[0] == true)
+	{
+		DWORD dwByte;
+		HANDLE hFile = CreateFile(L"../Data/Line_Stage1.dat", GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
 
+		LINEITER iter = m_LineList_Stage1.begin();
+		LINEITER iter_End = m_LineList_Stage1.end();
+		for (iter; iter != iter_End; ++iter)
+		{
+			WriteFile(hFile, (*iter), sizeof(LINE), &dwByte, NULL);
+		}
+
+		CloseHandle(hFile);
+	}
+	else if (m_bStageCheck[1] == true)
+	{
+		DWORD dwByte;
+		HANDLE hFile = CreateFile(L"../Data/Line_Stage2.dat", GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+
+		LINEITER iter = m_LineList_Stage2.begin();
+		LINEITER iter_End = m_LineList_Stage2.end();
+		for (iter; iter != iter_End; ++iter)
+		{
+			WriteFile(hFile, (*iter), sizeof(LINE), &dwByte, NULL);
+		}
+
+		CloseHandle(hFile);
+	}
+	else if (m_bStageCheck[2] == true)
+	{
+		DWORD dwByte;
+		HANDLE hFile = CreateFile(L"../Data/Line_Stage3.dat", GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+
+		LINEITER iter = m_LineList_Stage3.begin();
+		LINEITER iter_End = m_LineList_Stage3.end();
+		for (iter; iter != iter_End; ++iter)
+		{
+			WriteFile(hFile, (*iter), sizeof(LINE), &dwByte, NULL);
+		}
+
+		CloseHandle(hFile);
+	}
+	else if (m_bStageCheck[3] == true)
+	{
+		DWORD dwByte;
+		HANDLE hFile = CreateFile(L"../Data/Line_Boss.dat", GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+
+		LINEITER iter = m_LineList_BossStage.begin();
+		LINEITER iter_End = m_LineList_BossStage.end();
+		for (iter; iter != iter_End; ++iter)
+		{
+			WriteFile(hFile, (*iter), sizeof(LINE), &dwByte, NULL);
+		}
+
+		CloseHandle(hFile);
+	}
 }
 
 void CLine_Tool::Load_Data(void)
 {
+	if (m_bStageCheck[0] == true)
+	{
+		LINEITER iter = m_LineList_Stage1.begin();
+		LINEITER iter_End = m_LineList_Stage1.end();
+		if (m_LineList_Stage1.size() > 0)
+		{
+			for (iter; iter != iter_End; ++iter)
+			{
+				SAFE_DELETE(*iter);
+			}
+			m_LineList_Stage1.clear();
+		}
 
+		DWORD dwByte;
+		HANDLE hFile = CreateFile(L"../Data/Line_Stage1.dat", GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+		while (true)
+		{
+			LINE* pLine = new LINE;
+			ReadFile(hFile, pLine, sizeof(LINE), &dwByte, NULL);
+
+			if (dwByte == 0)
+			{
+				SAFE_DELETE(pLine);
+				break;
+			}
+
+			m_LineList_Stage1.push_back(pLine);
+		}
+
+		CloseHandle(hFile);
+	}
+	else if (m_bStageCheck[1] == true)
+	{
+		LINEITER iter = m_LineList_Stage2.begin();
+		LINEITER iter_End = m_LineList_Stage2.end();
+		if (m_LineList_Stage2.size() > 0)
+		{
+			for (iter; iter != iter_End; ++iter)
+			{
+				SAFE_DELETE(*iter);
+			}
+			m_LineList_Stage2.clear();
+		}
+
+		DWORD dwByte;
+		HANDLE hFile = CreateFile(L"../Data/Line_Stage2.dat", GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+		while (true)
+		{
+			LINE* pLine = new LINE;
+			ReadFile(hFile, pLine, sizeof(LINE), &dwByte, NULL);
+
+			if (dwByte == 0)
+			{
+				SAFE_DELETE(pLine);
+				break;
+			}
+
+			m_LineList_Stage2.push_back(pLine);
+		}
+
+		CloseHandle(hFile);
+	}
+	else if (m_bStageCheck[2] == true)
+	{
+		LINEITER iter = m_LineList_Stage3.begin();
+		LINEITER iter_End = m_LineList_Stage3.end();
+		if (m_LineList_Stage3.size() > 0)
+		{
+			for (iter; iter != iter_End; ++iter)
+			{
+				SAFE_DELETE(*iter);
+			}
+			m_LineList_Stage3.clear();
+		}
+
+		DWORD dwByte;
+		HANDLE hFile = CreateFile(L"../Data/Line_Stage3.dat", GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+		while (true)
+		{
+			LINE* pLine = new LINE;
+			ReadFile(hFile, pLine, sizeof(LINE), &dwByte, NULL);
+
+			if (dwByte == 0)
+			{
+				SAFE_DELETE(pLine);
+				break;
+			}
+
+			m_LineList_Stage3.push_back(pLine);
+		}
+
+		CloseHandle(hFile);
+	}
+	else if (m_bStageCheck[3] == true)
+	{
+		LINEITER iter = m_LineList_BossStage.begin();
+		LINEITER iter_End = m_LineList_BossStage.end();
+		if (m_LineList_BossStage.size() > 0)
+		{
+			for (iter; iter != iter_End; ++iter)
+			{
+				SAFE_DELETE(*iter);
+			}
+			m_LineList_BossStage.clear();
+		}
+
+		DWORD dwByte;
+		HANDLE hFile = CreateFile(L"../Data/Line_Boss.dat", GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+		while (true)
+		{
+			LINE* pLine = new LINE;
+			ReadFile(hFile, pLine, sizeof(LINE), &dwByte, NULL);
+
+			if (dwByte == 0)
+			{
+				SAFE_DELETE(pLine);
+				break;
+			}
+
+			m_LineList_BossStage.push_back(pLine);
+		}
+
+		CloseHandle(hFile);
+	}
 }
 #pragma endregion
 
@@ -304,53 +525,43 @@ void CLine_Tool::Create_Line(void)
 	POINT pt;
 	pt = CMouse::GetPos();
 
-	if (m_bLineCreate_Check == true)
-	{
-		if (m_bStageCheck[0] == true)
-		{
-			//Stage1
-			if (GETS(CKeyMgr)->OnceKeyDown(VK_LBUTTON) && m_bLineClick_Check == false)
-			{
-				m_tLine_Point_Left.fx = (float)pt.x;
-				m_tLine_Point_Left.fy = (float)pt.y;
-				m_bLineClick_Check = true;
-			}
-			
-			//이 부분이 안된다.. 머지???
-			if (GETS(CKeyMgr)->OnceKeyDown(VK_LBUTTON) && m_bLineClick_Check == true)
-			{
-				if (m_bLineComplete_Check == false)
-				{
-					m_tLine_Point_Right.fx = (float)pt.x;
-					m_tLine_Point_Right.fy = (float)pt.y;
+	LINEPOINT tMousePos;
+	tMousePos.fx = (float)pt.x - g_fScrollX;
+	tMousePos.fy = (float)pt.y;
 
-					m_bLineClick_Check = false;
-					m_bLineComplete_Check = true;
+	if (m_bStageCheck[0] == true)
+	{
+		//Stage1
+		if (m_bLineCreate_Check == true)
+		{
+			if (GETS(CKeyMgr)->OnceKeyDown(VK_LBUTTON))
+			{
+				if (m_LineList_Stage1.size() <= 0)
+					m_LineList_Stage1.push_back(new LINE(m_tLine_StartPoint, tMousePos));
+				else
+				{
+					m_tLine_ReStart_Point.fx = (float)CMouse::GetPos().x;
+					m_tLine_ReStart_Point.fy = (float)CMouse::GetPos().y;
+
+					if(m_bLineReStart_Check == false)
+						m_LineList_Stage1.push_back(new LINE(m_LineList_Stage1.back()->tRight_Point, tMousePos));
+					else if (m_bLineReStart_Check == true)
+						m_LineList_Stage1.push_back(new LINE(m_tLine_ReStart_Point, tMousePos));
 				}
 			}
-
-			if (m_bLineComplete_Check == true)
-			{
-				m_LineList_Stage1.push_back(new LINE(m_tLine_Point_Left, m_tLine_Point_Right));
-				m_bLineComplete_Check = false;
-			}
-
-			system("cls");
-			cout << m_bLineClick_Check << endl;
-			cout << m_bLineComplete_Check << endl;
 		}
-		else if (m_bStageCheck[1] == true)
-		{
-			//Stage2
-		}
-		else if (m_bStageCheck[2] == true)
-		{
-			//Stage3
-		}
-		else if (m_bStageCheck[3] == true)
-		{
-			//Boss Stage
-		}
+	}
+	else if (m_bStageCheck[1] == true)
+	{
+		//Stage2
+	}
+	else if (m_bStageCheck[2] == true)
+	{
+		//Stage3
+	}
+	else if (m_bStageCheck[3] == true)
+	{
+		//Boss Stage
 	}
 }
 #pragma endregion
