@@ -24,6 +24,7 @@ CBstage_Map::~CBstage_Map(void)
 
 void CBstage_Map::LoadData(void)
 {
+	//Tile Load
 	FILE* pFile = NULL;
 	fopen_s(&pFile, "../Data/BStage_Tile.dat", "rb");
 
@@ -52,6 +53,24 @@ void CBstage_Map::LoadData(void)
 	}
 
 	fclose(pFile);
+
+	//Line Load
+	DWORD dwByte;
+	HANDLE hFile = CreateFile(L"../Data/Line_Boss.dat", GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+	while (true)
+	{
+		LINE* pLine = new LINE;
+		ReadFile(hFile, pLine, sizeof(LINE), &dwByte, NULL);
+
+		if (dwByte == 0)
+		{
+			SAFE_DELETE(pLine);
+			break;
+		}
+
+		m_StageBoss_LineList.push_back(pLine);
+	}
+	CloseHandle(hFile);
 }
 
 void CBstage_Map::Initialize(void)
@@ -128,6 +147,28 @@ void CBstage_Map::Render(HDC _dc)
 						m_vecBtage_Tile[iIndex]->iDrawID * iTileSizeX, 0,
 						iTileSizeX, iTileSizeY,
 						RGB(255, 255, 255));
+
+					//Line Render
+					HPEN old_pen;
+					m_Pen = CreatePen(PS_SOLID, 2, RGB(255, 0, 0));
+					old_pen = (HPEN)SelectObject(_dc, m_Pen);
+
+					MoveToEx(_dc, int(m_StageBoss_LineList.front()->tLeft_Point.fx), int(m_StageBoss_LineList.front()->tLeft_Point.fy), NULL);
+
+					list<LINE*>::iterator iter_Line = m_StageBoss_LineList.begin();
+					list<LINE*>::iterator iter_Line_End = m_StageBoss_LineList.end();
+					for (iter_Line; iter_Line != iter_Line_End; ++iter_Line)
+					{
+						if ((*iter_Line)->tLeft_Point.fx == 0 && (*iter_Line)->tLeft_Point.fy == 0)
+							continue;
+						if ((*iter_Line)->tRight_Point.fx == 0 && (*iter_Line)->tRight_Point.fy == 0)
+							continue;
+
+						MoveToEx(_dc, int((*iter_Line)->tLeft_Point.fx + g_fScrollX), int((*iter_Line)->tLeft_Point.fy + g_fScrollY), NULL);
+						LineTo(_dc, int((*iter_Line)->tRight_Point.fx + g_fScrollX), int((*iter_Line)->tRight_Point.fy + g_fScrollY));
+					}
+
+					SelectObject(_dc, old_pen);
 				}
 			}
 		}
@@ -144,5 +185,14 @@ void CBstage_Map::Release(void)
 			SAFE_DELETE(*iter);
 		}
 		m_vecBtage_Tile.clear();
+
+		list<LINE*>::iterator iter_Line = m_StageBoss_LineList.begin();
+		for (iter_Line; iter_Line != m_StageBoss_LineList.end(); ++iter_Line)
+		{
+			SAFE_DELETE(*iter_Line);
+		}
+		m_StageBoss_LineList.clear();
+
+		DeleteObject(m_Pen);
 	}
 }

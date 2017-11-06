@@ -140,7 +140,7 @@ void CLine_Tool::Render(HDC _dc)
 			}
 			else
 			{
-				MoveToEx(_dc, (int)(m_LineList_Stage1.back()->tRight_Point.fx + g_fScrollX), (int)m_LineList_Stage1.back()->tRight_Point.fy, NULL);
+				MoveToEx(_dc, int(m_LineList_Stage1.back()->tRight_Point.fx + g_fScrollX), int(m_LineList_Stage1.back()->tRight_Point.fy + g_fScrollY), NULL);
 				LineTo(_dc, int(tMousePos.fx), int(tMousePos.fy));
 			}
 		}
@@ -158,8 +158,8 @@ void CLine_Tool::Render(HDC _dc)
 				if ((*iter)->tRight_Point.fx == 0 && (*iter)->tRight_Point.fy == 0)
 					continue;
 
-				MoveToEx(_dc, int((*iter)->tLeft_Point.fx), int((*iter)->tLeft_Point.fy), NULL);
-				LineTo(_dc, int((*iter)->tRight_Point.fx + g_fScrollX), int((*iter)->tRight_Point.fy));
+				MoveToEx(_dc, int((*iter)->tLeft_Point.fx + g_fScrollX), int((*iter)->tLeft_Point.fy + g_fScrollY), NULL);
+				LineTo(_dc, int((*iter)->tRight_Point.fx + g_fScrollX), int((*iter)->tRight_Point.fy + g_fScrollY));
 			}
 		}
 	}
@@ -175,7 +175,7 @@ void CLine_Tool::Render(HDC _dc)
 			}
 			else
 			{
-				MoveToEx(_dc, (int)(m_LineList_Stage2.back()->tRight_Point.fx + g_fScrollX), (int)m_LineList_Stage2.back()->tRight_Point.fy, NULL);
+				MoveToEx(_dc, (int)(m_LineList_Stage2.back()->tRight_Point.fx + g_fScrollX), (int)m_LineList_Stage2.back()->tRight_Point.fy + g_fScrollY, NULL);
 				LineTo(_dc, int(tMousePos.fx), int(tMousePos.fy));
 			}
 		}
@@ -193,8 +193,8 @@ void CLine_Tool::Render(HDC _dc)
 				if ((*iter)->tRight_Point.fx == 0 && (*iter)->tRight_Point.fy == 0)
 					continue;
 
-				MoveToEx(_dc, int((*iter)->tLeft_Point.fx), int((*iter)->tLeft_Point.fy), NULL);
-				LineTo(_dc, int((*iter)->tRight_Point.fx + g_fScrollX), int((*iter)->tRight_Point.fy));
+				MoveToEx(_dc, int((*iter)->tLeft_Point.fx + g_fScrollX), int((*iter)->tLeft_Point.fy + g_fScrollY), NULL);
+				LineTo(_dc, int((*iter)->tRight_Point.fx + g_fScrollX), int((*iter)->tRight_Point.fy + g_fScrollY));
 			}
 		}
 	}
@@ -210,12 +210,12 @@ void CLine_Tool::Render(HDC _dc)
 			}
 			else
 			{
-				MoveToEx(_dc, (int)(m_LineList_Stage3.back()->tRight_Point.fx + g_fScrollX), (int)m_LineList_Stage3.back()->tRight_Point.fy, NULL);
+				MoveToEx(_dc, (int)(m_LineList_Stage3.back()->tRight_Point.fx + g_fScrollX), (int)m_LineList_Stage3.back()->tRight_Point.fy + g_fScrollY, NULL);
 				LineTo(_dc, int(tMousePos.fx), int(tMousePos.fy));
 			}
 		}
 
-		if (m_LineList_Stage2.size() != 0)
+		if (m_LineList_Stage3.size() != 0)
 		{
 			MoveToEx(_dc, int(m_LineList_Stage3.front()->tLeft_Point.fx), int(m_LineList_Stage3.front()->tLeft_Point.fy), NULL);
 
@@ -228,8 +228,8 @@ void CLine_Tool::Render(HDC _dc)
 				if ((*iter)->tRight_Point.fx == 0 && (*iter)->tRight_Point.fy == 0)
 					continue;
 
-				MoveToEx(_dc, int((*iter)->tLeft_Point.fx), int((*iter)->tLeft_Point.fy), NULL);
-				LineTo(_dc, int((*iter)->tRight_Point.fx + g_fScrollX), int((*iter)->tRight_Point.fy));
+				MoveToEx(_dc, int((*iter)->tLeft_Point.fx + g_fScrollX), int((*iter)->tLeft_Point.fy + g_fScrollY), NULL);
+				LineTo(_dc, int((*iter)->tRight_Point.fx + g_fScrollX), int((*iter)->tRight_Point.fy + g_fScrollY));
 			}
 		}
 	}
@@ -245,7 +245,7 @@ void CLine_Tool::Render(HDC _dc)
 			}
 			else
 			{
-				MoveToEx(_dc, (int)(m_LineList_BossStage.back()->tRight_Point.fx + g_fScrollX), (int)m_LineList_BossStage.back()->tRight_Point.fy, NULL);
+				MoveToEx(_dc, (int)(m_LineList_BossStage.back()->tRight_Point.fx + g_fScrollX), (int)m_LineList_BossStage.back()->tRight_Point.fy + g_fScrollY, NULL);
 				LineTo(_dc, int(tMousePos.fx), int(tMousePos.fy));
 			}
 		}
@@ -263,8 +263,8 @@ void CLine_Tool::Render(HDC _dc)
 				if ((*iter)->tRight_Point.fx == 0 && (*iter)->tRight_Point.fy == 0)
 					continue;
 
-				MoveToEx(_dc, int((*iter)->tLeft_Point.fx), int((*iter)->tLeft_Point.fy), NULL);
-				LineTo(_dc, int((*iter)->tRight_Point.fx + g_fScrollX), int((*iter)->tRight_Point.fy));
+				MoveToEx(_dc, int((*iter)->tLeft_Point.fx + g_fScrollX), int((*iter)->tLeft_Point.fy + g_fScrollY), NULL);
+				LineTo(_dc, int((*iter)->tRight_Point.fx + g_fScrollX), int((*iter)->tRight_Point.fy + g_fScrollY));
 			}
 		}
 	}
@@ -374,8 +374,8 @@ void CLine_Tool::ShortCut_Key(void)
 	if (GETS(CKeyMgr)->OnceKeyDown('S') && m_bLineReStart_Check == false)
 	{
 		//Line Create Start
-		m_tLine_StartPoint.fx = (float)CMouse::GetPos().x;
-		m_tLine_StartPoint.fy = (float)CMouse::GetPos().y;
+		m_tLine_StartPoint.fx = (float)CMouse::GetPos().x - g_fScrollX;
+		m_tLine_StartPoint.fy = (float)CMouse::GetPos().y - g_fScrollY;
 
 		m_bLineCreate_Check = true;
 	}
@@ -396,8 +396,8 @@ void CLine_Tool::ShortCut_Key(void)
 		if (GETS(CKeyMgr)->OnceKeyDown('R'))
 		{
 			//다시 시작할 포인트 받기.
-			m_tLine_StartPoint.fx = float(CMouse::GetPos().x);
-			m_tLine_StartPoint.fy = float(CMouse::GetPos().y);
+			m_tLine_StartPoint.fx = float(CMouse::GetPos().x) - g_fScrollX;
+			m_tLine_StartPoint.fy = float(CMouse::GetPos().y) - g_fScrollY;
 		}
 	
 		m_bLineReStart_Check = true;
@@ -663,7 +663,7 @@ void CLine_Tool::Create_Line(void)
 
 	LINEPOINT tMousePos;
 	tMousePos.fx = (float)pt.x - g_fScrollX;
-	tMousePos.fy = (float)pt.y;
+	tMousePos.fy = (float)pt.y - g_fScrollY;
 
 	if (m_bStageCheck[0] == true)
 	{

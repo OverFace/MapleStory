@@ -13,6 +13,8 @@ private:
 	bool			m_bRender_Tile;
 	bool			m_bStage_Check;
 	vector<TILE*>	m_vecStage3_Tile;
+	list<LINE*>		m_Stage3_LineList;
+	HPEN			m_Pen;
 
 public:
 	inline void		SetRedner(bool _bRender) { m_bRender = _bRender; }

@@ -13,6 +13,9 @@ private:
 	bool			m_bRender_Tile;
 	bool			m_bStage_Check;
 	vector<TILE*>	m_vecStage2_Tile;
+	list<LINE*>		m_Stage2_LineList;
+	HPEN			m_Pen;
+
 private:
 	eBGType			m_eBGType;
 

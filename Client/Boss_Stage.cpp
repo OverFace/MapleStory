@@ -50,6 +50,11 @@ void CBoss_Stage::Initialize(void)
 
 	//UI
 	//---------------------------------------------------------------------
+	//Store
+	CObj* pStore = new CStore;
+	pStore->Initialize();
+	GETS(CObjMgr)->AddObject(OBJ_UI, pStore);
+
 	//Status
 	pObj = new CStatus;
 	pObj->Initialize();

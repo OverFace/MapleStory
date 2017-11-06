@@ -13,6 +13,8 @@ private:
 	bool			m_bRender_Tile;
 	bool			m_bStage_Check;
 	vector<TILE*>	m_vecStage1_Tile;
+	list<LINE*>		m_Stage1_LineList;
+	HPEN			m_Pen;
 
 private:
 	INFO			m_tRopeInfo;
