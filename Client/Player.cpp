@@ -7,7 +7,8 @@
 #include "KeyMgr.h"
 #include "Stage1_Map.h"
 
-CPlayer::CPlayer(void) {
+CPlayer::CPlayer(void) 
+{
 
 	m_pName = NULL;
 	memset(&m_tFrame, 0, sizeof(FRAME));
@@ -24,11 +25,13 @@ CPlayer::CPlayer(void) {
 	m_fOldY = 0.f;
 }
 
-CPlayer::~CPlayer(void) {
+CPlayer::~CPlayer(void)
+{
 	Release();
 }
 
-void CPlayer::Initialize(void) {
+void CPlayer::Initialize(void)
+{
 
 	m_pName = L"Player_Right";
 	m_tInfo.fx = float(WINCX / 2);
@@ -63,18 +66,19 @@ void CPlayer::Initialize(void) {
 	m_eRenderType = RENDER_WORLDOBJ;
 }
 
-int CPlayer::Update() {
-
-	KeyCheck();
+int CPlayer::Update()
+{
+	//Player Animation
+	Player_FrameMove();
+	
 	Jump();
+	Player_KeyCheck();
 	Player_InfoCheck();
-
-	FrameMove();
 	Scroll();
 
 	CObj::Update();
 
-	//Rope랑 충돌 안될시에 바로 스텐드 자세로 돌아가도록 만들어야 된다.
+	//Player Rect Size Setting
 	m_Rect.left = long(m_tInfo.fx - (m_tInfo.fcx - 30) / 2);
 	m_Rect.right = long(m_tInfo.fx + (m_tInfo.fcx - 30) / 2);
 	m_Rect.top = long(m_tInfo.fy - (m_tInfo.fcy - 40) / 2);
@@ -83,7 +87,8 @@ int CPlayer::Update() {
 	return 0;
 }
 
-void CPlayer::Render(HDC _dc) {
+void CPlayer::Render(HDC _dc) 
+{
 
 	TransparentBlt(_dc,
 		int(m_tInfo.fx - m_tInfo.fcx / 2.f),
@@ -106,11 +111,12 @@ void CPlayer::Render(HDC _dc) {
 	*/
 }
 
-void CPlayer::Release(void) {
+void CPlayer::Release(void) 
+{
 
 }
 
-void CPlayer::FrameMove(void)
+void CPlayer::Player_FrameMove(void)
 {
 	if (m_dwState != m_dwPrevState)
 	{
@@ -130,9 +136,9 @@ void CPlayer::FrameMove(void)
 			break;
 		case STATE_ATT:
 			m_tFrame.iFrameStart = 0;
-			m_tFrame.iFrameEnd = 5;
+			m_tFrame.iFrameEnd = 2;
 			m_tFrame.iYIndex = 2;
-			m_tFrame.dwFrameTime = 150;
+			m_tFrame.dwFrameTime = 220;
 			break;
 		case STATE_HIT:
 			m_tFrame.iFrameStart = 0;
@@ -154,15 +160,33 @@ void CPlayer::FrameMove(void)
 			break;
 		case STATE_DOWN:
 			m_tFrame.iFrameStart = 0;
-			m_tFrame.iFrameEnd = 1;
-			m_tFrame.iYIndex = 0;
+			m_tFrame.iFrameEnd = 0;
+			m_tFrame.iYIndex = 5;
 			m_tFrame.dwFrameTime = 150;
 			break;
-		case STATE_SKILL:
+		case STATE_SKILL_ONE:
+			m_tFrame.iFrameStart = 0;
+			m_tFrame.iFrameEnd = 2;
+			m_tFrame.iYIndex = 2;
+			m_tFrame.dwFrameTime = 220;
+			break;
+		case STATE_SKILL_TWO:
+			m_tFrame.iFrameStart = 0;
+			m_tFrame.iFrameEnd = 2;
+			m_tFrame.iYIndex = 7;
+			m_tFrame.dwFrameTime = 150;
+			break;
+		case STATE_SKILL_THREE:
 			m_tFrame.iFrameStart = 0;
 			m_tFrame.iFrameEnd = 3;
 			m_tFrame.iYIndex = 3;
-			m_tFrame.dwFrameTime = 150;
+			m_tFrame.dwFrameTime = 220;
+			break;
+		case STATE_SKILL_FORE:
+			m_tFrame.iFrameStart = 0;
+			m_tFrame.iFrameEnd = 3;
+			m_tFrame.iYIndex = 3;
+			m_tFrame.dwFrameTime = 220;
 			break;
 		}
 		m_dwPrevState = m_dwState;
@@ -172,16 +196,15 @@ void CPlayer::FrameMove(void)
 	{
 		m_dwFrameTime = GetTickCount();
 
-		//로프를 탈때 애니메이션 멈추게 하기 위해서
-		//제대로 안됨. 바닥에서 스케이트 탐.
-		if (m_bAnimation_Stop == false) {
+		if (m_bAnimation_Stop == false) 
+		{
 			++m_tFrame.iFrameStart;
 		}
 	}
 
 	if (m_tFrame.iFrameStart > m_tFrame.iFrameEnd)
 	{
-		if (m_dwState != STATE_STAND && m_bRope_Check == false)
+		if (m_dwState != STATE_STAND/* && m_bRope_Check == false*/)
 		{
 			m_dwState = STATE_STAND;
 		}
@@ -189,9 +212,76 @@ void CPlayer::FrameMove(void)
 	}
 }
 
-void CPlayer::KeyCheck(void)
+void CPlayer::Player_KeyCheck(void)
 {
-	if (m_dwState != STATE_ATT) {
+	/*
+		--Player Key--
+		상태를 공격 할때와 안할때로 나눈다.
+		스텐드 : 가만히 서 있는 동작.
+		공격 : 공격 시에는 움직이지 않는다.
+		걷기 : 좌우로 움직이는 동작
+		점프 : 점프 하는 동작
+		스킬 : 스킬도 공격과 비슷하게 구성.
+		엎드리기 : 아래 키 누를때(좌우 이동은 불가능 하지만 쳐다 볼 수는 있다) + 공격키 가능.
+		아래로 내려 가기 : 공중 지형에서 아래키 누르고 + 점프 키는 아래로 통과 하게 하면 된다.
+		피격 : 공격 당할시에 넉백 효과(키는 상관 없다.)
+	*/
+
+	if (m_dwState != STATE_ATT)
+	{
+		//걷기(왼 & 오)
+		if (GETS(CKeyMgr)->StayKeyDown(VK_LEFT))
+		{
+			m_pName = L"Player_Left";
+			m_dwState = STATE_WALK;
+		}
+		if (GETS(CKeyMgr)->StayKeyDown(VK_RIGHT))
+		{
+			m_pName = L"Player_Right";
+			m_dwState = STATE_WALK;
+		}
+		
+		//엎드리기
+		if (GETS(CKeyMgr)->StayKeyDown(VK_DOWN))
+		{
+			m_dwState = STATE_DOWN;
+		}
+
+		//점프
+		if (GETS(CKeyMgr)->OnceKeyDown(VK_SPACE))
+		{
+			//Jump Function
+			m_dwState = STATE_JUMP;
+		}
+	}
+
+	//공격
+	if (GETS(CKeyMgr)->StayKeyDown(VK_CONTROL))
+	{
+		m_dwState = STATE_ATT;
+	}
+	
+	//스킬 공격
+	if (GETS(CKeyMgr)->OnceKeyDown(0x31))
+	{
+		m_dwState = STATE_SKILL_ONE;
+	}
+	else if (GETS(CKeyMgr)->OnceKeyDown(0x32))
+	{
+		m_dwState = STATE_SKILL_TWO;
+	}
+	else if (GETS(CKeyMgr)->OnceKeyDown(0x33))
+	{
+		m_dwState = STATE_SKILL_THREE;
+	}
+	else if (GETS(CKeyMgr)->OnceKeyDown(0x34))
+	{
+		m_dwState = STATE_SKILL_FORE;
+	}
+
+	/*
+	if (m_dwState != STATE_ATT)
+	{
 		//로프 타다가 점프 할때
 		if ((m_bRope_Check == true && GETS(CKeyMgr)->OnceKeyDown(VK_SPACE))
 			&& (GETS(CKeyMgr)->StayKeyDown(VK_LEFT) || GETS(CKeyMgr)->StayKeyDown(VK_RIGHT)))
@@ -299,6 +389,7 @@ void CPlayer::KeyCheck(void)
 			m_dwState = STATE_SKILL;
 		}
 	}
+	*/
 }
 
 void CPlayer::Scroll()
@@ -370,6 +461,7 @@ void CPlayer::Scroll()
 				m_tInfo.fx += m_fSpeed;
 			}
 		}
+
 		/* 원래 기존의 방식 스크롤 방법.
 		if (m_tInfo.fx >= 2910.f)
 		{
@@ -397,7 +489,8 @@ void CPlayer::Scroll()
 	}
 #pragma endregion
 #pragma region 스테이지3
-	if (GETS(CSceneMgr)->GetSceneType() == SCENE_STAGE3) {
+	if (GETS(CSceneMgr)->GetSceneType() == SCENE_STAGE3) 
+	{
 		if (m_tInfo.fx <= 516.f)
 		{
 			m_fSpeed = 4.f;
@@ -489,6 +582,7 @@ void CPlayer::Jump(void)
 
 INFO* CPlayer::Rope_Ride(void)
 {
+	/*
 	CObj* pMap = NULL;
 
 	OBJITER iter_map = GETS(CObjMgr)->GetObjList(OBJ_BACKGROUND)->begin();
@@ -503,6 +597,9 @@ INFO* CPlayer::Rope_Ride(void)
 	}
 
 	return &((CStage1_Map*)pMap)->GetRopeInfo();
+	*/
+
+	return NULL;
 }
 
 bool CPlayer::Player_InfoCheck(void)

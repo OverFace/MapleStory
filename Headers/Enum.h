@@ -40,15 +40,18 @@ enum eSceneType
 
 enum ePlayerState
 {
-	STATE_STAND = 0,
-	STATE_WALK,
-	STATE_ATT,
-	STATE_SKILL,
-	STATE_HIT,
-	STATE_UP,
-	STATE_JUMP,
-	STATE_DOWN,
-	STATE_DEAD,
+	STATE_STAND = 0,			//서 있는 상태
+	STATE_WALK,					//걷는 상태
+	STATE_ATT,					//공격 상태
+	STATE_SKILL_ONE,			//스킬1 상태
+	STATE_SKILL_TWO,			//스킬2 상태
+	STATE_SKILL_THREE,			//스킬3 상태
+	STATE_SKILL_FORE,			//스킬4 상태
+	STATE_HIT,					//피격 당할때 상태
+	STATE_UP,					//위로 올라 갈때 상태
+	STATE_JUMP,					//점프 상태
+	STATE_DOWN,					//업드릴 때 상태
+	STATE_DEAD,					//죽을때 상태
 	STATE_END
 };
 

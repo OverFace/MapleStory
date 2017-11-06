@@ -7,21 +7,23 @@ public:
 	virtual ~CPlayer(void);
 
 private:
-	TCHAR * m_pName;
+	TCHAR*  m_pName;
 	FRAME   m_tFrame;
 	DWORD	m_dwState;
 	DWORD	m_dwPrevState;
 	DWORD	m_dwFrameTime;
-	POINT	m_ptOffset;
 
-private:
-	int		m_iMoney;
+private: //Scroll
+	POINT	m_ptOffset;
 
 private: //Jump
 	bool	m_bJump;
 	float   m_fJumpAcc;
 	float	m_fOldY;
 	float   m_fDownSpeed;
+
+private:
+	int		m_iMoney;
 
 private: //Scene Change Check
 	int		m_dSceneType;
@@ -42,12 +44,13 @@ public: //Setter
 	inline void		SetMoney(int _iMoney) { m_iMoney += _iMoney; }
 
 private:
-	void			FrameMove(void);
-	void			KeyCheck(void);
+	void			Player_FrameMove(void);
+	void			Player_KeyCheck(void);
 	void			Scroll(void);
 	void			Jump(void);
 	INFO*			Rope_Ride(void);
 	bool			Player_InfoCheck(void);
+
 public:
 	virtual void	Initialize(void);
 	virtual int		Update(void);
