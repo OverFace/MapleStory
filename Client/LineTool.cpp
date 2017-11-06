@@ -26,6 +26,7 @@ CLine_Tool::CLine_Tool(void)
 	m_bLineCreate_Check = false;
 	m_bLineClick_Check = false;
 	m_bLineReStart_Check = false;
+	m_bLineBlank_Check = false;
 
 	m_pStage1_Back = NULL;
 	m_pStage1_Map = NULL;
@@ -115,6 +116,7 @@ void CLine_Tool::Render(HDC _dc)
 {
 	//Obj Mgr Render
 	GETS(CObjMgr)->Render(_dc);
+	Display_CutDownKey_Redner(_dc);
 
 	//Line Render
 	LINEPOINT tMousePos;
@@ -125,6 +127,7 @@ void CLine_Tool::Render(HDC _dc)
 	m_Pen = CreatePen(PS_SOLID, 2, RGB(255, 0, 0));
 	old_pen = (HPEN)SelectObject(_dc, m_Pen);
 
+#pragma region Render Stage Line
 	if (m_bStageCheck[0] == true)
 	{
 		//Stage 1
@@ -150,6 +153,12 @@ void CLine_Tool::Render(HDC _dc)
 			LINEITER iter_End = m_LineList_Stage1.end();
 			for (iter; iter != iter_End; ++iter)
 			{
+				if ((*iter)->tLeft_Point.fx == 0 && (*iter)->tLeft_Point.fy == 0)
+					continue;
+				if ((*iter)->tRight_Point.fx == 0 && (*iter)->tRight_Point.fy == 0)
+					continue;
+
+				MoveToEx(_dc, int((*iter)->tLeft_Point.fx), int((*iter)->tLeft_Point.fy), NULL);
 				LineTo(_dc, int((*iter)->tRight_Point.fx + g_fScrollX), int((*iter)->tRight_Point.fy));
 			}
 		}
@@ -157,16 +166,109 @@ void CLine_Tool::Render(HDC _dc)
 	else if (m_bStageCheck[1] == true)
 	{
 		//Stage 2
+		if (m_bLineCreate_Check == true)
+		{
+			if (m_LineList_Stage2.size() <= 0)
+			{
+				MoveToEx(_dc, int(m_tLine_StartPoint.fx), int(m_tLine_StartPoint.fy), NULL);
+				LineTo(_dc, int(tMousePos.fx), int(tMousePos.fy));
+			}
+			else
+			{
+				MoveToEx(_dc, (int)(m_LineList_Stage2.back()->tRight_Point.fx + g_fScrollX), (int)m_LineList_Stage2.back()->tRight_Point.fy, NULL);
+				LineTo(_dc, int(tMousePos.fx), int(tMousePos.fy));
+			}
+		}
+
+		if (m_LineList_Stage2.size() != 0)
+		{
+			MoveToEx(_dc, int(m_LineList_Stage2.front()->tLeft_Point.fx), int(m_LineList_Stage2.front()->tLeft_Point.fy), NULL);
+
+			LINEITER iter = m_LineList_Stage2.begin();
+			LINEITER iter_End = m_LineList_Stage2.end();
+			for (iter; iter != iter_End; ++iter)
+			{
+				if ((*iter)->tLeft_Point.fx == 0 && (*iter)->tLeft_Point.fy == 0)
+					continue;
+				if ((*iter)->tRight_Point.fx == 0 && (*iter)->tRight_Point.fy == 0)
+					continue;
+
+				MoveToEx(_dc, int((*iter)->tLeft_Point.fx), int((*iter)->tLeft_Point.fy), NULL);
+				LineTo(_dc, int((*iter)->tRight_Point.fx + g_fScrollX), int((*iter)->tRight_Point.fy));
+			}
+		}
 	}
 	else if (m_bStageCheck[2] == true)
 	{
 		//Stage 3
+		if (m_bLineCreate_Check == true)
+		{
+			if (m_LineList_Stage3.size() <= 0)
+			{
+				MoveToEx(_dc, int(m_tLine_StartPoint.fx), int(m_tLine_StartPoint.fy), NULL);
+				LineTo(_dc, int(tMousePos.fx), int(tMousePos.fy));
+			}
+			else
+			{
+				MoveToEx(_dc, (int)(m_LineList_Stage3.back()->tRight_Point.fx + g_fScrollX), (int)m_LineList_Stage3.back()->tRight_Point.fy, NULL);
+				LineTo(_dc, int(tMousePos.fx), int(tMousePos.fy));
+			}
+		}
+
+		if (m_LineList_Stage2.size() != 0)
+		{
+			MoveToEx(_dc, int(m_LineList_Stage3.front()->tLeft_Point.fx), int(m_LineList_Stage3.front()->tLeft_Point.fy), NULL);
+
+			LINEITER iter = m_LineList_Stage3.begin();
+			LINEITER iter_End = m_LineList_Stage3.end();
+			for (iter; iter != iter_End; ++iter)
+			{
+				if ((*iter)->tLeft_Point.fx == 0 && (*iter)->tLeft_Point.fy == 0)
+					continue;
+				if ((*iter)->tRight_Point.fx == 0 && (*iter)->tRight_Point.fy == 0)
+					continue;
+
+				MoveToEx(_dc, int((*iter)->tLeft_Point.fx), int((*iter)->tLeft_Point.fy), NULL);
+				LineTo(_dc, int((*iter)->tRight_Point.fx + g_fScrollX), int((*iter)->tRight_Point.fy));
+			}
+		}
 	}
 	else if (m_bStageCheck[3] == true)
 	{
 		//Boss Stage
-	}
+		if (m_bLineCreate_Check == true)
+		{
+			if (m_LineList_BossStage.size() <= 0)
+			{
+				MoveToEx(_dc, int(m_tLine_StartPoint.fx), int(m_tLine_StartPoint.fy), NULL);
+				LineTo(_dc, int(tMousePos.fx), int(tMousePos.fy));
+			}
+			else
+			{
+				MoveToEx(_dc, (int)(m_LineList_BossStage.back()->tRight_Point.fx + g_fScrollX), (int)m_LineList_BossStage.back()->tRight_Point.fy, NULL);
+				LineTo(_dc, int(tMousePos.fx), int(tMousePos.fy));
+			}
+		}
 
+		if (m_LineList_BossStage.size() != 0)
+		{
+			MoveToEx(_dc, int(m_LineList_BossStage.front()->tLeft_Point.fx), int(m_LineList_BossStage.front()->tLeft_Point.fy), NULL);
+
+			LINEITER iter = m_LineList_BossStage.begin();
+			LINEITER iter_End = m_LineList_BossStage.end();
+			for (iter; iter != iter_End; ++iter)
+			{
+				if ((*iter)->tLeft_Point.fx == 0 && (*iter)->tLeft_Point.fy == 0)
+					continue;
+				if ((*iter)->tRight_Point.fx == 0 && (*iter)->tRight_Point.fy == 0)
+					continue;
+
+				MoveToEx(_dc, int((*iter)->tLeft_Point.fx), int((*iter)->tLeft_Point.fy), NULL);
+				LineTo(_dc, int((*iter)->tRight_Point.fx + g_fScrollX), int((*iter)->tRight_Point.fy));
+			}
+		}
+	}
+#pragma endregion
 	SelectObject(_dc, old_pen);
 }
 
@@ -268,7 +370,8 @@ void CLine_Tool::ShortCut_Key(void)
 	}
 #pragma endregion
 #pragma region Line Create Key
-	if (GETS(CKeyMgr)->OnceKeyDown('S'))
+	//Line 시작 키
+	if (GETS(CKeyMgr)->OnceKeyDown('S') && m_bLineReStart_Check == false)
 	{
 		//Line Create Start
 		m_tLine_StartPoint.fx = (float)CMouse::GetPos().x;
@@ -276,15 +379,40 @@ void CLine_Tool::ShortCut_Key(void)
 
 		m_bLineCreate_Check = true;
 	}
+	
+	//Line 끊어주는 키.
 	if (GETS(CKeyMgr)->StayKeyDown('D'))
 	{
-		m_bLineCreate_Check = false;
+		if (m_bLineBlank_Check == false)
+		{
+			//Start Point 0으로 초기화
+			ZeroMemory(&m_tLine_StartPoint, sizeof(m_tLine_StartPoint));
+
+			//0으로 초기화 된 값을 넣어준다.
+			m_LineList_Stage1.push_back(new LINE(m_tLine_StartPoint, m_tLine_StartPoint));
+			m_bLineBlank_Check = true;
+		}
+
+		if (GETS(CKeyMgr)->OnceKeyDown('R'))
+		{
+			//다시 시작할 포인트 받기.
+			m_tLine_StartPoint.fx = float(CMouse::GetPos().x);
+			m_tLine_StartPoint.fy = float(CMouse::GetPos().y);
+		}
+	
 		m_bLineReStart_Check = true;
 	}
+	else if (!GETS(CKeyMgr)->StayKeyDown('D'))
+	{
+		m_bLineBlank_Check = false;
+		m_bLineReStart_Check = false;
+	}
 
-	system("cls");
-	cout << m_bLineCreate_Check << endl;
-
+	//이전의 Line 삭제 해주는 키.
+	if (GETS(CKeyMgr)->OnceKeyDown('C'))
+	{
+		Delete_Line();
+	}
 #pragma endregion
 #pragma region Save & Load Key
 	if (GETS(CKeyMgr)->OnceKeyDown('5'))
@@ -522,6 +650,14 @@ void CLine_Tool::Load_Data(void)
 #pragma region Line
 void CLine_Tool::Create_Line(void)
 {
+	/*
+	S키 누를 시에 StartPoint가 찍히고 그다음 마우스 클릭시
+	그다음 Point가 찍힌다.
+
+	D키 누를 시에 선을 끊고 그 다음 번째에서 시작하게 해야된다.
+	그러기 위해서 중간에 NULL 값을 넣어서 한번 선을 끊기게 만들자.
+	*/
+
 	POINT pt;
 	pt = CMouse::GetPos();
 
@@ -537,16 +673,18 @@ void CLine_Tool::Create_Line(void)
 			if (GETS(CKeyMgr)->OnceKeyDown(VK_LBUTTON))
 			{
 				if (m_LineList_Stage1.size() <= 0)
+				{
+					//LineList의 Size가 0일때 경우
 					m_LineList_Stage1.push_back(new LINE(m_tLine_StartPoint, tMousePos));
+				}
 				else
 				{
-					m_tLine_ReStart_Point.fx = (float)CMouse::GetPos().x;
-					m_tLine_ReStart_Point.fy = (float)CMouse::GetPos().y;
-
-					if(m_bLineReStart_Check == false)
+					//LineList의 Size가 0이 아닐 경우
+					//선을 계속해서 이어 갈 때.
+					if (m_bLineReStart_Check == true)
+						m_LineList_Stage1.push_back(new LINE(m_tLine_StartPoint, tMousePos));
+					else
 						m_LineList_Stage1.push_back(new LINE(m_LineList_Stage1.back()->tRight_Point, tMousePos));
-					else if (m_bLineReStart_Check == true)
-						m_LineList_Stage1.push_back(new LINE(m_tLine_ReStart_Point, tMousePos));
 				}
 			}
 		}
@@ -554,14 +692,141 @@ void CLine_Tool::Create_Line(void)
 	else if (m_bStageCheck[1] == true)
 	{
 		//Stage2
+		if (m_bLineCreate_Check == true)
+		{
+			if (GETS(CKeyMgr)->OnceKeyDown(VK_LBUTTON))
+			{
+				if (m_LineList_Stage2.size() <= 0)
+				{
+					//LineList의 Size가 0일때 경우
+					m_LineList_Stage2.push_back(new LINE(m_tLine_StartPoint, tMousePos));
+				}
+				else
+				{
+					//LineList의 Size가 0이 아닐 경우
+					//선을 계속해서 이어 갈 때.
+					if (m_bLineReStart_Check == true)
+						m_LineList_Stage2.push_back(new LINE(m_tLine_StartPoint, tMousePos));
+					else
+						m_LineList_Stage2.push_back(new LINE(m_LineList_Stage2.back()->tRight_Point, tMousePos));
+				}
+			}
+		}
 	}
 	else if (m_bStageCheck[2] == true)
 	{
 		//Stage3
+		if (m_bLineCreate_Check == true)
+		{
+			if (GETS(CKeyMgr)->OnceKeyDown(VK_LBUTTON))
+			{
+				if (m_LineList_Stage3.size() <= 0)
+				{
+					//LineList의 Size가 0일때 경우
+					m_LineList_Stage3.push_back(new LINE(m_tLine_StartPoint, tMousePos));
+				}
+				else
+				{
+					//LineList의 Size가 0이 아닐 경우
+					//선을 계속해서 이어 갈 때.
+					if (m_bLineReStart_Check == true)
+						m_LineList_Stage3.push_back(new LINE(m_tLine_StartPoint, tMousePos));
+					else
+						m_LineList_Stage3.push_back(new LINE(m_LineList_Stage3.back()->tRight_Point, tMousePos));
+				}
+			}
+		}
 	}
 	else if (m_bStageCheck[3] == true)
 	{
 		//Boss Stage
+		if (m_bLineCreate_Check == true)
+		{
+			if (GETS(CKeyMgr)->OnceKeyDown(VK_LBUTTON))
+			{
+				if (m_LineList_BossStage.size() <= 0)
+				{
+					//LineList의 Size가 0일때 경우
+					m_LineList_BossStage.push_back(new LINE(m_tLine_StartPoint, tMousePos));
+				}
+				else
+				{
+					//LineList의 Size가 0이 아닐 경우
+					//선을 계속해서 이어 갈 때.
+					if (m_bLineReStart_Check == true)
+						m_LineList_BossStage.push_back(new LINE(m_tLine_StartPoint, tMousePos));
+					else
+						m_LineList_BossStage.push_back(new LINE(m_LineList_BossStage.back()->tRight_Point, tMousePos));
+				}
+			}
+		}
+	}
+}
+
+void CLine_Tool::Delete_Line(void)
+{
+	if (m_bStageCheck[0] == true)
+	{
+		//Stage 1
+		if (m_LineList_Stage1.size() <= 0)
+			return;
+
+		if (m_LineList_Stage1.size() > 0)
+			m_LineList_Stage1.pop_back();
+	}
+	else if (m_bStageCheck[1] == true)
+	{
+		//Stage 2
+		if (m_LineList_Stage2.size() <= 0)
+			return;
+
+		if (m_LineList_Stage2.size() > 0)
+			m_LineList_Stage2.pop_back();
+	}
+	else if (m_bStageCheck[2] == true)
+	{
+		//Stage 3
+		if (m_LineList_Stage3.size() <= 0)
+			return;
+
+		if (m_LineList_Stage3.size() > 0)
+			m_LineList_Stage3.pop_back();
+	}
+	else if (m_bStageCheck[3] == true)
+	{
+		//Boss Stage
+		if (m_LineList_BossStage.size() <= 0)
+			return;
+
+		if (m_LineList_BossStage.size() > 0)
+			m_LineList_BossStage.pop_back();
+	}
+}
+#pragma endregion
+
+#pragma region Line Tool Ext Render
+void CLine_Tool::Display_CutDownKey_Redner(HDC _dc)
+{
+	TCHAR szF1[128] = L"F1 : 설명 보기";
+	TextOut(_dc, 10, 35, szF1, lstrlen(szF1));
+
+	static bool bPress = false;
+	if (GETS(CKeyMgr)->StayKeyDown(VK_F1))
+		bPress = true;
+	if (!GETS(CKeyMgr)->StayKeyDown(VK_F1))
+		bPress = false;
+
+	if (bPress == true)
+	{
+		TCHAR szKeyExplanation[128] = L"Number1: Stage1  Number2: Stage2  Number3: Stage3  Number4: Boss Stage";
+		TCHAR szSaveLoad[126] = L"Number5: Save     Number6: Load";
+		TCHAR szEx[128] = L" (해당되는 스테이지에서 눌러야 그 스테이지가 저장됨)";
+		TCHAR szTile[128] = L"1.S키 : Line 그리기 시작  2.D키 : Line 재시작  3.R키 : Line 다시 시작 포인트  4.C키 : 이전 Line 지우기";
+
+		TextOut(_dc, 10, 50, szKeyExplanation, lstrlen(szKeyExplanation));
+		TextOut(_dc, 10, 65, szSaveLoad, lstrlen(szSaveLoad));
+		TextOut(_dc, 10, 80, szEx, lstrlen(szEx));
+		TextOut(_dc, 10, 105, szTile, lstrlen(szTile));
 	}
 }
 #pragma endregion

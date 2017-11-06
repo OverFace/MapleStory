@@ -14,13 +14,16 @@ private: //Value
 	bool			m_bLineCreate_Check;
 	bool			m_bLineClick_Check;
 	bool			m_bLineReStart_Check;
+	bool			m_bLineBlank_Check;
+	HPEN			m_Pen;
+
+private: //Line
 	list<LINE*>		m_LineList_Stage1;
 	list<LINE*>		m_LineList_Stage2;
 	list<LINE*>		m_LineList_Stage3;
 	list<LINE*>		m_LineList_BossStage;
 	LINEPOINT		m_tLine_StartPoint;
 	LINEPOINT		m_tLine_ReStart_Point;
-	HPEN			m_Pen;
 
 private: //BackGrond
 	CObj*			m_pStage1_Back;
@@ -38,6 +41,10 @@ private: //Function
 
 private: //Line
 	void			Create_Line(void);
+	void			Delete_Line(void);
+
+private: //Render
+	void			Display_CutDownKey_Redner(HDC _dc);
 
 public:
 	virtual void	Initialize(void);
