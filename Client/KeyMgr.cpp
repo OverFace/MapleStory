@@ -19,12 +19,24 @@ void CKeyMgr::Update(void)
 {
 	for (int i = 0; i < 256; ++i)
 	{
+		/*
 		if (GetAsyncKeyState(i) && m_bPress[i] == false)
 		{
 			m_bPress[i] = true;
 		}
 
 		if (!GetAsyncKeyState(i) && m_bPress[i] == true)
+		{
+			m_bPress[i] = false;
+		}
+		*/
+
+		if (!GetAsyncKeyState(i) && m_bKeyDown[i] == true)
+		{
+			m_bPress[i] = false;
+		}
+
+		if (!GetAsyncKeyState(i) && m_bKeyUp[i] == true)
 		{
 			m_bPress[i] = false;
 		}

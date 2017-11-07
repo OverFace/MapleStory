@@ -43,6 +43,7 @@ enum ePlayerState
 	STATE_STAND = 0,			//서 있는 상태
 	STATE_WALK,					//걷는 상태
 	STATE_ATT,					//공격 상태
+	STATE_DOWN_ATT,				//엎드려서 공격 상태
 	STATE_SKILL_ONE,			//스킬1 상태
 	STATE_SKILL_TWO,			//스킬2 상태
 	STATE_SKILL_THREE,			//스킬3 상태
@@ -50,7 +51,7 @@ enum ePlayerState
 	STATE_HIT,					//피격 당할때 상태
 	STATE_UP,					//위로 올라 갈때 상태
 	STATE_JUMP,					//점프 상태
-	STATE_DOWN,					//업드릴 때 상태
+	STATE_DOWN,					//엎드릴 때 상태
 	STATE_DEAD,					//죽을때 상태
 	STATE_END
 };

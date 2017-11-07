@@ -5,6 +5,7 @@
 #include "BitMap.h"
 #include "BitMapMgr.h"
 #include "Mouse.h"
+#include "Player.h"
 
 //UI
 #include "UI.h"
@@ -287,6 +288,9 @@ void CUi_QuickSlot::QuickSlot_Set_SkillIcon_CutDownKey(void)
 		-- 나중에 스킬이 나가도록 조정 해야 된다 --
 	*/
 
+	CPlayer* pPlayer = NULL;
+	pPlayer = (CPlayer*)GETS(CObjMgr)->GetObjList(OBJ_PLAYER)->front();
+
 	//0x30 ~ 0x39 : 0 ~ 9번 숫자키.
 	if (GETS(CKeyMgr)->OnceKeyDown(0x31))
 	{
@@ -305,7 +309,9 @@ void CUi_QuickSlot::QuickSlot_Set_SkillIcon_CutDownKey(void)
 				&& (*iter)->Get_Skill_Icon_Check() == true
 				&& m_bSkill_CutDownKey_check[CK_1] == false)
 			{
-				cout << "1번 스킬 발동" << endl;
+				//Player State Setting
+				pPlayer->SetPlayer_State(STATE_SKILL_ONE);
+				
 				m_bSkill_CutDownKey_check[CK_1] = true;
 				break;
 			}
@@ -332,7 +338,9 @@ void CUi_QuickSlot::QuickSlot_Set_SkillIcon_CutDownKey(void)
 				&& (*iter)->Get_Skill_Icon_Check() == true
 				&& m_bSkill_CutDownKey_check[CK_2] == false)
 			{
-				cout << "2번 스킬 발동" << endl;
+				//Player State Setting
+				pPlayer->SetPlayer_State(STATE_SKILL_TWO);
+
 				m_bSkill_CutDownKey_check[CK_2] = true;
 				break;
 			}
@@ -359,7 +367,9 @@ void CUi_QuickSlot::QuickSlot_Set_SkillIcon_CutDownKey(void)
 				&& (*iter)->Get_Skill_Icon_Check() == true
 				&& m_bSkill_CutDownKey_check[CK_3] == false)
 			{
-				cout << "3번 스킬 발동" << endl;
+				//Player State Setting
+				pPlayer->SetPlayer_State(STATE_SKILL_THREE);
+
 				m_bSkill_CutDownKey_check[CK_3] = true;
 				break;
 			}
@@ -386,7 +396,9 @@ void CUi_QuickSlot::QuickSlot_Set_SkillIcon_CutDownKey(void)
 				&& (*iter)->Get_Skill_Icon_Check() == true
 				&& m_bSkill_CutDownKey_check[CK_4] == false)
 			{
-				cout << "4번 스킬 발동" << endl;
+				//Player State Setting
+				pPlayer->SetPlayer_State(STATE_SKILL_FORE);
+
 				m_bSkill_CutDownKey_check[CK_4] = true;
 				break;
 			}

@@ -6,7 +6,6 @@ c:\users\june\desktop\maple\maple_story\maplestory\client\debug\scene.obj
 c:\users\june\desktop\maple\maple_story\maplestory\client\debug\scenemgr.obj
 c:\users\june\desktop\maple\maple_story\maplestory\client\debug\shoes.obj
 c:\users\june\desktop\maple\maple_story\maplestory\client\debug\skill.obj
-c:\users\june\desktop\maple\maple_story\maplestory\client\debug\skill_input.obj
 c:\users\june\desktop\maple\maple_story\maplestory\client\debug\slot.obj
 c:\users\june\desktop\maple\maple_story\maplestory\client\debug\soundmgr.obj
 c:\users\june\desktop\maple\maple_story\maplestory\client\debug\stage1.obj
@@ -21,10 +20,8 @@ c:\users\june\desktop\maple\maple_story\maplestory\client\debug\status.obj
 c:\users\june\desktop\maple\maple_story\maplestory\client\debug\store.obj
 c:\users\june\desktop\maple\maple_story\maplestory\client\debug\store_npc.obj
 c:\users\june\desktop\maple\maple_story\maplestory\client\debug\ui.obj
+c:\users\june\desktop\maple\maple_story\maplestory\client\debug\ui_quickslot.obj
 c:\users\june\desktop\maple\maple_story\maplestory\client\debug\weapon.obj
-c:\users\june\desktop\maple\maple_story\maplestory\client\debug\item.obj
-c:\users\june\desktop\maple\maple_story\maplestory\client\debug\login.obj
-c:\users\june\desktop\maple\maple_story\maplestory\client\debug\login_back.obj
 c:\users\june\desktop\maple\maple_story\maplestory\client\debug\logo_back.obj
 c:\users\june\desktop\maple\maple_story\maplestory\client\debug\bitmap.obj
 c:\users\june\desktop\maple\maple_story\maplestory\client\debug\bitmapmgr.obj
@@ -34,6 +31,9 @@ c:\users\june\desktop\maple\maple_story\maplestory\client\debug\logo.obj
 c:\users\june\desktop\maple\maple_story\maplestory\client\debug\maingame.obj
 c:\users\june\desktop\maple\maple_story\maplestory\client\debug\messo.obj
 c:\users\june\desktop\maple\maple_story\maplestory\client\debug\monster.obj
+c:\users\june\desktop\maple\maple_story\maplestory\client\debug\quick_slot.obj
+c:\users\june\desktop\maple\maple_story\maplestory\client\debug\skill_icon.obj
+c:\users\june\desktop\maple\maple_story\maplestory\client\debug\skill_slot.obj
 c:\users\june\desktop\maple\maple_story\maplestory\client\debug\slim.obj
 c:\users\june\desktop\maple\maple_story\maplestory\client\debug\mouse.obj
 c:\users\june\desktop\maple\maple_story\maplestory\client\debug\mpbar.obj
@@ -56,13 +56,12 @@ c:\users\june\desktop\maple\maple_story\maplestory\client\debug\glove.obj
 c:\users\june\desktop\maple\maple_story\maplestory\client\debug\helmet.obj
 c:\users\june\desktop\maple\maple_story\maplestory\client\debug\hpbar.obj
 c:\users\june\desktop\maple\maple_story\maplestory\client\debug\inven.obj
-c:\users\june\desktop\maple\maple_story\maplestory\client\debug\skill_slot.obj
-c:\users\june\desktop\maple\maple_story\maplestory\client\debug\skill_icon.obj
-c:\users\june\desktop\maple\maple_story\maplestory\client\debug\quick_slot.obj
-c:\users\june\desktop\maple\maple_story\maplestory\client\debug\ui_quickslot.obj
+c:\users\june\desktop\maple\maple_story\maplestory\client\debug\item.obj
 c:\users\june\desktop\maple\maple_story\maplestory\client\debug\linetool.obj
-c:\users\june\desktop\maple\maple_story\maplestory\debug\client.exe
+c:\users\june\desktop\maple\maple_story\maplestory\client\debug\login.obj
+c:\users\june\desktop\maple\maple_story\maplestory\client\debug\login_back.obj
 c:\users\june\desktop\maple\maple_story\maplestory\debug\client.ilk
+c:\users\june\desktop\maple\maple_story\maplestory\debug\client.exe
 c:\users\june\desktop\maple\maple_story\maplestory\debug\client.pdb
 c:\users\june\desktop\maple\maple_story\maplestory\client\debug\client.res
 c:\users\june\desktop\maple\maple_story\maplestory\client\debug\client.tlog\cl.command.1.tlog

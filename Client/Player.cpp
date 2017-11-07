@@ -7,9 +7,8 @@
 #include "KeyMgr.h"
 #include "Stage1_Map.h"
 
-CPlayer::CPlayer(void) 
+CPlayer::CPlayer(void)
 {
-
 	m_pName = NULL;
 	memset(&m_tFrame, 0, sizeof(FRAME));
 	m_dwFrameTime = 0;
@@ -23,6 +22,8 @@ CPlayer::CPlayer(void)
 	m_bRope_ColStop = false;
 	m_fJumpAcc = 0.f;
 	m_fOldY = 0.f;
+
+	m_bDown_Check = false;
 }
 
 CPlayer::~CPlayer(void)
@@ -32,20 +33,24 @@ CPlayer::~CPlayer(void)
 
 void CPlayer::Initialize(void)
 {
-
 	m_pName = L"Player_Right";
 	m_tInfo.fx = float(WINCX / 2);
-	if (GETS(CSceneMgr)->GetSceneType() == SCENE_STAGE1) {
+
+	if (GETS(CSceneMgr)->GetSceneType() == SCENE_STAGE1)
+	{
 		m_tInfo.fy = 512.f;
 	}
-	if (GETS(CSceneMgr)->GetSceneType() == SCENE_STAGE2) {
+	if (GETS(CSceneMgr)->GetSceneType() == SCENE_STAGE2)
+	{
 		g_fScrollY = -650.f;
 		m_tInfo.fy = 560.f;
 	}
-	if (GETS(CSceneMgr)->GetSceneType() == SCENE_STAGE3) {
+	if (GETS(CSceneMgr)->GetSceneType() == SCENE_STAGE3)
+	{
 		m_tInfo.fy = 454.f;
 	}
-	if (GETS(CSceneMgr)->GetSceneType() == SCENE_BOSS) {
+	if (GETS(CSceneMgr)->GetSceneType() == SCENE_BOSS)
+	{
 		m_tInfo.fy = 530.f;
 	}
 
@@ -57,11 +62,9 @@ void CPlayer::Initialize(void)
 	m_fOldY = m_tInfo.fy;
 
 	m_tFrame = FRAME(0, 3, 0, 150);
-
 	m_dwState = STATE_STAND;
-
 	m_dwFrameTime = GetTickCount();
-	m_fSpeed = 2.f;
+	m_fSpeed = 6.f;
 
 	m_eRenderType = RENDER_WORLDOBJ;
 }
@@ -70,8 +73,8 @@ int CPlayer::Update()
 {
 	//Player Animation
 	Player_FrameMove();
-	
-	Jump();
+	Player_Jump();
+
 	Player_KeyCheck();
 	Player_InfoCheck();
 	Scroll();
@@ -87,7 +90,7 @@ int CPlayer::Update()
 	return 0;
 }
 
-void CPlayer::Render(HDC _dc) 
+void CPlayer::Render(HDC _dc)
 {
 
 	TransparentBlt(_dc,
@@ -111,7 +114,7 @@ void CPlayer::Render(HDC _dc)
 	*/
 }
 
-void CPlayer::Release(void) 
+void CPlayer::Release(void)
 {
 
 }
@@ -139,6 +142,12 @@ void CPlayer::Player_FrameMove(void)
 			m_tFrame.iFrameEnd = 2;
 			m_tFrame.iYIndex = 2;
 			m_tFrame.dwFrameTime = 220;
+			break;
+		case STATE_DOWN_ATT:
+			m_tFrame.iFrameStart = 0;
+			m_tFrame.iFrameEnd = 1;
+			m_tFrame.iYIndex = 4;
+			m_tFrame.dwFrameTime = 550;
 			break;
 		case STATE_HIT:
 			m_tFrame.iFrameStart = 0;
@@ -196,7 +205,7 @@ void CPlayer::Player_FrameMove(void)
 	{
 		m_dwFrameTime = GetTickCount();
 
-		if (m_bAnimation_Stop == false) 
+		if (m_bAnimation_Stop == false)
 		{
 			++m_tFrame.iFrameStart;
 		}
@@ -227,56 +236,60 @@ void CPlayer::Player_KeyCheck(void)
 		피격 : 공격 당할시에 넉백 효과(키는 상관 없다.)
 	*/
 
-	if (m_dwState != STATE_ATT)
+
+	//엎드리기
+	if (GETS(CKeyMgr)->StayKeyDown(VK_DOWN))
 	{
-		//걷기(왼 & 오)
+		m_dwState = STATE_DOWN;
+
 		if (GETS(CKeyMgr)->StayKeyDown(VK_LEFT))
-		{
 			m_pName = L"Player_Left";
-			m_dwState = STATE_WALK;
-		}
-		if (GETS(CKeyMgr)->StayKeyDown(VK_RIGHT))
-		{
+		else if (GETS(CKeyMgr)->StayKeyDown(VK_RIGHT))
 			m_pName = L"Player_Right";
-			m_dwState = STATE_WALK;
-		}
-		
-		//엎드리기
-		if (GETS(CKeyMgr)->StayKeyDown(VK_DOWN))
+
+		m_bDown_Check = true;
+	}
+	else
+	{
+		if (m_dwState != STATE_ATT)
 		{
-			m_dwState = STATE_DOWN;
+			//걷기(왼 & 오)
+			if (GETS(CKeyMgr)->StayKeyDown(VK_LEFT))
+			{
+				m_pName = L"Player_Left";
+				m_dwState = STATE_WALK;
+
+				//Player Move
+				m_tInfo.fx -= m_fSpeed;
+			}
+			else if (GETS(CKeyMgr)->StayKeyDown(VK_RIGHT))
+			{
+				m_pName = L"Player_Right";
+				m_dwState = STATE_WALK;
+
+				//Player Move
+				m_tInfo.fx += m_fSpeed;
+			}
+
+			//점프
+			if (GETS(CKeyMgr)->OnceKeyDown(VK_SPACE))
+			{
+				//Jump Function
+				m_bJump = true;
+				m_dwState = STATE_JUMP;				
+			}
 		}
 
-		//점프
-		if (GETS(CKeyMgr)->OnceKeyDown(VK_SPACE))
-		{
-			//Jump Function
-			m_dwState = STATE_JUMP;
-		}
+		m_bDown_Check = false;
 	}
 
 	//공격
 	if (GETS(CKeyMgr)->StayKeyDown(VK_CONTROL))
 	{
-		m_dwState = STATE_ATT;
-	}
-	
-	//스킬 공격
-	if (GETS(CKeyMgr)->OnceKeyDown(0x31))
-	{
-		m_dwState = STATE_SKILL_ONE;
-	}
-	else if (GETS(CKeyMgr)->OnceKeyDown(0x32))
-	{
-		m_dwState = STATE_SKILL_TWO;
-	}
-	else if (GETS(CKeyMgr)->OnceKeyDown(0x33))
-	{
-		m_dwState = STATE_SKILL_THREE;
-	}
-	else if (GETS(CKeyMgr)->OnceKeyDown(0x34))
-	{
-		m_dwState = STATE_SKILL_FORE;
+		if (m_bDown_Check == false)
+			m_dwState = STATE_ATT;
+		else if (m_bDown_Check == true)
+			m_dwState = STATE_DOWN_ATT;
 	}
 
 	/*
@@ -489,7 +502,7 @@ void CPlayer::Scroll()
 	}
 #pragma endregion
 #pragma region 스테이지3
-	if (GETS(CSceneMgr)->GetSceneType() == SCENE_STAGE3) 
+	if (GETS(CSceneMgr)->GetSceneType() == SCENE_STAGE3)
 	{
 		if (m_tInfo.fx <= 516.f)
 		{
@@ -561,7 +574,7 @@ void CPlayer::Scroll()
 #pragma endregion
 }
 
-void CPlayer::Jump(void)
+void CPlayer::Player_Jump(void)
 {
 	//y = 중력가속도 * 시간 * 시간 * 0.5f + 시간 * 점프속도 + 점프파워
 	if (m_bJump && m_bRope_Check == false)

@@ -118,12 +118,6 @@ int CStat::Update(void)
 	if (m_iStat_Limit <= 0 && m_bLevelUp_Check == true)
 		m_bLevelUp_Check = false;
 
-	system("cls");
-	cout << "Hp : " << m_tStat.m_iHp << endl;
-	cout << "MaxHp : " << m_tStat.m_iMaxHp << endl;
-	cout << "Mp : " << m_tStat.m_iMp << endl;
-	cout << "MaxMp : " << m_tStat.m_iMaxMp << endl;
-
 	return 0;
 }
 

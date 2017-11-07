@@ -47,6 +47,7 @@ int CMainGame::Update(void)
 {
 	//Scene Mgr Update
 	GETS(CSceneMgr)->Update();
+	GETS(CKeyMgr)->Update();
 
 	return 0;
 }
@@ -82,4 +83,5 @@ void CMainGame::Release(void)
 	GETS(CSceneMgr)->DestroyInstance();
 	GETS(CBitMapMgr)->DestroyInstance();
 	GETS(CSoundMgr)->DestroyInstance();
+	GETS(CKeyMgr)->DestroyInstance();
 }

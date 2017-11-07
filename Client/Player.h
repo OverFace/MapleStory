@@ -22,6 +22,9 @@ private: //Jump
 	float	m_fOldY;
 	float   m_fDownSpeed;
 
+private: //State Check
+	bool	m_bDown_Check;
+
 private:
 	int		m_iMoney;
 
@@ -42,12 +45,14 @@ public: //Setter
 	inline void		SetRope_Check(bool _bCheck) { if(m_bRope_ColStop == false) m_bRope_Check = _bCheck; }
 	inline void		SetRope_CollStop(bool _bcheck) { m_bRope_ColStop = _bcheck; }
 	inline void		SetMoney(int _iMoney) { m_iMoney += _iMoney; }
+	inline void		SetPlayer_State(DWORD _dwState) { m_dwState = _dwState; }
 
 private:
 	void			Player_FrameMove(void);
 	void			Player_KeyCheck(void);
+	void			Player_Jump(void);
+
 	void			Scroll(void);
-	void			Jump(void);
 	INFO*			Rope_Ride(void);
 	bool			Player_InfoCheck(void);
 
